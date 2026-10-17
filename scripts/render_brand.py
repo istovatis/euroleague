@@ -44,6 +44,34 @@ def court(color, size=None, stroke=4):
 </svg>"""
 
 
+def centre_disc(color, size=None, uid="c"):
+    """Centre-court badge: a solid disc with the halfway line and the centre circle cut
+    out (transparent), so it works on any background. The line ends at the disc edge;
+    with free ends the mark reads as the Greek letter phi."""
+    dim = f' width="{size}" height="{size}"' if size else ""
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"{dim}>
+  <mask id="{uid}"><rect width="100" height="100" fill="#fff"/>
+    <g fill="none" stroke="#000" stroke-width="6">
+      <line x1="50" y1="0" x2="50" y2="100"/><circle cx="50" cy="50" r="20"/>
+    </g></mask>
+  <circle cx="50" cy="50" r="48" fill="{color}" mask="url(#{uid})"/>
+</svg>"""
+
+
+def centre_avatar(color):
+    """Profile picture: halfway line edge to edge with the centre circle. The platform's
+    circle crop acts as the court edge, which is why the line runs off the canvas."""
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1080" height="1080">
+  <g fill="none" stroke="{color}" stroke-width="5">
+    <line x1="50" y1="0" x2="50" y2="100"/><circle cx="50" cy="50" r="19"/>
+  </g>
+</svg>"""
+
+
+# Which mark the assets use: "centre" (halfway line + centre circle) or "court" (half court).
+MARK = "centre"
+
+
 CSS = f"""
 @font-face {{ font-family: F; font-weight: 900; src: url({FONTS}/FiraSansExtraCondensed-Black.ttf); }}
 @font-face {{ font-family: F; font-weight: 700; src: url({FONTS}/FiraSansExtraCondensed-Bold.ttf); }}
@@ -61,14 +89,18 @@ svg {{ display: block; position: relative; }}
 
 
 def lockup(lang, font_px, color, mark_color):
-    # Court mark ~ cap height wide, with a heavier stroke so it holds up next to Black type.
-    return f"""<div class="lockup" style="gap:{round(font_px * 0.18)}px">{court(mark_color, round(font_px * 0.8), 6)}
+    # Mark ~ cap height, so it reads as an equal partner to the name. The court gets a
+    # heavier stroke so it holds up next to Black type.
+    size = round(font_px * 0.8)
+    mark = centre_disc(mark_color, size, "w") if MARK == "centre" else court(mark_color, size, 6)
+    return f"""<div class="lockup" style="gap:{round(font_px * 0.18)}px">{mark}
 <div class="word" style="font-size:{font_px}px; color:{color}">{LANGS[lang]['name']}</div></div>"""
 
 
 def avatar():
-    # One avatar for every language. The court's corners stay well inside the circle crop.
-    return CSS % dict(w=1080, h=1080), court(C["accent"], 600), 1080, 1080, True
+    # One avatar for every language. The half court's corners stay well inside the circle crop.
+    mark = centre_avatar(C["accent"]) if MARK == "centre" else court(C["accent"], 600)
+    return CSS % dict(w=1080, h=1080), mark, 1080, 1080, True
 
 
 def wordmark(lang, mode):
@@ -105,9 +137,11 @@ def shoot(css, body, w, h, on_ink, out, lang="en"):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "court.svg").write_text(court(C["accent"]))
-    (OUT / "court-mono.svg").write_text(court(C["bg"]))
-    print("assets/brand/court.svg\nassets/brand/court-mono.svg")
+    svgs = {"court.svg": court(C["accent"]), "court-mono.svg": court(C["bg"]),
+            "centre.svg": centre_disc(C["accent"]), "centre-mono.svg": centre_disc(C["bg"])}
+    for name, svg in svgs.items():
+        (OUT / name).write_text(svg)
+        print(f"assets/brand/{name}")
     shoot(*avatar(), OUT / "avatar.png")
     for lang in LANGS:
         shoot(*wordmark(lang, "ink"), OUT / f"wordmark-{lang}.png", lang)
