@@ -20,14 +20,24 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 def find_chrome():
     mac = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-    for c in (os.environ.get("CHROME"), mac, "google-chrome", "google-chrome-stable", "chromium", "chromium-browser"):
-        if c and (os.path.exists(c) or shutil.which(c)):
+    for c in (os.environ.get("CHROME"), mac):
+        if c and os.path.exists(c):
             return c
-    # Playwright-managed Chromium (cloud): npx playwright install chromium
-    hits = sorted(pathlib.Path.home().glob(".cache/ms-playwright/chromium-*/chrome-linux*/chrome"))
-    if hits:
-        return str(hits[-1])
-    sys.exit("No Chrome found: install one or set CHROME=/path/to/chrome")
+    # Cloud (Linux): prefer Playwright's headless_shell. The full Chromium build there
+    # crops ~88px off the bottom of --window-size screenshots, clipping the footer.
+    pw_dirs = [pathlib.Path("/opt/pw-browsers"), pathlib.Path.home() / ".cache/ms-playwright"]
+    for d in pw_dirs:
+        hits = sorted(d.glob("chromium_headless_shell-*/chrome-linux*/headless_shell"))
+        if hits:
+            return str(hits[-1])
+    for c in ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser"):
+        if shutil.which(c):
+            return c
+    for d in pw_dirs:
+        hits = sorted(d.glob("chromium-*/chrome-linux*/chrome"))
+        if hits:
+            return str(hits[-1])
+    sys.exit("No Chrome found: run `npx -y playwright install chromium-headless-shell` or set CHROME=/path/to/chrome")
 
 
 CHROME = find_chrome()
