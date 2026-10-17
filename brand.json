@@ -1,5 +1,8 @@
 {
-  "name": "ROUND REPORT",
+  "name": {
+    "en": "PARQUET",
+    "el": "ΠΑΡΚΕ"
+  },
   "handle": {
     "en": "@yourhandle",
     "el": "@yourhandle_gr"

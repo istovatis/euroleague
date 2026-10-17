@@ -15,6 +15,8 @@ import subprocess
 import sys
 import tempfile
 
+from brand_mark import centre_disc
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
@@ -57,7 +59,9 @@ body::before { content: ""; position: absolute; inset: 0; pointer-events: none;
               repeating-linear-gradient(135deg, #ffffff06 0 2px, transparent 2px 22px); }
 .top { display: flex; justify-content: space-between; align-items: center; font-weight: 700;
   font-size: %(small)dpx; letter-spacing: .12em; text-transform: uppercase; color: %(muted)s; position: relative; }
-.top b { color: %(accent)s; font-weight: 900; }
+.top b { color: %(fg)s; font-weight: 900; }
+.brand { display: inline-flex; align-items: center; gap: .4em; }
+.brand svg { width: 1.15em; height: 1.15em; }
 .main { flex: 1; display: flex; flex-direction: column; justify-content: center; position: relative; }
 .kicker { display: inline-block; align-self: flex-start; background: %(accent)s; color: %(bg)s; font-weight: 900;
   font-size: %(kick)dpx; letter-spacing: .08em; text-transform: uppercase; padding: 6px 16px; margin-bottom: 28px; }
@@ -132,7 +136,7 @@ def page(spec, card, fmt, n, total):
     css = CSS % dict(size, f=FONTS, **BRAND["colors"])
     page_no = f"{n}/{total}" if total > 1 else ""
     return f"""<!doctype html><html lang="{spec['lang']}"><head><meta charset="utf-8"><style>{css}</style></head><body>
-<div class="top"><span><b>{html.escape(BRAND['name'])}</b> · {html.escape(spec['round_label'])}</span><span>{page_no}</span></div>
+<div class="top"><span class="brand">{centre_disc(BRAND['colors']['accent'])}<b>{html.escape(BRAND['name'][spec['lang']])}</b> · {html.escape(spec['round_label'])}</span><span>{page_no}</span></div>
 <div class="main">{card_html(card)}</div>
 <div class="foot"><span>{html.escape(BRAND['handle'][spec['lang']])}</span><span>{html.escape(BRAND['disclaimer'][spec['lang']])}</span></div>
 </body></html>"""
