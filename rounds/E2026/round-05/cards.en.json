@@ -1,0 +1,22 @@
+{
+  "lang": "en",
+  "round_label": "Round 5",
+  "ig": [
+    {"type": "hook", "kicker": "Game changer", "title": "Down 12.\nWon in *overtime*.", "subtitle": "Jean Montero · Olympiacos"},
+    {"type": "score", "kicker": "Final · OT", "sides": [
+        {"team": "Valencia", "score": 97, "won": false},
+        {"team": "Olympiacos", "score": 102, "won": true}],
+      "note": "Valencia were 4-0. Olympiacos trailed 71-59 after Q3.",
+      "lines": [["Montero", "26 pts · 35 PIR · 9/10 FT"], ["Fournier", "23 pts · 7/7 FT · +11"], ["Vezenkov", "14 pts · 7 reb"]]},
+    {"type": "text", "kicker": "Why it matters", "paragraphs": ["Valencia came in **unbeaten**. Olympiacos took the road win in OT.", "Now only **Panathinaikos** are still perfect."]},
+    {"type": "list", "kicker": "Also in Round 5", "items": [
+        {"tag": "Statement", "text": "Panathinaikos (4-0) hold Partizan to 55 in a 72-55 road win"},
+        {"tag": "Thriller", "text": "Crvena win 84-82 at ASVEL, Virtus win 96-94 at Paris"},
+        {"tag": "Sniper", "text": "Alston Jr. (Virtus): 23 pts, 5/7 from three"}]}
+  ],
+  "x": {"type": "score", "kicker": "Game changer · Montero", "sides": [
+      {"team": "Valencia", "score": 97, "won": false},
+      {"team": "Olympiacos", "score": 102, "won": true}],
+    "note": "Down 12 after Q3. Unbeaten Valencia fall in OT",
+    "lines": [["Montero", "26 pts · 35 PIR"], ["Fournier", "23 pts · +11"]]}
+}
