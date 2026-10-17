@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render brand assets (ball mark, avatar, wordmarks, X headers) into assets/brand/.
+"""Render brand assets (court mark, avatar, wordmarks, X headers) into assets/brand/.
 
 Usage: python3 scripts/render_brand.py
 Uses the palette in brand.json and the same headless Chrome as render_cards.py.
@@ -19,17 +19,28 @@ LANGS = {
 }
 
 
-def ball(color, size=None, uid="b"):
-    """Minimal basketball: a solid disc with the seams cut out (transparent), so it
-    sits on any background. Pure geometry, so it is also exported as a real SVG."""
-    dim = f' width="{size}" height="{size}"' if size else ""
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"{dim}>
-  <mask id="{uid}"><rect width="100" height="100" fill="#fff"/>
-    <g fill="none" stroke="#000" stroke-width="5" stroke-linecap="round">
-      <line x1="50" y1="0" x2="50" y2="100"/><line x1="0" y1="50" x2="100" y2="50"/>
-      <path d="M20,15 C38,32 38,68 20,85"/><path d="M80,15 C62,32 62,68 80,85"/>
-    </g></mask>
-  <circle cx="50" cy="50" r="46" fill="{color}" mask="url(#{uid})"/>
+def court(color, size=None, stroke=4):
+    """Minimal half court, top view, in real FIBA proportions (15 x 14 m): sidelines,
+    halfway line with the centre circle, the paint with the free-throw circle and the
+    three-point line. Pure geometry, so it is also exported as a real SVG."""
+    s, x0, top = 5.2, 11, 11                       # metres -> viewBox units
+    base, cx = top + 14 * s, 50
+    basket = base - 1.575 * s
+    key_w, key_top, r_ft, r_3 = 4.9 * s, base - 5.8 * s, 1.8 * s, 6.75 * s
+    c1, c2 = x0 + 0.9 * s, x0 + 15 * s - 0.9 * s  # three-point corner lines
+    c_y = basket - ((r_3 ** 2 - (cx - c1) ** 2) ** 0.5)
+    f = lambda v: f"{v:.2f}".rstrip("0").rstrip(".")
+    pad = stroke / 2
+    vb = f"{f(x0 - pad)} {f(top - pad)} {f(15 * s + stroke)} {f(14 * s + stroke)}"
+    dim = f' width="{size}" height="{f(size * 14 / 15)}"' if size else ""
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb}"{dim}>
+  <g fill="none" stroke="{color}" stroke-width="{stroke}">
+    <rect x="{x0}" y="{top}" width="{f(15 * s)}" height="{f(14 * s)}"/>
+    <path d="M{f(cx - r_ft)},{top} A{f(r_ft)},{f(r_ft)} 0 0 0 {f(cx + r_ft)},{top}"/>
+    <rect x="{f(cx - key_w / 2)}" y="{f(key_top)}" width="{f(key_w)}" height="{f(base - key_top)}"/>
+    <path d="M{f(cx - r_ft)},{f(key_top)} A{f(r_ft)},{f(r_ft)} 0 0 1 {f(cx + r_ft)},{f(key_top)}"/>
+    <path d="M{f(c1)},{f(base)} V{f(c_y)} A{f(r_3)},{f(r_3)} 0 0 1 {f(c2)},{f(c_y)} V{f(base)}"/>
+  </g>
 </svg>"""
 
 
@@ -49,23 +60,22 @@ svg {{ display: block; position: relative; }}
 """
 
 
-def lockup(lang, font_px, color, ball_color):
-    # Ball ~ cap height plus a little, so it reads as an equal partner to the name.
-    b = round(font_px * 0.78)
-    return f"""<div class="lockup" style="gap:{round(font_px * 0.16)}px">{ball(ball_color, b, "w")}
+def lockup(lang, font_px, color, mark_color):
+    # Court mark ~ cap height wide, with a heavier stroke so it holds up next to Black type.
+    return f"""<div class="lockup" style="gap:{round(font_px * 0.18)}px">{court(mark_color, round(font_px * 0.8), 6)}
 <div class="word" style="font-size:{font_px}px; color:{color}">{LANGS[lang]['name']}</div></div>"""
 
 
 def avatar():
-    # One avatar for every language. The ball fills ~60% so the circle crop never touches it.
-    return CSS % dict(w=1080, h=1080), ball(C["accent"], 640), 1080, 1080, True
+    # One avatar for every language. The court's corners stay well inside the circle crop.
+    return CSS % dict(w=1080, h=1080), court(C["accent"], 600), 1080, 1080, True
 
 
 def wordmark(lang, mode):
     """mode: "ink" (on the dark brand background), "light-text" (transparent, for dark
     backgrounds) or "mono" (transparent, all ink: for white or light backgrounds)."""
-    text, ballc = (C["bg"], C["bg"]) if mode == "mono" else (C["fg"], C["accent"])
-    return CSS % dict(w=2000, h=640), lockup(lang, 340, text, ballc), 2000, 640, mode == "ink"
+    text, markc = (C["bg"], C["bg"]) if mode == "mono" else (C["fg"], C["accent"])
+    return CSS % dict(w=2000, h=640), lockup(lang, 340, text, markc), 2000, 640, mode == "ink"
 
 
 def header(lang):
@@ -95,11 +105,9 @@ def shoot(css, body, w, h, on_ink, out, lang="en"):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    for old in OUT.glob("avatar-*.png"):  # per-language letter avatars are replaced by the ball
-        old.unlink()
-    (OUT / "ball.svg").write_text(ball(C["accent"]))
-    (OUT / "ball-mono.svg").write_text(ball(C["bg"]))
-    print("assets/brand/ball.svg\nassets/brand/ball-mono.svg")
+    (OUT / "court.svg").write_text(court(C["accent"]))
+    (OUT / "court-mono.svg").write_text(court(C["bg"]))
+    print("assets/brand/court.svg\nassets/brand/court-mono.svg")
     shoot(*avatar(), OUT / "avatar.png")
     for lang in LANGS:
         shoot(*wordmark(lang, "ink"), OUT / f"wordmark-{lang}.png", lang)
