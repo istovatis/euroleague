@@ -5,7 +5,7 @@ This runs every morning. Most days there is nothing new, and the run should exit
 1. Run `python3 scripts/round_digest.py`. It prints the latest fully played round N.
 2. If `rounds/E2026/round-NN/README.md` already exists, the round is already drafted. **Stop**: no edits and no commit (run `git checkout -- . && git clean -fd rounds/` to drop the digest it just wrote).
 3. Otherwise draft round N following `CLAUDE.md`, and use `rounds/E2026/round-06/` as the reference for format and tone. Create one folder per story (`01-<slug>` is the lead, then up to `04-<slug>`), and in each one:
-   - `post.en.md` and `post.el.md`. The Greek version is localized for Greek fans, not translated: it uses the Greek names of clubs and players and Greek venue names (OAKA = ΟΑΚΑ, Peace and Friendship Stadium = ΣΕΦ), and plays up Olympiacos and Panathinaikos angles.
+   - `post.en.md` (X post + Instagram) and `post.el.md` (Instagram only: no X section, no `x` card). The Greek version is localized for Greek fans, not translated: it uses the Greek names of clubs and players and Greek venue names (OAKA = ΟΑΚΑ, Peace and Friendship Stadium = ΣΕΦ), and plays up Olympiacos and Panathinaikos angles.
    - `cards.en.json` and `cards.el.json`. Render each one with `python3 scripts/render_cards.py <spec>`. The renderer picks the right browser itself (on Linux it prefers Playwright's headless_shell, because the full Chromium build crops the bottom of the image). If none is found, run `npx -y playwright install chromium-headless-shell` first.
    - Open every PNG with Read and fix any overflow, clipping or wrong text before committing.
    - Then write the round's `README.md` posting plan (see `rounds/E2026/round-06/README.md`).

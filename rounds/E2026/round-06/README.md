@@ -1,6 +1,6 @@
 # Round 6 (Oct 15–16, 2026): posting plan
 
-One post per day, all out before Round 7 tips off on Thu Oct 22. Each folder holds the English and Greek versions: `post.<lang>.md` (X post and Instagram caption) and `cards/<lang>/` (Instagram slides `ig-1..3.png`, X image `x.png`).
+One post per day, all out before Round 7 tips off on Thu Oct 22. Each folder holds the English and Greek versions: `post.<lang>.md` and `cards/<lang>/` (Instagram slides `ig-1..3.png`). English also has the X post and the X image `x.png`; Greek is Instagram-only for now.
 
 | # | Post on | Story | Hook |
 |---|---|---|---|

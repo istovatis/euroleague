@@ -157,7 +157,8 @@ def main():
     out_dir = spec_path.parent / "cards" / spec["lang"]
     out_dir.mkdir(parents=True, exist_ok=True)
     jobs = [("ig", c, i + 1, len(spec["ig"]), out_dir / f"ig-{i + 1}.png") for i, c in enumerate(spec["ig"])]
-    jobs.append(("x", spec["x"], 1, 1, out_dir / "x.png"))
+    if spec["lang"] in BRAND["handle"]["x"] and "x" in spec:  # some languages are Instagram-only
+        jobs.append(("x", spec["x"], 1, 1, out_dir / "x.png"))
     for fmt, card, n, total, out in jobs:
         shoot(page(spec, card, fmt, n, total), SIZES[fmt]["w"], SIZES[fmt]["h"], out)
         print(out.relative_to(ROOT))
