@@ -62,14 +62,14 @@ def wordmark(lang, mode):
     """mode: "ink" (on the dark brand background), "light-text" (transparent, for dark
     backgrounds) or "mono" (transparent, all ink: for white or light backgrounds)."""
     text, markc = (C["bg"], C["bg"]) if mode == "mono" else (C["fg"], C["accent"])
-    return CSS % dict(w=2000, h=640), lockup(lang, 340, text, markc), 2000, 640, mode == "ink"
+    return CSS % dict(w=2900, h=640), lockup(lang, 340, text, markc), 2900, 640, mode == "ink"
 
 
 def header(lang):
     # X overlays the avatar bottom-left, so the lockup sits right of centre.
     body = f"""<div style="position:absolute; right:110px; top:50%; transform:translateY(-50%);
   display:flex; flex-direction:column; align-items:flex-end; gap:20px">
-{lockup(lang, 180, C['fg'], C['accent'])}
+{lockup(lang, 140, C['fg'], C['accent'])}
 <span style="font-weight:700; font-size:40px; letter-spacing:.08em; text-transform:uppercase; color:{C['muted']}">{LANGS[lang]['tagline']}</span>
 </div>"""
     return CSS % dict(w=1500, h=500), body, 1500, 500, True
