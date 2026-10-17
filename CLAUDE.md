@@ -30,3 +30,9 @@ Tell each round like a story, the way a commentator would, not like a stats repo
 
 ## Languages
 Live: English (`post.en.md`: Instagram + X), Greek (`post.el.md`: **Instagram only** for now; no Greek X post, no `x` card in `cards.el.json`). Planned markets, roughly by EuroLeague audience: Greek (el), Spanish (es), Turkish (tr), Serbian (sr), Lithuanian (lt), Hebrew (he), Italian (it), French (fr), German (de). Localize, don't translate. For each market, pick the angle that matters there. For example, Greek accounts lead with Olympiacos and Panathinaikos stories, and Turkish accounts with Fenerbahce, Efes and Besiktas.
+
+## Publishing (Instagram)
+Publishing runs on the owner's Mac, because the Instagram tokens live in its Keychain (service `parquet-hoops-instagram`). Never publish without the owner's go-ahead.
+- `scripts/publish_instagram.py <story> <lang>`: dry run; add `--yes` to publish. Writes `published.<lang>.json` and never posts a story twice.
+- `scripts/publish_story.sh <story>`: publishes EN, then EL, and commits the records.
+- `scripts/schedule_publish.py <story> "YYYY-MM-DD HH:MM"`: one-shot launchd job at local (Athens) time; `--list` shows pending jobs, `--dry-run` tests one. Logs go to `~/Library/Logs/parquet-hoops/`.
