@@ -6,7 +6,7 @@ One post per EuroLeague round, on one story. The project is fan-run and **not af
 1. `python3 scripts/round_digest.py` writes `rounds/<season>/round-NN/digest.json` and prints the round summary. It picks the latest fully played round by default, or use `--round N`.
 2. Pick **one** story, using the rules below.
 3. Write `rounds/<season>/round-NN/post.en.md` with the X post, the Instagram caption and the carousel slide text.
-4. Write `cards.<lang>.json` (card types: hook, score, text, list; `*accent*`, `**bold**` and `\n` are allowed). Then run `python3 scripts/render_cards.py rounds/<season>/round-NN/cards.<lang>.json`, which writes `cards/<lang>/ig-N.png` (1080×1350) and `x.png` (1600×900) using headless Chrome. Look at the PNGs before handing them over. The account name, handle, disclaimer and colors live in `brand.json`.
+4. Write `cards.<lang>.json` (card types: hook, score, text, list; `*accent*`, `**bold**` and `\n` are allowed). Then run `python3 scripts/render_cards.py rounds/<season>/round-NN/cards.<lang>.json`, which writes `cards/<lang>/ig-N.png` (1080×1350) and `x.png` (1600×900) using headless Chrome. Look at the PNGs before handing them over. The account name, handles (per channel: `ig` and `x`, since X does not allow dots), disclaimer and colors live in `brand.json`.
 5. Every number in the copy must come from `digest.json`. Background facts (a coach's history, streaks, records) must be ones you are sure of. If in doubt, leave them out.
 
 ## Picking the story (in priority order)

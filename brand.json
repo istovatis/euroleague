@@ -4,8 +4,14 @@
     "el": "PARQUET HOOPS"
   },
   "handle": {
-    "en": "@parquet.hoops",
-    "el": "@yourhandle_gr"
+    "ig": {
+      "en": "@parquet.hoops",
+      "el": "@parke.hoops"
+    },
+    "x": {
+      "en": "@parquet_hoops",
+      "el": "@yourhandle_gr"
+    }
   },
   "disclaimer": {
     "en": "Fan account · Not affiliated with EuroLeague",
