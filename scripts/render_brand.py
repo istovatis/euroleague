@@ -24,7 +24,7 @@ def centre_avatar(color):
     """Profile picture: halfway line edge to edge with the centre circle. The platform's
     circle crop acts as the court edge, which is why the line runs off the canvas."""
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1080" height="1080">
-  <g fill="none" stroke="{color}" stroke-width="5">
+  <g fill="none" stroke="{color}" stroke-width="8">
     <line x1="50" y1="0" x2="50" y2="100"/><circle cx="50" cy="50" r="19"/>
   </g>
 </svg>"""
