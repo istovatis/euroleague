@@ -18,7 +18,14 @@ Prefer the story with the strongest *narrative*, not just the biggest number. Us
 
 ## Channel style
 **X**: 280 characters or fewer, punchy hook on the first line, 3–4 stat lines, one hashtag `#EuroLeague` plus at most one club tag. No emoji spam (2 at most).
-**Instagram**: a carousel of 3–5 slides. Slide 1 is a big hook and the name; slide 2 is the stat card; slide 3 is context or "why it matters"; the last slide is "Also in Round N". The caption opens with a hook, then 3–5 short lines and a question to drive comments, followed by 8–12 hashtags at the end.
+**Instagram**: a carousel of 3–5 slides. Slide 1 is a big hook and the name; slide 2 is the stat card; slide 3 is a second narrative punch (a `hook` card with a big line, never a `text` card that explains); the last slide is "Also in Round N". The caption opens with a hook, then 3–5 short lines and a question to drive comments, followed by 8–12 hashtags at the end.
+
+## Voice: vivid, not analytical
+Tell each round like a story, the way a commentator would, not like a stats report. The model is "The student won in Athens": a headline with a character, a rivalry and a payoff.
+- Every slide and every caption line is a beat of the story: tension, turn, payoff. Use fragments and strong verbs ("5-0. Unbeaten. At home." / "Leday dropped 17.").
+- Numbers back the story up; they are never the point. No stat-trivia lines like "No player scored 20" or "They shot 48% from three".
+- No explainer kickers or slides: no "Why it matters", "Context", "Key stat", "The numbers".
+- Lean on drama the data supports: unbeaten runs ending, comebacks, overtime, road wins, rivalries, a coach facing his old club or mentor.
 
 ## Languages
 Live: English (`post.en.md`), Greek (`post.el.md`). Planned markets, roughly by EuroLeague audience: Greek (el), Spanish (es), Turkish (tr), Serbian (sr), Lithuanian (lt), Hebrew (he), Italian (it), French (fr), German (de). Localize, don't translate. For each market, pick the angle that matters there. For example, Greek accounts lead with Olympiacos and Panathinaikos stories, and Turkish accounts with Fenerbahce, Efes and Besiktas.

@@ -1,5 +1,8 @@
 # 6η αγωνιστική: ΠΡΟΠΟΝΗΤΗΣ, Δημήτρης Ιτούδης (Χάποελ Τελ Αβίβ)
 
+## Facts to verify
+- Itoudis spent years as Obradovic's assistant (at Panathinaikos) before becoming a head coach. Used on slide 3 and in the caption.
+
 Same story as the English post. How it's localized: "ΟΑΚΑ" instead of "Telekom Center", the student and teacher angle (Itoudis and Obradovic at Panathinaikos is a story every Greek fan knows), and Vezenkov added to the caption for Olympiacos fans.
 
 Cards: `cards/el/ig-1..4.png` (Instagram), `cards/el/x.png` (X)
@@ -22,13 +25,15 @@ Cards: `cards/el/ig-1..4.png` (Instagram), `cards/el/x.png` (X)
 
 ## Instagram caption
 
-Ο Παναθηναϊκός μπήκε στην 6η αγωνιστική ως η μόνη αήττητη ομάδα της EuroLeague.
+5-0. Αήττητος. Στην έδρα του.
 
-Ο Δημήτρης Ιτούδης ήρθε στο ΟΑΚΑ και έφυγε με το 91-81.
+Και τότε ο Δημήτρης Ιτούδης μπήκε στο ΟΑΚΑ.
 
-Κανένας 20άρης. Ο Μίτσιτς μοίρασε το παιχνίδι (8 ασίστ, +15), ο Λεντέι είχε 17 και ο Μπράιαντ 14.
+Ο Μίτσιτς έστησε το σόου: 8 ασίστ, +15. Ο Λεντέι έβαλε 17. Ο Μπράιαντ πρόσθεσε 14.
 
-Ο μαθητής νίκησε τον δάσκαλο στο σπίτι του. 👀
+91-81. Το τέλειο ξεκίνημα του Παναθηναϊκού τελείωσε.
+
+Μεγάλωσε προπονητικά στον πάγκο του Ομπράντοβιτς. Αυτή τη φορά τον νίκησε στο σπίτι του. 🔥
 
 Και στον Πειραιά χαμογελούν: 38 PIR για τον Βεζένκοφ στη νίκη με παράταση στη Βαρκελώνη.
 
