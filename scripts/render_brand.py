@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render brand assets (court mark, avatar, wordmarks, X headers) into assets/brand/.
+"""Render brand assets (centre-court mark, avatar, wordmarks, X headers) into assets/brand/.
 
 Usage: python3 scripts/render_brand.py
 Uses the palette in brand.json and the same headless Chrome as render_cards.py.
@@ -17,31 +17,6 @@ LANGS = {
     "en": {"name": "PARQUET", "tagline": "One story per round"},
     "el": {"name": "ΠΑΡΚΕ", "tagline": "Μία ιστορία κάθε αγωνιστική"},
 }
-
-
-def court(color, size=None, stroke=4):
-    """Minimal half court, top view, in real FIBA proportions (15 x 14 m): sidelines,
-    halfway line with the centre circle, the paint with the free-throw circle and the
-    three-point line. Pure geometry, so it is also exported as a real SVG."""
-    s, x0, top = 5.2, 11, 11                       # metres -> viewBox units
-    base, cx = top + 14 * s, 50
-    basket = base - 1.575 * s
-    key_w, key_top, r_ft, r_3 = 4.9 * s, base - 5.8 * s, 1.8 * s, 6.75 * s
-    c1, c2 = x0 + 0.9 * s, x0 + 15 * s - 0.9 * s  # three-point corner lines
-    c_y = basket - ((r_3 ** 2 - (cx - c1) ** 2) ** 0.5)
-    f = lambda v: f"{v:.2f}".rstrip("0").rstrip(".")
-    pad = stroke / 2
-    vb = f"{f(x0 - pad)} {f(top - pad)} {f(15 * s + stroke)} {f(14 * s + stroke)}"
-    dim = f' width="{size}" height="{f(size * 14 / 15)}"' if size else ""
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb}"{dim}>
-  <g fill="none" stroke="{color}" stroke-width="{stroke}">
-    <rect x="{x0}" y="{top}" width="{f(15 * s)}" height="{f(14 * s)}"/>
-    <path d="M{f(cx - r_ft)},{top} A{f(r_ft)},{f(r_ft)} 0 0 0 {f(cx + r_ft)},{top}"/>
-    <rect x="{f(cx - key_w / 2)}" y="{f(key_top)}" width="{f(key_w)}" height="{f(base - key_top)}"/>
-    <path d="M{f(cx - r_ft)},{f(key_top)} A{f(r_ft)},{f(r_ft)} 0 0 1 {f(cx + r_ft)},{f(key_top)}"/>
-    <path d="M{f(c1)},{f(base)} V{f(c_y)} A{f(r_3)},{f(r_3)} 0 0 1 {f(c2)},{f(c_y)} V{f(base)}"/>
-  </g>
-</svg>"""
 
 
 def centre_disc(color, size=None, uid="c"):
@@ -68,10 +43,6 @@ def centre_avatar(color):
 </svg>"""
 
 
-# Which mark the assets use: "centre" (halfway line + centre circle) or "court" (half court).
-MARK = "centre"
-
-
 CSS = f"""
 @font-face {{ font-family: F; font-weight: 900; src: url({FONTS}/FiraSansExtraCondensed-Black.ttf); }}
 @font-face {{ font-family: F; font-weight: 700; src: url({FONTS}/FiraSansExtraCondensed-Bold.ttf); }}
@@ -89,18 +60,15 @@ svg {{ display: block; position: relative; }}
 
 
 def lockup(lang, font_px, color, mark_color):
-    # Mark ~ cap height, so it reads as an equal partner to the name. The court gets a
-    # heavier stroke so it holds up next to Black type.
-    size = round(font_px * 0.8)
-    mark = centre_disc(mark_color, size, "w") if MARK == "centre" else court(mark_color, size, 6)
+    # Mark ~ cap height, so it reads as an equal partner to the name.
+    mark = centre_disc(mark_color, round(font_px * 0.8), "w")
     return f"""<div class="lockup" style="gap:{round(font_px * 0.18)}px">{mark}
 <div class="word" style="font-size:{font_px}px; color:{color}">{LANGS[lang]['name']}</div></div>"""
 
 
 def avatar():
-    # One avatar for every language. The half court's corners stay well inside the circle crop.
-    mark = centre_avatar(C["accent"]) if MARK == "centre" else court(C["accent"], 600)
-    return CSS % dict(w=1080, h=1080), mark, 1080, 1080, True
+    # One avatar for every language.
+    return CSS % dict(w=1080, h=1080), centre_avatar(C["accent"]), 1080, 1080, True
 
 
 def wordmark(lang, mode):
@@ -137,8 +105,7 @@ def shoot(css, body, w, h, on_ink, out, lang="en"):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    svgs = {"court.svg": court(C["accent"]), "court-mono.svg": court(C["bg"]),
-            "centre.svg": centre_disc(C["accent"]), "centre-mono.svg": centre_disc(C["bg"])}
+    svgs = {"centre.svg": centre_disc(C["accent"]), "centre-mono.svg": centre_disc(C["bg"])}
     for name, svg in svgs.items():
         (OUT / name).write_text(svg)
         print(f"assets/brand/{name}")
