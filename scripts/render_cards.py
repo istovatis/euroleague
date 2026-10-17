@@ -138,7 +138,7 @@ def page(spec, card, fmt, n, total):
     return f"""<!doctype html><html lang="{spec['lang']}"><head><meta charset="utf-8"><style>{css}</style></head><body>
 <div class="top"><span class="brand">{centre_disc(BRAND['colors']['accent'])}<b>{html.escape(BRAND['name'][spec['lang']])}</b> · {html.escape(spec['round_label'])}</span><span>{page_no}</span></div>
 <div class="main">{card_html(card)}</div>
-<div class="foot"><span>{html.escape(BRAND['handle'][fmt][spec['lang']])}</span><span>{html.escape(BRAND['disclaimer'][spec['lang']])}</span></div>
+<div class="foot"><span>{html.escape(BRAND['handle'][fmt][spec['lang']])}</span></div>
 </body></html>"""
 
 
