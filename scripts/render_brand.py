@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Render brand assets (avatars, wordmarks, X headers) into assets/brand/.
+"""Render brand assets (ball mark, avatar, wordmarks, X headers) into assets/brand/.
 
 Usage: python3 scripts/render_brand.py
 Uses the palette in brand.json and the same headless Chrome as render_cards.py.
 """
-import json
 import pathlib
 import subprocess
 import tempfile
@@ -14,14 +13,27 @@ from render_cards import BRAND, CHROME, FONTS, ROOT
 C = BRAND["colors"]
 OUT = ROOT / "assets" / "brand"
 
-# name: the wordmark split as (before, accent letter, after); mark: avatar letter;
-# nudge: optical centring of the mark in px (P's heavy stem makes it look left of centre).
 LANGS = {
-    "en": {"name": ("PAR", "Q", "UET"), "mark": "P", "nudge": 36, "tagline": "One story per round"},
-    "el": {"name": ("ΠΑΡ", "Κ", "Ε"), "mark": "Π", "nudge": 0, "tagline": "Μία ιστορία κάθε αγωνιστική"},
+    "en": {"name": "PARQUET", "tagline": "One story per round"},
+    "el": {"name": "ΠΑΡΚΕ", "tagline": "Μία ιστορία κάθε αγωνιστική"},
 }
 
-BASE = f"""
+
+def ball(color, size=None, uid="b"):
+    """Minimal basketball: a solid disc with the seams cut out (transparent), so it
+    sits on any background. Pure geometry, so it is also exported as a real SVG."""
+    dim = f' width="{size}" height="{size}"' if size else ""
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"{dim}>
+  <mask id="{uid}"><rect width="100" height="100" fill="#fff"/>
+    <g fill="none" stroke="#000" stroke-width="5" stroke-linecap="round">
+      <line x1="50" y1="0" x2="50" y2="100"/><line x1="0" y1="50" x2="100" y2="50"/>
+      <path d="M20,15 C38,32 38,68 20,85"/><path d="M80,15 C62,32 62,68 80,85"/>
+    </g></mask>
+  <circle cx="50" cy="50" r="46" fill="{color}" mask="url(#{uid})"/>
+</svg>"""
+
+
+CSS = f"""
 @font-face {{ font-family: F; font-weight: 900; src: url({FONTS}/FiraSansExtraCondensed-Black.ttf); }}
 @font-face {{ font-family: F; font-weight: 700; src: url({FONTS}/FiraSansExtraCondensed-Bold.ttf); }}
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
@@ -31,53 +43,42 @@ body {{ font-family: F, sans-serif; color: {C['fg']}; display: flex; align-items
 .ink::before {{ content: ""; position: absolute; inset: 0;
   background: radial-gradient(circle at 80%% 15%%, {C['accent']}26, transparent 50%%),
               repeating-linear-gradient(135deg, #ffffff08 0 3px, transparent 3px 34px); }}
-.acc {{ color: {C['accent']}; }}
-.word {{ font-weight: 900; letter-spacing: -0.01em; line-height: 1; position: relative; }}
-.planks {{ display: flex; gap: %(gap)dpx; position: relative; }}
-.planks i {{ display: block; width: %(pw)dpx; height: %(ph)dpx; background: {C['accent']}; transform: skewX(-45deg); }}
+.lockup {{ display: flex; align-items: center; position: relative; }}
+.word {{ font-weight: 900; letter-spacing: -0.01em; line-height: 1; }}
+svg {{ display: block; position: relative; }}
 """
 
 
-def planks(n, pw, ph, gap):
-    return f'<div class="planks" style="--n:{n}">' + "<i></i>" * n + "</div>"
+def lockup(lang, font_px, color, ball_color):
+    # Ball ~ cap height plus a little, so it reads as an equal partner to the name.
+    b = round(font_px * 0.78)
+    return f"""<div class="lockup" style="gap:{round(font_px * 0.16)}px">{ball(ball_color, b, "w")}
+<div class="word" style="font-size:{font_px}px; color:{color}">{LANGS[lang]['name']}</div></div>"""
 
 
-def avatar(lang):
-    m = LANGS[lang]["mark"]
-    css = BASE % dict(w=1080, h=1080, gap=18, pw=56, ph=26)
-    # Glyph sits inside the centre ~65% so the Instagram/X circle crop never clips it.
-    body = f"""<div class="word acc" style="font-size:760px; margin-top:-40px; margin-left:{LANGS[lang]['nudge']}px">{m}</div>
-<div style="position:absolute; bottom:250px; left:50%; transform:translateX(-50%)">{planks(4, 56, 26, 18)}</div>"""
-    return css, body, 1080, 1080, True
+def avatar():
+    # One avatar for every language. The ball fills ~60% so the circle crop never touches it.
+    return CSS % dict(w=1080, h=1080), ball(C["accent"], 640), 1080, 1080, True
 
 
 def wordmark(lang, mode):
     """mode: "ink" (on the dark brand background), "light-text" (transparent, for dark
     backgrounds) or "mono" (transparent, all ink: for white or light backgrounds)."""
-    a, q, b = LANGS[lang]["name"]
-    css = BASE % dict(w=2000, h=640, gap=28, pw=90, ph=40)
-    if mode == "mono":
-        css += f".word, .acc {{ color: {C['bg']}; }} .planks i {{ background: {C['bg']}; }}"
-    body = f"""<div style="display:flex; flex-direction:column; align-items:flex-start; gap:40px">
-<div class="word" style="font-size:380px">{a}<span class="acc">{q}</span>{b}</div>
-{planks(5, 90, 40, 28)}</div>"""
-    return css, body, 2000, 640, mode == "ink"
+    text, ballc = (C["bg"], C["bg"]) if mode == "mono" else (C["fg"], C["accent"])
+    return CSS % dict(w=2000, h=640), lockup(lang, 340, text, ballc), 2000, 640, mode == "ink"
 
 
 def header(lang):
-    a, q, b = LANGS[lang]["name"]
-    css = BASE % dict(w=1500, h=500, gap=16, pw=50, ph=22)
-    # X overlays the avatar bottom-left, so the wordmark sits right of centre.
+    # X overlays the avatar bottom-left, so the lockup sits right of centre.
     body = f"""<div style="position:absolute; right:110px; top:50%; transform:translateY(-50%);
-  display:flex; flex-direction:column; align-items:flex-end; gap:22px">
-<div class="word" style="font-size:200px">{a}<span class="acc">{q}</span>{b}</div>
-<div style="display:flex; align-items:center; gap:24px">
+  display:flex; flex-direction:column; align-items:flex-end; gap:20px">
+{lockup(lang, 180, C['fg'], C['accent'])}
 <span style="font-weight:700; font-size:40px; letter-spacing:.08em; text-transform:uppercase; color:{C['muted']}">{LANGS[lang]['tagline']}</span>
-{planks(3, 50, 22, 16)}</div></div>"""
-    return css, body, 1500, 500, True
+</div>"""
+    return CSS % dict(w=1500, h=500), body, 1500, 500, True
 
 
-def shoot(css, body, w, h, on_ink, out, lang):
+def shoot(css, body, w, h, on_ink, out, lang="en"):
     doc = f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><style>{css}</style></head>' \
           f'<body class="{"ink" if on_ink else ""}">{body}</body></html>'
     with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as f:
@@ -94,8 +95,13 @@ def shoot(css, body, w, h, on_ink, out, lang):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
+    for old in OUT.glob("avatar-*.png"):  # per-language letter avatars are replaced by the ball
+        old.unlink()
+    (OUT / "ball.svg").write_text(ball(C["accent"]))
+    (OUT / "ball-mono.svg").write_text(ball(C["bg"]))
+    print("assets/brand/ball.svg\nassets/brand/ball-mono.svg")
+    shoot(*avatar(), OUT / "avatar.png")
     for lang in LANGS:
-        shoot(*avatar(lang), OUT / f"avatar-{lang}.png", lang)
         shoot(*wordmark(lang, "ink"), OUT / f"wordmark-{lang}.png", lang)
         shoot(*wordmark(lang, "light-text"), OUT / f"wordmark-{lang}-transparent.png", lang)
         shoot(*wordmark(lang, "mono"), OUT / f"wordmark-{lang}-mono.png", lang)
