@@ -55,8 +55,7 @@ html, body { width: %(w)dpx; height: %(h)dpx; overflow: hidden; }
 body { font-family: F, sans-serif; background: %(bg)s; color: %(fg)s; position: relative;
   padding: %(pad)dpx; display: flex; flex-direction: column; }
 body::before { content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(circle at 85%% 10%%, %(accent)s22, transparent 45%%),
-              repeating-linear-gradient(135deg, #ffffff06 0 2px, transparent 2px 22px); }
+  background: radial-gradient(circle at 85%% 10%%, %(accent)s22, transparent 45%%); }
 .top { display: flex; justify-content: space-between; align-items: center; font-weight: 700;
   font-size: %(small)dpx; letter-spacing: .12em; text-transform: uppercase; color: %(muted)s; position: relative; }
 .top b { color: %(fg)s; font-weight: 900; }

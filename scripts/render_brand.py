@@ -38,8 +38,7 @@ html, body {{ width: %(w)dpx; height: %(h)dpx; overflow: hidden; }}
 body {{ font-family: F, sans-serif; color: {C['fg']}; display: flex; align-items: center; justify-content: center; }}
 .ink {{ background: {C['bg']}; position: relative; }}
 .ink::before {{ content: ""; position: absolute; inset: 0;
-  background: radial-gradient(circle at 80%% 15%%, {C['accent']}26, transparent 50%%),
-              repeating-linear-gradient(135deg, #ffffff08 0 3px, transparent 3px 34px); }}
+  background: radial-gradient(circle at 80%% 15%%, {C['accent']}26, transparent 50%%); }}
 .lockup {{ display: flex; align-items: center; position: relative; }}
 .word {{ font-weight: 900; letter-spacing: -0.01em; line-height: 1; }}
 svg {{ display: block; position: relative; }}
