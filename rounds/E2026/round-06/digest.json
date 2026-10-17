@@ -11,6 +11,13 @@
         "name": "Fenerbahce",
         "score": 74,
         "after_q3": 59,
+        "quarters": [
+          12,
+          13,
+          34,
+          15
+        ],
+        "overtimes": [],
         "coach": "JASIKEVICIUS, SARAS",
         "record_before": "4-1",
         "pos_before": 3
@@ -20,6 +27,13 @@
         "name": "Partizan",
         "score": 65,
         "after_q3": 44,
+        "quarters": [
+          19,
+          9,
+          16,
+          21
+        ],
+        "overtimes": [],
         "coach": "PENARROYA, JOAN",
         "record_before": "3-2",
         "pos_before": 8
@@ -43,6 +57,13 @@
         "name": "Valencia",
         "score": 88,
         "after_q3": 72,
+        "quarters": [
+          23,
+          25,
+          24,
+          16
+        ],
+        "overtimes": [],
         "coach": "ALBERT, XAVIER",
         "record_before": "4-1",
         "pos_before": 2
@@ -52,6 +73,13 @@
         "name": "Maccabi",
         "score": 91,
         "after_q3": 71,
+        "quarters": [
+          31,
+          19,
+          21,
+          20
+        ],
+        "overtimes": [],
         "coach": "KATTASH, ODED",
         "record_before": "1-4",
         "pos_before": 18
@@ -75,6 +103,13 @@
         "name": "Milan",
         "score": 97,
         "after_q3": 68,
+        "quarters": [
+          23,
+          26,
+          19,
+          29
+        ],
+        "overtimes": [],
         "coach": "POETA, GIUSEPPE",
         "record_before": "1-4",
         "pos_before": 19
@@ -84,6 +119,13 @@
         "name": "Dubai",
         "score": 101,
         "after_q3": 83,
+        "quarters": [
+          29,
+          27,
+          27,
+          18
+        ],
+        "overtimes": [],
         "coach": "PASCUAL, XAVI",
         "record_before": "3-2",
         "pos_before": 10
@@ -107,6 +149,13 @@
         "name": "Real",
         "score": 111,
         "after_q3": 77,
+        "quarters": [
+          27,
+          34,
+          16,
+          34
+        ],
+        "overtimes": [],
         "coach": "MARTINEZ, PEDRO",
         "record_before": "2-3",
         "pos_before": 11
@@ -116,6 +165,13 @@
         "name": "ASVEL",
         "score": 92,
         "after_q3": 71,
+        "quarters": [
+          25,
+          23,
+          23,
+          21
+        ],
+        "overtimes": [],
         "coach": "PARKER, TONY",
         "record_before": "2-3",
         "pos_before": 15
@@ -139,6 +195,13 @@
         "name": "Zalgiris",
         "score": 70,
         "after_q3": 56,
+        "quarters": [
+          12,
+          24,
+          20,
+          14
+        ],
+        "overtimes": [],
         "coach": "MASIULIS, TOMAS",
         "record_before": "2-3",
         "pos_before": 13
@@ -148,6 +211,13 @@
         "name": "Efes",
         "score": 85,
         "after_q3": 67,
+        "quarters": [
+          21,
+          21,
+          25,
+          18
+        ],
+        "overtimes": [],
         "coach": "LASO, PABLO",
         "record_before": "1-4",
         "pos_before": 17
@@ -171,6 +241,13 @@
         "name": "Besiktas",
         "score": 95,
         "after_q3": 69,
+        "quarters": [
+          26,
+          27,
+          16,
+          26
+        ],
+        "overtimes": [],
         "coach": "ALIMPIJEVIC, DUSAN",
         "record_before": "2-3",
         "pos_before": 12
@@ -180,6 +257,13 @@
         "name": "Bayern",
         "score": 87,
         "after_q3": 58,
+        "quarters": [
+          17,
+          18,
+          23,
+          29
+        ],
+        "overtimes": [],
         "coach": "GAVEL, ANTON",
         "record_before": "2-3",
         "pos_before": 14
@@ -203,6 +287,13 @@
         "name": "Crvena",
         "score": 90,
         "after_q3": 77,
+        "quarters": [
+          28,
+          18,
+          31,
+          13
+        ],
+        "overtimes": [],
         "coach": "NAVARRO, IBON",
         "record_before": "3-2",
         "pos_before": 5
@@ -212,6 +303,13 @@
         "name": "Paris",
         "score": 81,
         "after_q3": 58,
+        "quarters": [
+          18,
+          18,
+          22,
+          23
+        ],
+        "overtimes": [],
         "coach": "LEFEVRE, MAXIME",
         "record_before": "1-4",
         "pos_before": 16
@@ -235,6 +333,13 @@
         "name": "Panathinaikos",
         "score": 81,
         "after_q3": 61,
+        "quarters": [
+          25,
+          21,
+          15,
+          20
+        ],
+        "overtimes": [],
         "coach": "OBRADOVIC, ZELJKO",
         "record_before": "5-0",
         "pos_before": 1
@@ -244,6 +349,13 @@
         "name": "Hapoel",
         "score": 91,
         "after_q3": 68,
+        "quarters": [
+          29,
+          19,
+          20,
+          23
+        ],
+        "overtimes": [],
         "coach": "ITOUDIS, DIMITRIS",
         "record_before": "3-2",
         "pos_before": 6
@@ -267,6 +379,13 @@
         "name": "Virtus",
         "score": 86,
         "after_q3": 68,
+        "quarters": [
+          24,
+          22,
+          22,
+          18
+        ],
+        "overtimes": [],
         "coach": "MUMBRU, ALEX",
         "record_before": "3-2",
         "pos_before": 9
@@ -276,6 +395,13 @@
         "name": "Baskonia",
         "score": 78,
         "after_q3": 53,
+        "quarters": [
+          12,
+          22,
+          19,
+          25
+        ],
+        "overtimes": [],
         "coach": "PERASOVIC, VELIMIR",
         "record_before": "1-4",
         "pos_before": 20
@@ -299,6 +425,15 @@
         "name": "Barca",
         "score": 100,
         "after_q3": 66,
+        "quarters": [
+          30,
+          17,
+          19,
+          26
+        ],
+        "overtimes": [
+          8
+        ],
         "coach": "SEKULIC, ALEKSANDER",
         "record_before": "3-2",
         "pos_before": 7
@@ -308,6 +443,15 @@
         "name": "Olympiacos",
         "score": 105,
         "after_q3": 77,
+        "quarters": [
+          26,
+          31,
+          20,
+          15
+        ],
+        "overtimes": [
+          13
+        ],
         "coach": "BARTZOKAS, GEORGIOS",
         "record_before": "4-1",
         "pos_before": 4

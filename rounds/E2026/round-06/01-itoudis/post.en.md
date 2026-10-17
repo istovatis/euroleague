@@ -5,8 +5,6 @@
 
 **Why this story:** Panathinaikos were the only unbeaten team (5-0). Hapoel won 91-81 in Athens without anyone scoring 20. Micic ran the game (8 ast, +15), and five players shared the load. Itoudis spent years on Obradovic's bench before becoming a head coach, so this is the student beating the teacher in his own arena.
 
-Runners-up: Vezenkov 38 PIR (MVP) · Maccabi (1-4) winning 91-88 at Valencia (4-1) (underdog)
-
 ---
 
 ## X (258 characters)
@@ -37,11 +35,6 @@ Leday 17 · Bryant 14 · Micic 9 pts / 8 ast / +15
 **Slide 3 (full circle):**
 LEARNED ON HIS BENCH. WON IN HIS HOUSE.
 Itoudis vs Obradovic · OAKA
-
-**Slide 4 (also in Round 6):**
-🔥 Vezenkov: 38 PIR, 25 pts, 10/10 FT, OT win at Barça
-🚨 Maccabi (1-4) beat Valencia (4-1) on the road, 91-88
-🎯 Feliz (Real): 8/11 from three
 
 ## Instagram caption
 

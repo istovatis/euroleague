@@ -1,0 +1,76 @@
+{
+  "lang": "en",
+  "round_label": "Round 6",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "MVP of the round",
+      "title": "Ten from\nthe line.\nZero *misses*.",
+      "subtitle": "Sasha Vezenkov · Olympiacos"
+    },
+    {
+      "type": "score",
+      "kicker": "Final · OT",
+      "sides": [
+        {
+          "team": "Barça",
+          "score": 100,
+          "won": false
+        },
+        {
+          "team": "Olympiacos",
+          "score": 105,
+          "won": true
+        }
+      ],
+      "note": "Up 11 after three. Barça forced overtime.",
+      "lines": [
+        [
+          "Vezenkov",
+          "25 pts · 6 reb · 38 PIR"
+        ],
+        [
+          "From the line",
+          "10/10"
+        ],
+        [
+          "Inside the arc",
+          "6/7"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Overtime",
+      "title": "Palau roared.\n*Sasha* didn't\nblink.",
+      "subtitle": "Olympiacos take OT 13-8"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "kicker": "MVP of the round · Vezenkov",
+    "sides": [
+      {
+        "team": "Barça",
+        "score": 100,
+        "won": false
+      },
+      {
+        "team": "Olympiacos",
+        "score": 105,
+        "won": true
+      }
+    ],
+    "note": "Overtime at Palau",
+    "lines": [
+      [
+        "Vezenkov",
+        "25 pts · 38 PIR"
+      ],
+      [
+        "Free throws",
+        "10/10"
+      ]
+    ]
+  }
+}

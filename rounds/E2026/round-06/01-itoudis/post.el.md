@@ -3,9 +3,9 @@
 ## Facts to verify
 - Itoudis spent years as Obradovic's assistant (at Panathinaikos) before becoming a head coach. Used on slide 3 and in the caption.
 
-Same story as the English post. How it's localized: "ΟΑΚΑ" instead of "Telekom Center", the student and teacher angle (Itoudis and Obradovic at Panathinaikos is a story every Greek fan knows), and Vezenkov added to the caption for Olympiacos fans.
+Same story as the English post. How it's localized: "ΟΑΚΑ" instead of "Telekom Center", the student and teacher angle (Itoudis and Obradovic at Panathinaikos is a story every Greek fan knows).
 
-Cards: `cards/el/ig-1..4.png` (Instagram), `cards/el/x.png` (X)
+Cards: `cards/el/ig-1..3.png` (Instagram), `cards/el/x.png` (X)
 
 ---
 
@@ -35,8 +35,6 @@ Cards: `cards/el/ig-1..4.png` (Instagram), `cards/el/x.png` (X)
 
 Μεγάλωσε προπονητικά στον πάγκο του Ομπράντοβιτς. Αυτή τη φορά τον νίκησε στο σπίτι του. 🔥
 
-Και στον Πειραιά χαμογελούν: 38 PIR για τον Βεζένκοφ στη νίκη με παράταση στη Βαρκελώνη.
-
 Ποιος θα σταματήσει τη Χάποελ; 👇
 
-#EuroLeague #Ιτούδης #Παναθηναϊκός #ΧάποελΤελΑβίβ #Ολυμπιακός #Βεζένκοφ #μπάσκετ #basketball #EuroLeagueBasketball
+#EuroLeague #Ιτούδης #Παναθηναϊκός #ΧάποελΤελΑβίβ #Μίτσιτς #μπάσκετ #basketball #EuroLeagueBasketball

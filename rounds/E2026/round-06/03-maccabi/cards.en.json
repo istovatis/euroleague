@@ -1,0 +1,76 @@
+{
+  "lang": "en",
+  "round_label": "Round 6",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "Upset of the round",
+      "title": "Came in 1-4.\nLeft *2-4*.",
+      "subtitle": "Maccabi Tel Aviv · at Valencia"
+    },
+    {
+      "type": "score",
+      "kicker": "Final",
+      "sides": [
+        {
+          "team": "Valencia",
+          "score": 88,
+          "won": false
+        },
+        {
+          "team": "Maccabi Tel Aviv",
+          "score": 91,
+          "won": true
+        }
+      ],
+      "note": "18th won at 2nd. Down 72-71 after three.",
+      "lines": [
+        [
+          "Clark III",
+          "17 pts · 3/3 from three · +13"
+        ],
+        [
+          "Sorkin",
+          "16 pts · 3/4 from three"
+        ],
+        [
+          "Brissett",
+          "14 pts · 5 reb"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The fourth quarter",
+      "title": "Down one.\nTen minutes.\n*20-16*.",
+      "subtitle": "Oded Kattash's Maccabi at Roig Arena"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "kicker": "Upset of the round · Maccabi",
+    "sides": [
+      {
+        "team": "Valencia",
+        "score": 88,
+        "won": false
+      },
+      {
+        "team": "Maccabi Tel Aviv",
+        "score": 91,
+        "won": true
+      }
+    ],
+    "note": "1-4 Maccabi win at 4-1 Valencia",
+    "lines": [
+      [
+        "Clark III",
+        "17 pts · +13"
+      ],
+      [
+        "4th quarter",
+        "20-16"
+      ]
+    ]
+  }
+}

@@ -76,6 +76,8 @@ def main():
                 "code": c["club"]["code"], "name": c["club"]["editorialName"],
                 "score": c["score"],
                 "after_q3": p["partials1"] + p["partials2"] + p["partials3"],
+                "quarters": [p["partials1"], p["partials2"], p["partials3"], p["partials4"]],
+                "overtimes": [v for _, v in sorted((p.get("extraPeriods") or {}).items(), key=lambda kv: int(kv[0]))],
                 "coach": box[side]["coach"]["name"],
                 "record_before": (lambda t: f'{t["gamesWon"]}-{t["gamesLost"]}' if t else "0-0")(table.get(c["club"]["code"])),
                 "pos_before": table.get(c["club"]["code"], {}).get("position"),

@@ -1,0 +1,76 @@
+{
+  "lang": "en",
+  "round_label": "Round 6",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "Sniper of the round",
+      "title": "26 points.\n*24* from\ndowntown.",
+      "subtitle": "Andrés Feliz · Real Madrid"
+    },
+    {
+      "type": "score",
+      "kicker": "Final",
+      "sides": [
+        {
+          "team": "ASVEL",
+          "score": 92,
+          "won": false
+        },
+        {
+          "team": "Real Madrid",
+          "score": 111,
+          "won": true
+        }
+      ],
+      "note": "Real back to 3-3.",
+      "lines": [
+        [
+          "Feliz",
+          "26 pts · 5 ast · +16"
+        ],
+        [
+          "From three",
+          "8/11"
+        ],
+        [
+          "Minutes",
+          "25"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "From deep",
+      "title": "Eleven\nthrees.\n*Eight* fell.",
+      "subtitle": "Movistar Arena, Madrid"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "kicker": "Sniper of the round · Feliz",
+    "sides": [
+      {
+        "team": "ASVEL",
+        "score": 92,
+        "won": false
+      },
+      {
+        "team": "Real Madrid",
+        "score": 111,
+        "won": true
+      }
+    ],
+    "note": "26 points, 24 from three",
+    "lines": [
+      [
+        "Feliz",
+        "26 pts · +16"
+      ],
+      [
+        "From three",
+        "8/11"
+      ]
+    ]
+  }
+}
