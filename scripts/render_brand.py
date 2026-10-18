@@ -16,8 +16,8 @@ C = BRAND["colors"]
 OUT = ROOT / "assets" / "brand"
 
 LANGS = {
-    "en": {"name": BRAND["name"]["en"], "tagline": "One story per round"},
-    "el": {"name": BRAND["name"]["el"], "tagline": "Μία ιστορία κάθε αγωνιστική"},
+    "en": {"name": BRAND["name"]["en"], "tagline": "Stories from the floor"},
+    "el": {"name": BRAND["name"]["el"], "tagline": "Ιστορίες από το παρκέ"},
 }
 
 
