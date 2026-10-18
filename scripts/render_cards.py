@@ -179,7 +179,7 @@ def main():
     for fmt, card, n, total, out in jobs:
         slide_photo = photo if (fmt == "ig" and n == 1) else None
         shoot(page(spec, card, fmt, n, total, slide_photo), SIZES[fmt]["w"], SIZES[fmt]["h"], out)
-        print(out.relative_to(ROOT))
+        print(out.relative_to(ROOT) if out.is_relative_to(ROOT) else out)
 
 
 if __name__ == "__main__":
