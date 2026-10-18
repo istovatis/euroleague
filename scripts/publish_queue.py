@@ -14,6 +14,10 @@ refuses to post a story twice, so re-running is always safe. Tokens come from IG
 The drafting routines queue every post with --draft ("approved": false) at its suggested time. Drafts are never
 published: the owner approves them (approve command, the "Approve posts" workflow, or by setting "approved" to true
 in publish/queue.json). A draft approved after its time is published on the next run.
+
+Times can be "now" or "now+N" (N minutes from now), so day posts go out as soon as they are approved. Posts on the
+same account are kept at least GAP_MINUTES apart: each run publishes at most one entry, in queue order, so a batch
+approved together goes out one by one instead of all at once.
 """
 import argparse
 import datetime as dt
@@ -26,6 +30,22 @@ import zoneinfo
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 QUEUE = ROOT / "publish" / "queue.json"
 ATHENS = zoneinfo.ZoneInfo("Europe/Athens")
+GAP_MINUTES = 30
+
+
+def parse_when(text):
+    """Athens "YYYY-MM-DD HH:MM", or "now" / "now+N" (minutes)."""
+    if text.startswith("now"):
+        minutes = int(text[4:]) if text.startswith("now+") else 0
+        return (dt.datetime.now(ATHENS) + dt.timedelta(minutes=minutes)).replace(second=0, microsecond=0)
+    return dt.datetime.strptime(text, "%Y-%m-%d %H:%M").replace(tzinfo=ATHENS)
+
+
+def last_published():
+    """When the most recent queued post went out (any language), or None."""
+    times = [json.loads(f.read_text()).get("published_at") for e in load() for f in (ROOT / e["story"]).glob("published.*.json")]
+    times = [dt.datetime.strptime(t, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=dt.timezone.utc) for t in times if t]
+    return max(times, default=None)
 
 
 def load():
@@ -46,12 +66,12 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     a = sub.add_parser("add")
     a.add_argument("story")
-    a.add_argument("when", help='Athens local time, "YYYY-MM-DD HH:MM"')
+    a.add_argument("when", help='Athens local time, "YYYY-MM-DD HH:MM", or "now" / "now+N" (minutes)')
     a.add_argument("--langs", default="en,el")
     a.add_argument("--draft", action="store_true", help="queue unapproved: publish only after approve")
     ap_ = sub.add_parser("approve")
     ap_.add_argument("match", help='part of the story path, e.g. "round-07/day-1" or "01-", or "all"')
-    ap_.add_argument("--when", help='new Athens time, "YYYY-MM-DD HH:MM" (default: keep the queued time)')
+    ap_.add_argument("--when", help='new Athens time, "YYYY-MM-DD HH:MM" or "now" (default: keep the queued time)')
     sub.add_parser("list")
     r = sub.add_parser("run")
     r.add_argument("--dry-run", action="store_true")
@@ -74,7 +94,7 @@ def main():
         story = pathlib.Path(args.story)
         if not (ROOT / story / "post.en.md").exists():
             sys.exit(f"Not a story folder: {story}")
-        when = dt.datetime.strptime(args.when, "%Y-%m-%d %H:%M").replace(tzinfo=ATHENS)
+        when = parse_when(args.when)
         entries = [e for e in entries if e["story"] != story.as_posix()]
         entries.append({"story": story.as_posix(), "when": when.isoformat(), "langs": args.langs.split(","),
                         "approved": not args.draft})
@@ -91,7 +111,7 @@ def main():
         for e in hits:
             e["approved"] = True
             if args.when:
-                e["when"] = dt.datetime.strptime(args.when, "%Y-%m-%d %H:%M").replace(tzinfo=ATHENS).isoformat()
+                e["when"] = parse_when(args.when).isoformat()
             print(f"Approved {e['story']} for {dt.datetime.fromisoformat(e['when']):%a %d %b %H:%M} Athens")
         save(entries)
         return
@@ -105,18 +125,24 @@ def main():
         return
 
     now = dt.datetime.now(dt.timezone.utc)
+    due = [e for e in entries if dt.datetime.fromisoformat(e["when"]) <= now and e.get("approved", True)
+           and not all(done(e, lang) for lang in e["langs"])]
+    if not due:
+        return
+    last = last_published()
+    if last and now - last < dt.timedelta(minutes=GAP_MINUTES) and not args.dry_run:
+        print(f"{len(due)} due; the last post went out at {last:%H:%M} UTC, waiting for the {GAP_MINUTES}-minute gap")
+        return
+    e = due[0]
     failed = False
-    for e in entries:
-        if dt.datetime.fromisoformat(e["when"]) > now or not e.get("approved", True):
+    for lang in e["langs"]:
+        if done(e, lang):
             continue
-        for lang in e["langs"]:
-            if done(e, lang):
-                continue
-            print(f"== {e['story']} [{lang}] due {e['when']}", flush=True)
-            cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang]
-            if not args.dry_run:
-                cmd.append("--yes")
-            failed |= subprocess.run(cmd).returncode != 0
+        print(f"== {e['story']} [{lang}] due {e['when']}", flush=True)
+        cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang]
+        if not args.dry_run:
+            cmd.append("--yes")
+        failed |= subprocess.run(cmd).returncode != 0
     sys.exit(1 if failed else 0)
 
 

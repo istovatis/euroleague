@@ -12,7 +12,7 @@ Every EuroLeague game day becomes a set of posts (a lead story plus up to two mo
 
 ## Day posts
 - One lead post (`01-…`) plus up to two more (`02-…`, `03-…`), **only from that day's games**. Include a story only if it stands on its own; a quiet day can have just one post.
-- Posting plan (`day-K/README.md`): publish the next day, before that evening's games tip off. Suggested times (Athens): lead 09:00, then 12:00 and 15:00.
+- Posting plan (`day-K/README.md`): fresh, the same night. The posts are queued for "now" and go out as soon as the owner approves them, lead first, 30 minutes apart.
 - Don't repeat a story that an earlier day of the same round already told.
 
 ## Round highlight
@@ -20,7 +20,7 @@ One post that closes the round, in `round-NN/highlight/`, drafted after the last
 - **Slide 1 (hook, with photo):** the defining story of the round, told with the whole round in view ("Round 7 belonged to …"). It may revisit the biggest day story, but with new framing.
 - **Slide 2 (score card style):** player of the round, i.e. the top PIR across all game days, with their line.
 - **Slide 3 (list card):** the table after the round, the top 4 plus the biggest climber or faller, with vivid tags ("New leader", "Still perfect", "Up 3"). Use `standings_after` from the digest.
-- Caption and X post in the same vivid voice. Posting plan (`highlight/README.md`): the evening after the round's last day, at 19:00 Athens, after that day's posts.
+- Caption and X post in the same vivid voice. Posting plan (`highlight/README.md`): the day after the round's last day, at 12:00 Athens, so it doesn't bury that night's day posts.
 
 ## Arena of the week (Sundays)
 One post every Sunday about a EuroLeague arena, in `arenas/<season>/<arena-slug>/`, published Sunday evening.
