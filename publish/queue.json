@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "story": "arenas/E2026/turkcell-basketball-development-center",
+    "when": "2026-10-18T20:19:00+03:00",
+    "langs": [
+      "en",
+      "el"
+    ],
+    "approved": true
+  }
+]
