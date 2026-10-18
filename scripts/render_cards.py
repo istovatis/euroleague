@@ -44,6 +44,7 @@ def find_chrome():
 
 CHROME = find_chrome()
 BRAND = json.loads((ROOT / "brand.json").read_text())
+CLUBS = json.loads((ROOT / "assets" / "clubs.json").read_text())
 FONTS = (ROOT / "assets" / "fonts").as_uri()
 
 CSS = """
@@ -62,6 +63,11 @@ body::before { content: ""; position: absolute; inset: 0; pointer-events: none;
 .brand { display: inline-flex; align-items: center; gap: .4em; }
 .brand svg { width: 1.15em; height: 1.15em; }
 .main { flex: 1; display: flex; flex-direction: column; justify-content: center; position: relative; }
+.badges { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 26px; }
+.badge { display: inline-flex; align-items: center; gap: 12px; padding: 10px 22px 10px 16px; border-radius: 999px;
+  font-weight: 900; font-size: %(kick)dpx; letter-spacing: .06em; text-transform: uppercase;
+  box-shadow: 0 0 0 2px #ffffff40, 0 2px 10px #0006; }
+.badge i { width: .62em; height: .62em; border-radius: 50%%; display: block; box-shadow: 0 0 0 2px #0002; }
 .kicker { display: inline-block; align-self: flex-start; background: %(accent)s; color: %(bg)s; font-weight: 900;
   font-size: %(kick)dpx; letter-spacing: .08em; text-transform: uppercase; padding: 6px 16px; margin-bottom: 28px; }
 .title { font-weight: 900; font-size: %(title)dpx; line-height: .92; text-transform: uppercase; }
@@ -111,11 +117,21 @@ def rich(s):
     return "".join(f"<em>{p}</em>" if i % 2 else p for i, p in enumerate(parts))
 
 
-def card_html(card):
+def badges_html(codes, lang):
+    """Club badges in our own style (assets/clubs.json): never crests, which are trademarks."""
+    out = []
+    for code in codes:
+        c = CLUBS[code]
+        out.append(f'<span class="badge" style="background:{c["bg"]};color:{c["fg"]}">'
+                   f'<i style="background:{c["dot"]}"></i>{html.escape(c.get(lang) or c["en"])}</span>')
+    return f'<div class="badges">{"".join(out)}</div>'
+
+
+def card_html(card, lang="en"):
     t = card["type"]
     k = f'<div class="kicker">{rich(card["kicker"])}</div>' if card.get("kicker") else ""
     if t == "hook":
-        inner = f'{k}<div class="title">{rich(card["title"])}</div>' + (
+        inner = (badges_html(card["badges"], lang) if card.get("badges") else "") + f'{k}<div class="title">{rich(card["title"])}</div>' + (
             f'<div class="sub">{rich(card["subtitle"])}</div>' if card.get("subtitle") else "")
     elif t == "score":
         rows = "".join(
@@ -147,7 +163,7 @@ def page(spec, card, fmt, n, total, photo=None):
         credit = f'<span class="credit">{html.escape(photo["credit"])}</span>'
     return f"""<!doctype html><html lang="{spec['lang']}"><head><meta charset="utf-8"><style>{css}</style></head><body class="{"has-photo" if photo else ""}">{bg}
 <div class="top"><span class="brand">{centre_disc(BRAND['colors']['accent'])}<b>{html.escape(BRAND['name'][spec['lang']])}</b> · {html.escape(spec['round_label'])}</span><span>{page_no}</span></div>
-<div class="main">{card_html(card)}</div>
+<div class="main">{card_html(card, spec["lang"])}</div>
 <div class="foot"><span>{html.escape(BRAND['handle'][fmt][spec['lang']])}</span>{credit}</div>
 </body></html>"""
 

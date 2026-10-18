@@ -1,0 +1,23 @@
+{
+  "_note": "Club badges in our own style (no crests: logos are trademarks). Keys are EuroLeague API club codes. bg/fg = badge fill and text, dot = second club colour. Colours marked check=true are best guesses: confirm against the club's kit.",
+  "ASV": {"en": "ASVEL", "el": "Βιλερμπάν", "bg": "#00843D", "fg": "#FFFFFF", "dot": "#FFFFFF"},
+  "BAR": {"en": "Barça", "el": "Μπαρτσελόνα", "bg": "#A50044", "fg": "#FFFFFF", "dot": "#004D98"},
+  "BAS": {"en": "Baskonia", "el": "Μπασκόνια", "bg": "#1A2C5B", "fg": "#FFFFFF", "dot": "#C8102E"},
+  "MUN": {"en": "Bayern", "el": "Μπάγερν", "bg": "#DC052D", "fg": "#FFFFFF", "dot": "#0066B2"},
+  "BES": {"en": "Beşiktaş", "el": "Μπεσίκτας", "bg": "#000000", "fg": "#FFFFFF", "dot": "#FFFFFF"},
+  "RED": {"en": "Crvena Zvezda", "el": "Ερυθρός Αστέρας", "bg": "#E2001A", "fg": "#FFFFFF", "dot": "#FFFFFF"},
+  "DUB": {"en": "Dubai", "el": "Ντουμπάι", "bg": "#111111", "fg": "#FFFFFF", "dot": "#C8A24A", "check": true},
+  "IST": {"en": "Anadolu Efes", "el": "Αναντολού Εφές", "bg": "#00529B", "fg": "#FFFFFF", "dot": "#FFFFFF"},
+  "ULK": {"en": "Fenerbahçe", "el": "Φενέρμπαχτσε", "bg": "#002D72", "fg": "#FFED00", "dot": "#FFED00"},
+  "HTA": {"en": "Hapoel Tel Aviv", "el": "Χάποελ Τελ Αβίβ", "bg": "#D71920", "fg": "#FFFFFF", "dot": "#FFFFFF"},
+  "TEL": {"en": "Maccabi Tel Aviv", "el": "Μακάμπι Τελ Αβίβ", "bg": "#FFD200", "fg": "#0038A8", "dot": "#0038A8"},
+  "MIL": {"en": "Olimpia Milano", "el": "Αρμάνι Μιλάνο", "bg": "#E30613", "fg": "#FFFFFF", "dot": "#FFFFFF"},
+  "OLY": {"en": "Olympiacos", "el": "Ολυμπιακός", "bg": "#E30613", "fg": "#FFFFFF", "dot": "#FFFFFF"},
+  "PAN": {"en": "Panathinaikos", "el": "Παναθηναϊκός", "bg": "#007A33", "fg": "#FFFFFF", "dot": "#FFFFFF"},
+  "PRS": {"en": "Paris", "el": "Παρί", "bg": "#000000", "fg": "#FFFFFF", "dot": "#E4007C", "check": true},
+  "PAR": {"en": "Partizan", "el": "Παρτιζάν", "bg": "#000000", "fg": "#FFFFFF", "dot": "#FFFFFF"},
+  "MAD": {"en": "Real Madrid", "el": "Ρεάλ Μαδρίτης", "bg": "#FFFFFF", "fg": "#1B2A5B", "dot": "#FEBE10"},
+  "PAM": {"en": "Valencia", "el": "Βαλένθια", "bg": "#F26B21", "fg": "#FFFFFF", "dot": "#000000"},
+  "VIR": {"en": "Virtus", "el": "Βίρτους", "bg": "#000000", "fg": "#FFFFFF", "dot": "#FFFFFF"},
+  "ZAL": {"en": "Žalgiris", "el": "Ζαλγκίρις", "bg": "#006A44", "fg": "#FFFFFF", "dot": "#FFFFFF"}
+}
