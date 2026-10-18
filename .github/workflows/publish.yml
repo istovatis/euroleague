@@ -39,6 +39,7 @@ jobs:
           IG_TOKEN_EL: ${{ secrets.IG_TOKEN_EL }}
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            python3 scripts/publish_queue.py check
             python3 scripts/publish_queue.py run --dry-run
           else
             python3 scripts/publish_queue.py run

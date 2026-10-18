@@ -4,6 +4,7 @@
   python3 scripts/publish_queue.py add <story> "YYYY-MM-DD HH:MM" [--langs en,el]   # time is Athens local
   python3 scripts/publish_queue.py list
   python3 scripts/publish_queue.py run [--dry-run]     # publish every due, unpublished entry (used by CI)
+  python3 scripts/publish_queue.py check               # confirm each language's token works and matches its account
 
 An entry is published once per language: publish_instagram.py writes <story>/published.<lang>.json and
 refuses to post a story twice, so re-running is always safe. Tokens come from IG_TOKEN_EN / IG_TOKEN_EL
@@ -45,8 +46,20 @@ def main():
     sub.add_parser("list")
     r = sub.add_parser("run")
     r.add_argument("--dry-run", action="store_true")
+    sub.add_parser("check")
     args = ap.parse_args()
     entries = load()
+
+    if args.cmd == "check":
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import publish_instagram as ig
+        for lang, handle in sorted(ig.BRAND["handle"]["ig"].items()):
+            handle = handle.lstrip("@")
+            me = ig.call("GET", "me", ig.token_for(lang, handle), fields="username")
+            if me.get("username") != handle:
+                sys.exit(f"[{lang}] token belongs to @{me.get('username')}, expected @{handle}")
+            print(f"[{lang}] token OK for @{handle}")
+        return
 
     if args.cmd == "add":
         story = pathlib.Path(args.story)
