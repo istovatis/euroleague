@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
-"""Fetch a completed EuroLeague round and rank story candidates for the post.
+"""Fetch completed EuroLeague games and rank story candidates for the posts.
 
-Usage: python3 scripts/round_digest.py [--season E2026] [--round N]
+Usage:
+  python3 scripts/round_digest.py --round 7 --date 2026-10-21   # one game day -> round-07/day-K/digest.json
+  python3 scripts/round_digest.py --round 7 --highlight         # whole round + table after it -> round-07/highlight/
+  python3 scripts/round_digest.py [--round N]                    # whole round -> round-NN/digest.json
 Without --round, picks the latest round where every game is played.
-Writes rounds/<season>/round-NN/digest.json and prints a readable summary.
+Game days are Athens calendar dates; day K is the K-th date the round is played on.
 """
 import argparse
 import json
 import pathlib
+import sys
 import urllib.request
+
+from round_status import athens_date, round_days
 
 API = "https://api-live.euroleague.net"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -35,6 +41,13 @@ def standings_before(season, rnd):
     return {t["club"]["code"]: t for t in data["teams"]}
 
 
+def standings_after(season, rnd):
+    data = get(f"/v3/competitions/E/seasons/{season}/rounds/{rnd}/basicstandings")
+    return [{"position": t["position"], "code": t["club"]["code"], "name": t["club"]["editorialName"],
+             "record": f'{t["gamesWon"]}-{t["gamesLost"]}', "change": t.get("positionChange"),
+             "last5": t.get("last5Form")} for t in data["teams"]]
+
+
 def player_line(p, team, opp, won):
     s = p["stats"]
     per = p["player"]["person"]
@@ -59,14 +72,28 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--season", default="E2026")
     ap.add_argument("--round", type=int)
+    ap.add_argument("--date", help="Athens date YYYY-MM-DD: only that game day")
+    ap.add_argument("--highlight", action="store_true", help="whole round plus the table after it")
     a = ap.parse_args()
 
     games = get(f"/v2/competitions/E/seasons/{a.season}/games")["data"]
     rnd = a.round or latest_complete_round(games)
     table = standings_before(a.season, rnd)
     out = {"season": a.season, "round": rnd, "games": [], "players": []}
+    selected = [g for g in games if g["round"] == rnd]
+    days = round_days(games, rnd)
+    if a.date:
+        if a.date not in days:
+            sys.exit(f"Round {rnd} has no games on {a.date} (game days: {', '.join(days)})")
+        selected = [g for g in selected if athens_date(g) == a.date]
+        out.update(date=a.date, day=days.index(a.date) + 1, days=len(days))
+    if not all(g["played"] for g in selected):
+        sys.exit(f"Not all games are played yet ({sum(g['played'] for g in selected)}/{len(selected)})")
+    if a.highlight:
+        out["days"] = len(days)
+        out["standings_after"] = standings_after(a.season, rnd)
 
-    for g in sorted((g for g in games if g["round"] == rnd), key=lambda g: g["date"]):
+    for g in sorted(selected, key=lambda g: g["date"]):
         box = get(f"/v2/competitions/E/seasons/{a.season}/games/{g['gameCode']}/stats")
         sides = {}
         for side in ("local", "road"):
@@ -106,10 +133,15 @@ def main():
 
     out["players"].sort(key=lambda p: -p["pir"])
     dest = ROOT / "rounds" / a.season / f"round-{rnd:02d}"
+    if a.date:
+        dest = dest / f"day-{out['day']}"
+    elif a.highlight:
+        dest = dest / "highlight"
     dest.mkdir(parents=True, exist_ok=True)
     (dest / "digest.json").write_text(json.dumps(out, indent=2, ensure_ascii=False))
 
-    print(f"== {a.season} Round {rnd} -> {dest / 'digest.json'}\n")
+    label = f"day {out['day']}/{out['days']} ({a.date})" if a.date else ("highlight" if a.highlight else "")
+    print(f"== {a.season} Round {rnd} {label} -> {dest / 'digest.json'}\n")
     for g in out["games"]:
         h, r = g["home"], g["away"]
         flags = [f for f, on in (("ROAD WIN", g["road_win"]), ("OT", g["overtime"]),
@@ -122,6 +154,10 @@ def main():
               f"{p['pts']:.0f}p {p['reb']:.0f}r {p['ast']:.0f}a, 2P {p['fg2']} 3P {p['fg3']} FT {p['ft']}")
     print("\nMost upset-y:", max(out["games"], key=lambda g: g["upset_score"])["winner"])
     print("Most dramatic:", max(out["games"], key=lambda g: g["drama_score"])["winner"])
+    if a.highlight:
+        print("\nTable after the round:")
+        for t in out["standings_after"][:6]:
+            print(f"  {t['position']:>2}. {t['name']} {t['record']} ({t['change']})")
 
 
 if __name__ == "__main__":

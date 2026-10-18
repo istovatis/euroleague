@@ -1,21 +1,33 @@
 # EuroLeague round recap: Instagram + X
 
-Every EuroLeague round becomes a set of posts: one lead story plus up to three more, each its own post with its own vivid angle. The project is not affiliated with EuroLeague. Never use the EuroLeague logo, club logos or official, club or agency photos (they are copyrighted). Graphics are our own text and stat cards. Do **not** add a "fan account" or "not affiliated" disclaimer to cards, captions or X posts.
+Every EuroLeague game day becomes a set of posts (a lead story plus up to two more, each its own post with its own vivid angle), and every round closes with one round-highlight post. Round 6 was done per round, before this split; its folders are still a good reference for format and tone. The project is not affiliated with EuroLeague. Never use the EuroLeague logo, club logos or official, club or agency photos (they are copyrighted). Graphics are our own text and stat cards. Do **not** add a "fan account" or "not affiliated" disclaimer to cards, captions or X posts.
 
-## Workflow per round (automated daily: see ROUTINE.md)
-1. `python3 scripts/round_digest.py` writes `rounds/<season>/round-NN/digest.json` and prints the round summary. It picks the latest fully played round by default, or use `--round N`.
-2. Pick the stories, using the rules below: a lead story (`01-…`) and up to three more (`02-…` to `04-…`).
-3. Give each story its own folder, `rounds/<season>/round-NN/NN-<slug>/`, holding `post.<lang>.md` (X post, Instagram caption, slide text) and `cards.<lang>.json`.
+## Workflow (automated: see ROUTINE.md)
+1. `python3 scripts/round_digest.py --round N --date YYYY-MM-DD` writes one game day's `rounds/<season>/round-NN/day-K/digest.json`; `--highlight` writes the whole round plus the table after it to `round-NN/highlight/`.
+2. Pick the stories, using the rules below.
+3. Give each story its own folder, `day-K/NN-<slug>/`, holding `post.<lang>.md` (X post, Instagram caption, slide text) and `cards.<lang>.json`.
 4. Render each card spec with `python3 scripts/render_cards.py <story>/cards.<lang>.json` (card types: hook, score, text, list; `*accent*`, `**bold**` and `\n` are allowed). It writes `cards/<lang>/ig-N.png` (1080×1350) and `x.png` (1600×900) next to the spec using headless Chrome. Look at the PNGs before handing them over. The account name, handles (per channel: `ig` and `x`, since X does not allow dots) and colors live in `brand.json`.
-5. Write `rounds/<season>/round-NN/README.md`: the posting plan, listing the stories in order with one line each and the day to post them (lead story the morning after the round, then one per day, all out before the next round tips off).
-6. Every number in the copy must come from `digest.json` (box scores, records before the round, quarter and overtime scores). Background facts (a coach's history, streaks, records) must be ones you are sure of. If in doubt, leave them out.
+5. Write a `README.md` posting plan for each day and for the highlight (see below).
+6. Every number in the copy must come from `digest.json` (box scores, records before the round, quarter and overtime scores, the table after the round). Background facts (a coach's history, streaks, records) must be ones you are sure of. If in doubt, leave them out.
+
+## Day posts
+- One lead post (`01-…`) plus up to two more (`02-…`, `03-…`), **only from that day's games**. Include a story only if it stands on its own; a quiet day can have just one post.
+- Posting plan (`day-K/README.md`): publish the next day, before that evening's games tip off. Suggested times (Athens): lead 09:00, then 12:00 and 15:00.
+- Don't repeat a story that an earlier day of the same round already told.
+
+## Round highlight
+One post that closes the round, in `round-NN/highlight/`, drafted after the last game day:
+- **Slide 1 (hook, with photo):** the defining story of the round, told with the whole round in view ("Round 7 belonged to …"). It may revisit the biggest day story, but with new framing.
+- **Slide 2 (score card style):** player of the round, i.e. the top PIR across all game days, with their line.
+- **Slide 3 (list card):** the table after the round, the top 4 plus the biggest climber or faller, with vivid tags ("New leader", "Still perfect", "Up 3"). Use `standings_after` from the digest.
+- Caption and X post in the same vivid voice. Posting plan (`highlight/README.md`): the evening after the round's last day, at 19:00 Athens, after that day's posts.
 
 ## Picking the story (in priority order)
 - **Underdog**: a win that breaks the table. Examples: a bottom-4 team beating a top-4 team, ending an unbeaten run, or a road win at a top seed. Use `upset_score`, `standings_gap` and `road_win`.
 - **Coach**: when the result is clearly a coaching story, such as a tactical turnaround, a revenge game against a former club or mentor, or a big upset with a balanced box score where no single player dominated.
 - **MVP**: the top PIR of the round, if it's exceptional (35+ PIR, or a historic shooting line) and the team won.
 - **Game changer**: someone who decided a dramatic game, such as an OT game, a comeback from behind after Q3, or a margin of 3 points or fewer. Use `drama_score`.
-Prefer the story with the strongest *narrative*, not just the biggest number. The strongest becomes the lead post (`01`). Other strong candidates get **their own posts** (`02`–`04`), each told with its own vivid angle. Only include a story if it stands on its own; three great posts beat four with a filler. Never bundle stories into an "Also in Round N" slide.
+Prefer the story with the strongest *narrative*, not just the biggest number. The strongest becomes the day's lead post (`01`). Other strong candidates get **their own posts** (`02`–`03`), each told with its own vivid angle. Only include a story if it stands on its own; three great posts beat four with a filler. Never bundle stories into an "Also in Round N" slide.
 
 ## Channel style
 **X**: 280 characters or fewer, punchy hook on the first line, 3–4 stat lines, one hashtag `#EuroLeague` plus at most one club tag. No emoji spam (2 at most).
