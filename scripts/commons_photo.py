@@ -81,7 +81,10 @@ def main():
         f = next(info(d["query"]["pages"]))
         if not OK_LICENSES.match(f["license"]):
             sys.exit(f"Refusing {title}: license '{f['license']}' is not CC BY / BY-SA / CC0 / public domain")
-        (story / "photo.jpg").write_bytes(fetch(f["thumb"]))
+        # Commons hands out thumbnails on thumb.wikimedia.org, but upload.wikimedia.org serves the
+        # same path; use it so the cloud network allowlist needs only commons + upload.
+        thumb = f["thumb"].split("?")[0].replace("://thumb.wikimedia.org/", "://upload.wikimedia.org/")
+        (story / "photo.jpg").write_bytes(fetch(thumb))
         f["credit"] = f"Photo: {f['author']} / Wikimedia Commons, {f['license']}"
         (story / "photo.json").write_text(json.dumps(f, indent=2, ensure_ascii=False) + "\n")
         print(f"Saved {story / 'photo.jpg'}\n{f['credit']}\n{f['source']}")
