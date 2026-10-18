@@ -61,7 +61,7 @@ Tell each round like a story, the way a commentator would, not like a stats repo
 Live: English (`post.en.md`: Instagram + X), Greek (`post.el.md`: **Instagram only** for now; no Greek X post, no `x` card in `cards.el.json`). Planned markets, roughly by EuroLeague audience: Greek (el), Spanish (es), Turkish (tr), Serbian (sr), Lithuanian (lt), Hebrew (he), Italian (it), French (fr), German (de). Localize, don't translate. For each market, pick the angle that matters there. For example, Greek accounts lead with Olympiacos and Panathinaikos stories, and Turkish accounts with Fenerbahce, Efes and Besiktas.
 
 ## Publishing (Instagram)
-Publishing runs in GitHub Actions (`.github/workflows/publish.yml`, every 15 minutes). The tokens are the encrypted repository secrets `IG_TOKEN_EN` and `IG_TOKEN_EL`; they never go into the repo or a chat. Never publish or queue a post without the owner's go-ahead.
+Publishing runs in GitHub Actions (`.github/workflows/publish.yml`, every 15 minutes). The tokens are the encrypted repository secrets `IG_TOKEN_EN` and `IG_TOKEN_EL`; they never go into the repo or a chat. Only the owner approves posts: never publish or approve one without their go-ahead.
 - The drafting routines queue every post as a draft (`"approved": false`) at its suggested time. **Drafts are never published.** The owner approves them in one of three ways:
   - the **Approve posts** workflow (Actions tab or the GitHub mobile app; match e.g. `round-07/day-1`, `day-1/01-` or `all`, with an optional new time);
   - by telling Claude, who runs `publish_queue.py approve <match> [--when "YYYY-MM-DD HH:MM"]` and pushes;
