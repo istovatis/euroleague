@@ -1,0 +1,51 @@
+{
+  "arena": "TURKCELL BASKETBALL DEVELOPMENT CENTER",
+  "euroleague": {
+    "capacity": 10000,
+    "address": "Kazliçesme Mah. 10. Yil Caddesi No: 2/1 Zeytinburnu / Turkiye",
+    "home_teams": {
+      "Besiktas Istanbul": 19,
+      "Anadolu Efes Istanbul": 19
+    },
+    "upcoming_games": [
+      {
+        "round": 7,
+        "utc": "2026-10-22T17:30:00Z",
+        "home": "Anadolu Efes Istanbul",
+        "away": "Besiktas Istanbul"
+      },
+      {
+        "round": 8,
+        "utc": "2026-10-28T17:30:00Z",
+        "home": "Besiktas Istanbul",
+        "away": "Olympiacos Piraeus"
+      },
+      {
+        "round": 9,
+        "utc": "2026-10-30T17:30:00Z",
+        "home": "Anadolu Efes Istanbul",
+        "away": "Panathinaikos AKTOR Athens"
+      }
+    ],
+    "source": "https://api-live.euroleague.net/v2/competitions/E/seasons/E2026/games"
+  },
+  "wikidata": {
+    "qid": "Q130384910",
+    "url": "https://www.wikidata.org/wiki/Q130384910",
+    "opened (P1619)": [
+      "+2024-09-29T00:00:00Z"
+    ],
+    "inception (P571)": [
+      "+2024-08-00T00:00:00Z"
+    ],
+    "capacity (P1083)": [
+      "+10000"
+    ],
+    "architect (P84, item ids)": []
+  },
+  "wikipedia": {
+    "title": "Basketball Development Center",
+    "url": "https://en.wikipedia.org/wiki/Basketball_Development_Center",
+    "text": "Basketball Development Center (Turkish: Basketbol Gelişim Merkezi), also known as Turkcell Basketball Development Center for sponsorship reasons, is a sport complex for basketball in Istanbul, Turkey opened in 2024. It is owned by the Turkish Basketball Federation (TBF), and is home to men's and women's national teams in all age groups. Additionally, two local professional basketball team play their home matches in the complex.\n\n\n== History ==\nThe Basketbol Gelişim Merkezi (BGM) was built on the place of the multi-sport venue Abdi İpekçi Arena in 10. Yıl Cad., Kazlıçeşme at Zeytinburnu district of Istanbul, Turkey. The 1989-opened Abdi İpekçi Arena, which was worn out, could not meet expectations and was at risk of earthquake resistance, was closed in 2017, and demolished in 2018. The project for the BGM was completed in October 2021, and the tender for the construction was held end 2021. For the building signed the TOKİ (Mass Housing Administration) by the Ministry of Environment, Urbanisation and Climate Change. The groundbreaking took place in 2022, and the construction completed in 2024.\nThe Turkish Basketball Federation (TBF) moved its headquarters with all its offices from Sinan Erdem Dome, where it had been using from January 2022 on, to the BGM on 9 September 2024. \nMid September 2024 before the official opening of the BGM on 29 September, a weekend tournament was held, at which 48 teams of around 800 boys and girls in the U10 and U11 categories played six matches simultaneously.\n\n\n== Characteristics ==\nThe BGM is built on 68,800 m2 (17.0 acres) of land, and has 14,000 m2 (3.5 acres) green area. The complex consists of seven blocks.\nIt features a main court with 10,000 seating capacity, another hall for the training of the national teams with 1,000 seats, three 500-seat halls and a 3x3 basketball half-court. Camping facilities for domestic and foreign teams, fitness center, cardio hall, a hotel, concert and event areas, food, beverage and social areas, a basketball library and museum are available within the complex. It houses a basketball high school. The BGM features technology of generating energy from solar panels. The parking lot of the complex is capable of 417 cars and 25 buses.\nThe BGM is home to the men's, women's, junior and youth national teams. Tenants are the professional clubs Anadolu Efes and Galatasaray.\n\n\n== International events hosted ==\nThe first event in the BGM was the match of the 37th Men's Basketball President's Cup between Fenerbahçe Beko and Anadolu Efes played on the opening day 29 September 2024.\n\nOn 3 October 2024, the 2024 FIBA Europe SuperCup Women match between Fenerbahçe and Beşiktaş was played in the venue.\n\nThe EuroBasket Women 2025 qualification match of the Turkish national team against Romania took place on 7 November 2024.\nOn 22 November 2024, the venue hosted the EuroBasket 2025 qualification match between Turkey and Hungary.\n\n\n== Istanbul TBF Basketball Sport High School ==\nThe Istanbul TBF Basketball Sport High School (Turkish: İstanbul TBF Basketbol Spor Lisesi) was established on 20 September 2024 within the BGM with a protocol signed between the ministries National Education and Youth and Sports and the Turkish Basketball Federation (TBF). The high school has eight classrooms for a total capacity of 200 students.\n\n\n== See also ==\nAbdi İpekçi Arena\n\n\n== References ==\n\n\n== External links ==\n Media related to Basketball Development Center at Wikimedia Commons"
+  }
+}

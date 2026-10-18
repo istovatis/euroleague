@@ -1,0 +1,70 @@
+{
+  "lang": "en",
+  "round_label": "Istanbul",
+  "ig": [
+    {
+      "type": "hook",
+      "photo": "exterior",
+      "kicker": "Arena of the week",
+      "title": "Istanbul's\n*basketball\ncity*",
+      "subtitle": "Anadolu Efes · Besiktas · Istanbul"
+    },
+    {
+      "type": "list",
+      "kicker": "Turkcell Basketball Development Center",
+      "items": [
+        {
+          "tag": "Capacity",
+          "text": "10,000"
+        },
+        {
+          "tag": "Opened",
+          "text": "29 September 2024"
+        },
+        {
+          "tag": "Home of",
+          "text": "Anadolu Efes & Besiktas"
+        },
+        {
+          "tag": "This week",
+          "text": "Efes vs Besiktas · Thu 22 Oct"
+        }
+      ]
+    },
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "One bowl.\nTwo clubs.\nBoth at *home*.",
+      "subtitle": "Efes vs Besiktas · Thursday"
+    },
+    {
+      "type": "hook",
+      "kicker": "Did you know",
+      "title": "It has its\nown *high\nschool*.",
+      "subtitle": "200 students · plus a hotel and a basketball museum"
+    }
+  ],
+  "x": {
+    "type": "list",
+    "kicker": "Arena of the week",
+    "items": [
+      {
+        "tag": "Capacity",
+        "text": "10,000"
+      },
+      {
+        "tag": "Opened",
+        "text": "29 Sept 2024"
+      },
+      {
+        "tag": "Home of",
+        "text": "Anadolu Efes & Besiktas"
+      },
+      {
+        "tag": "This week",
+        "text": "Efes vs Besiktas · Thu 22 Oct"
+      }
+    ]
+  }
+}
