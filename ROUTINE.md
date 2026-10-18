@@ -31,7 +31,7 @@ rounds/E2026/round-07/
 
 ## Arena of the week run (Sundays, named in the prompt)
 1. `python3 scripts/arena_facts.py --next`. If it prints "All arenas covered", stop: no changes.
-2. `python3 scripts/arena_facts.py --get "<ARENA>"` (add `--wiki "<title>"` if it found the wrong Wikipedia page). Read `facts.json` in full.
+2. `python3 scripts/arena_facts.py --get "<ARENA>"` (add `--wiki "<title>"` if it found the wrong Wikipedia page). Read `facts.json` in full. Wikimedia sites rate-limit the cloud (HTTP 429); the scripts wait and retry on their own, so run them in the foreground and let them finish. Never move work into background tasks and end your turn: the run stops when you do.
 3. Find and download the exterior and interior photos (see "Arena of the week" in `CLAUDE.md`).
 4. Write `post.en.md` (X + Instagram, with `## Sources`) and `post.el.md` (Instagram only), plus `cards.en.json` and `cards.el.json`. Render them, open every PNG and fix any problems, and check the X post is 280 characters or fewer.
 5. Write the folder's `README.md`, commit `arenas/` to `main` with the message `Arena of the week: <arena> (EN + EL)` and push.

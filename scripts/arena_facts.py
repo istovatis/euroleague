@@ -16,6 +16,8 @@ import json
 import pathlib
 import re
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -27,8 +29,17 @@ FOLDER = ROOT / "arenas" / SEASON
 
 
 def get_json(url):
-    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
-        return json.load(r)
+    """GET with retries: Wikipedia/Wikidata answer 429 to busy shared IPs (cloud runners) with a Retry-After."""
+    for attempt in range(8):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            if e.code not in (429, 503) or attempt == 7:
+                raise
+            wait = min(int(e.headers.get("Retry-After") or 0) or 5 * 2 ** attempt, 60)
+            print(f"Rate limited (HTTP {e.code}) by {urllib.parse.urlparse(url).netloc}, retrying in {wait}s", file=sys.stderr)
+            time.sleep(wait)
 
 
 def slug(name):
