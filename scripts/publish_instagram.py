@@ -96,7 +96,7 @@ def jpegs_for(story, lang):
 
 def push():
     """Push main, rebasing first: drafting routines may have pushed in the meantime."""
-    subprocess.run(["git", "-C", str(ROOT), "pull", "-q", "--rebase", "origin", "main"], check=True)
+    subprocess.run(["git", "-C", str(ROOT), "pull", "-q", "--rebase", "--autostash", "origin", "main"], check=True)
     subprocess.run(["git", "-C", str(ROOT), "push", "-q", "origin", "main"], check=True)
 
 
