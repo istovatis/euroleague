@@ -3,7 +3,7 @@
 
   python3 scripts/round_status.py 7                        # exit 0 if round 7 is fully played, else 1
   python3 scripts/round_status.py 7 --date 2026-10-21      # same, for one game day (Athens date)
-  python3 scripts/round_status.py 7 --date 2026-10-21 --wait   # re-check every 5 min for up to 75 min
+  python3 scripts/round_status.py 7 --date 2026-10-21 --wait   # re-check every 5 min for up to 100 min
   python3 scripts/round_status.py --schedule               # upcoming game days: round, day k/K, date, last tip-off, run time (UTC)
   python3 scripts/round_status.py --pending                # played game days / rounds not drafted yet (daily safety net)
 """
@@ -20,7 +20,7 @@ import zoneinfo
 API = "https://api-live.euroleague.net/v2/competitions/E/seasons/{season}/games"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ATHENS = zoneinfo.ZoneInfo("Europe/Athens")
-RUN_AFTER_LAST_TIP = dt.timedelta(hours=2, minutes=15)  # a game takes ~2h; this is roughly the final buzzer
+RUN_AFTER_LAST_TIP = dt.timedelta(hours=1, minutes=50)  # a game takes ~1h45-2h; --wait covers late finishes
 
 
 def games(season):
@@ -77,7 +77,7 @@ def main():
 
     if a.round is None:
         ap.error("round number required")
-    for attempt in range(16 if a.wait else 1):
+    for attempt in range(21 if a.wait else 1):
         gs = [g for g in games(a.season) if g["round"] == a.round and (not a.date or athens_date(g) == a.date)]
         played = sum(g["played"] for g in gs)
         print(f"Round {a.round}{' on ' + a.date if a.date else ''}: {played}/{len(gs)} games played")
