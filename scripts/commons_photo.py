@@ -14,6 +14,8 @@ import json
 import pathlib
 import re
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -23,11 +25,24 @@ UA = {"User-Agent": "ParquetHoops/1.0 (https://github.com/istovatis/euroleague)"
 OK_LICENSES = re.compile(r"^(CC BY(-SA)? [0-9.]+|CC0|Public domain)$", re.I)
 
 
+def fetch(url):
+    """GET with retries: Wikimedia answers 429 to busy shared IPs (e.g. cloud runners) and
+    asks clients to wait for Retry-After seconds."""
+    for attempt in range(6):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code not in (429, 503) or attempt == 5:
+                raise
+            wait = min(int(e.headers.get("Retry-After") or 0) or 5 * 2 ** attempt, 60)
+            print(f"Wikimedia rate limit (HTTP {e.code}), retrying in {wait}s", file=sys.stderr)
+            time.sleep(wait)
+
+
 def api(**params):
     params.update(format="json")
-    req = urllib.request.Request(f"{API}?{urllib.parse.urlencode(params)}", headers=UA)
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.load(r)
+    return json.loads(fetch(f"{API}?{urllib.parse.urlencode(params)}"))
 
 
 def info(pages):
@@ -66,8 +81,7 @@ def main():
         f = next(info(d["query"]["pages"]))
         if not OK_LICENSES.match(f["license"]):
             sys.exit(f"Refusing {title}: license '{f['license']}' is not CC BY / BY-SA / CC0 / public domain")
-        req = urllib.request.Request(f["thumb"], headers=UA)
-        (story / "photo.jpg").write_bytes(urllib.request.urlopen(req, timeout=60).read())
+        (story / "photo.jpg").write_bytes(fetch(f["thumb"]))
         f["credit"] = f"Photo: {f['author']} / Wikimedia Commons, {f['license']}"
         (story / "photo.json").write_text(json.dumps(f, indent=2, ensure_ascii=False) + "\n")
         print(f"Saved {story / 'photo.jpg'}\n{f['credit']}\n{f['source']}")
