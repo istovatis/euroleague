@@ -1,7 +1,7 @@
 name: Publish to Instagram
 
 # Publishes every due entry in publish/queue.json (see scripts/publish_queue.py).
-# Tokens live in the repository secrets IG_TOKEN_EN and IG_TOKEN_EL; they never appear in logs or code.
+# Tokens live in the repository secrets IG_TOKEN_EN, IG_TOKEN_EL and X_*; they never appear in logs or code.
 on:
   schedule:
     - cron: "*/15 * * * *"
@@ -37,6 +37,10 @@ jobs:
         env:
           IG_TOKEN_EN: ${{ secrets.IG_TOKEN_EN }}
           IG_TOKEN_EL: ${{ secrets.IG_TOKEN_EL }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
             python3 scripts/publish_queue.py check

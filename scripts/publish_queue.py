@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Instagram publishing queue (publish/queue.json), run by the GitHub Actions workflow.
 
-  python3 scripts/publish_queue.py add <story> "YYYY-MM-DD HH:MM" [--langs en,el] [--draft]   # time is Athens local
+  python3 scripts/publish_queue.py add <story> "YYYY-MM-DD HH:MM" [--langs en,el,x] [--draft]   # time is Athens local
   python3 scripts/publish_queue.py approve <match> [--when "YYYY-MM-DD HH:MM"]   # approve drafts whose path contains <match> ("all" = every draft)
   python3 scripts/publish_queue.py list
   python3 scripts/publish_queue.py run [--dry-run]     # publish every due, unpublished entry (used by CI)
   python3 scripts/publish_queue.py check               # confirm each language's token works and matches its account
 
-An entry is published once per language: publish_instagram.py writes <story>/published.<lang>.json and
-refuses to post a story twice, so re-running is always safe. Tokens come from IG_TOKEN_EN / IG_TOKEN_EL
+An entry is published once per channel: "en" and "el" are the Instagram accounts (publish_instagram.py),
+"x" is the English X account (publish_x.py). Each writes <story>/published.<channel>.json and refuses to post a
+story twice, so re-running is always safe. X is skipped while its credentials aren't set up. Tokens come from IG_TOKEN_EN / IG_TOKEN_EL
 (GitHub Actions secrets) or the macOS Keychain when run locally.
 
 The drafting routines queue every post with --draft ("approved": false) at its suggested time. Drafts are never
@@ -67,7 +68,7 @@ def main():
     a = sub.add_parser("add")
     a.add_argument("story")
     a.add_argument("when", help='Athens local time, "YYYY-MM-DD HH:MM", or "now" / "now+N" (minutes)')
-    a.add_argument("--langs", default="en,el")
+    a.add_argument("--langs", default="en,el,x")
     a.add_argument("--draft", action="store_true", help="queue unapproved: publish only after approve")
     ap_ = sub.add_parser("approve")
     ap_.add_argument("match", help='part of the story path, e.g. "round-07/day-1" or "01-", or "all"')
@@ -82,6 +83,11 @@ def main():
     if args.cmd == "check":
         sys.path.insert(0, str(ROOT / "scripts"))
         import publish_instagram as ig
+        import publish_x
+        if publish_x.configured():
+            print(f"[x] token OK for @{publish_x.me(publish_x.credentials())['username']}")
+        else:
+            print("[x] not set up yet: skipped")
         for lang, handle in sorted(ig.BRAND["handle"]["ig"].items()):
             handle = handle.lstrip("@")
             me = ig.call("GET", "me", ig.token_for(lang, handle), fields="username")
@@ -125,8 +131,11 @@ def main():
         return
 
     now = dt.datetime.now(dt.timezone.utc)
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import publish_x
+    channels = lambda e: [c for c in e["langs"] if c != "x" or publish_x.configured()]
     due = [e for e in entries if dt.datetime.fromisoformat(e["when"]) <= now and e.get("approved", True)
-           and not all(done(e, lang) for lang in e["langs"])]
+           and not all(done(e, lang) for lang in channels(e))]
     if not due:
         return
     last = last_published()
@@ -135,11 +144,14 @@ def main():
         return
     e = due[0]
     failed = False
-    for lang in e["langs"]:
+    for lang in channels(e):
         if done(e, lang):
             continue
         print(f"== {e['story']} [{lang}] due {e['when']}", flush=True)
-        cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang]
+        if lang == "x":
+            cmd = [sys.executable, str(ROOT / "scripts" / "publish_x.py"), e["story"]]
+        else:
+            cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang]
         if not args.dry_run:
             cmd.append("--yes")
         failed |= subprocess.run(cmd).returncode != 0
