@@ -1,6 +1,8 @@
 # Daily post-round routine (cloud)
 
-This runs every morning. Most days there is nothing new, and the run should exit quickly without committing.
+Two kinds of runs use these steps:
+- **Per-round run** (the prompt names a round N): it fires when that round's last game should have just ended (2h15m after the last tip-off). First run `python3 scripts/round_status.py --wait N`, which re-checks every 5 minutes for up to 75 minutes. If it exits non-zero (a game ran late or was postponed), stop with no changes and no commit; the daily run will pick the round up later. Otherwise follow the steps below for round N, using `python3 scripts/round_digest.py --round N` in step 1.
+- **Daily safety net** (no round named): runs every morning. Most days there is nothing new, and the run should exit quickly without committing.
 
 1. Run `python3 scripts/round_digest.py`. It prints the latest fully played round N.
 2. If `rounds/E2026/round-NN/README.md` already exists, the round is already drafted. **Stop**: no edits and no commit (run `git checkout -- . && git clean -fd rounds/` to drop the digest it just wrote).
