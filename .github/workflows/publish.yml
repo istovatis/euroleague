@@ -1,0 +1,45 @@
+name: Publish to Instagram
+
+# Publishes every due entry in publish/queue.json (see scripts/publish_queue.py).
+# Tokens live in the repository secrets IG_TOKEN_EN and IG_TOKEN_EL; they never appear in logs or code.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: check tokens and posts, publish nothing"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow==10.4.0
+      - name: Configure git
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+      - name: Publish due posts
+        env:
+          IG_TOKEN_EN: ${{ secrets.IG_TOKEN_EN }}
+          IG_TOKEN_EL: ${{ secrets.IG_TOKEN_EL }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            python3 scripts/publish_queue.py run --dry-run
+          else
+            python3 scripts/publish_queue.py run
+          fi
