@@ -61,7 +61,9 @@ Tell each round like a story, the way a commentator would, not like a stats repo
 Live: English (`post.en.md`: Instagram + X), Greek (`post.el.md`: **Instagram only** for now; no Greek X post, no `x` card in `cards.el.json`). Planned markets, roughly by EuroLeague audience: Greek (el), Spanish (es), Turkish (tr), Serbian (sr), Lithuanian (lt), Hebrew (he), Italian (it), French (fr), German (de). Localize, don't translate. For each market, pick the angle that matters there. For example, Greek accounts lead with Olympiacos and Panathinaikos stories, and Turkish accounts with Fenerbahce, Efes and Besiktas.
 
 ## Publishing (Instagram)
-Publishing runs on the owner's Mac, because the Instagram tokens live in its Keychain (service `parquet-hoops-instagram`). Never publish without the owner's go-ahead.
-- `scripts/publish_instagram.py <story> <lang>`: dry run; add `--yes` to publish. Writes `published.<lang>.json` and never posts a story twice.
-- `scripts/publish_story.sh <story>`: publishes EN, then EL, and commits the records.
-- `scripts/schedule_publish.py <story> "YYYY-MM-DD HH:MM"`: one-shot launchd job at local (Athens) time; `--list` shows pending jobs, `--dry-run` tests one. Logs go to `~/Library/Logs/parquet-hoops/`.
+Publishing runs in GitHub Actions (`.github/workflows/publish.yml`, every 15 minutes). The tokens are the encrypted repository secrets `IG_TOKEN_EN` and `IG_TOKEN_EL`; they never go into the repo or a chat. Never publish or queue a post without the owner's go-ahead.
+- `scripts/publish_queue.py add <story> "YYYY-MM-DD HH:MM"` (Athens time, `--langs en,el` by default) queues a story in `publish/queue.json`. Commit and push the queue: the workflow publishes every due entry. `list` shows the queue with each language's state.
+- `scripts/publish_instagram.py <story> <lang>`: dry run; add `--yes` to publish. Writes `published.<lang>.json`, commits and pushes it right away, and never posts a story twice.
+- To test the workflow: `gh workflow run publish.yml -f dry_run=true`.
+- Backup on the owner's Mac (tokens in the Keychain, service `parquet-hoops-instagram`): `scripts/publish_story.sh <story>` publishes EN, then EL; `scripts/schedule_publish.py <story> "YYYY-MM-DD HH:MM"` sets a one-shot launchd job (`--list`, `--dry-run`; logs in `~/Library/Logs/parquet-hoops/`).
+- The tokens expire around 2026-12-15. Refresh them, then update the Keychain and the secrets.
