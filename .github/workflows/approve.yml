@@ -1,0 +1,46 @@
+name: Approve posts
+
+# Approves queued drafts so publish.yml posts them. Run it from the Actions tab or the GitHub mobile app.
+on:
+  workflow_dispatch:
+    inputs:
+      match:
+        description: 'Which drafts: part of the path, e.g. "round-07/day-1", "day-1/01-", or "all"'
+        required: true
+        default: all
+      when:
+        description: 'Optional new time, Athens, "YYYY-MM-DD HH:MM" (empty = keep the suggested time)'
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Approve and push the queue
+        env:
+          MATCH: ${{ inputs.match }}
+          WHEN: ${{ inputs.when }}
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          if [ -n "$WHEN" ]; then
+            python3 scripts/publish_queue.py approve "$MATCH" --when "$WHEN"
+          else
+            python3 scripts/publish_queue.py approve "$MATCH"
+          fi
+          git add publish/queue.json
+          git commit -q -m "Approve posts: $MATCH"
+          git pull -q --rebase origin main
+          git push -q origin main

@@ -62,7 +62,12 @@ Live: English (`post.en.md`: Instagram + X), Greek (`post.el.md`: **Instagram on
 
 ## Publishing (Instagram)
 Publishing runs in GitHub Actions (`.github/workflows/publish.yml`, every 15 minutes). The tokens are the encrypted repository secrets `IG_TOKEN_EN` and `IG_TOKEN_EL`; they never go into the repo or a chat. Never publish or queue a post without the owner's go-ahead.
-- `scripts/publish_queue.py add <story> "YYYY-MM-DD HH:MM"` (Athens time, `--langs en,el` by default) queues a story in `publish/queue.json`. Commit and push the queue: the workflow publishes every due entry. `list` shows the queue with each language's state.
+- The drafting routines queue every post as a draft (`"approved": false`) at its suggested time. **Drafts are never published.** The owner approves them in one of three ways:
+  - the **Approve posts** workflow (Actions tab or the GitHub mobile app; match e.g. `round-07/day-1`, `day-1/01-` or `all`, with an optional new time);
+  - by telling Claude, who runs `publish_queue.py approve <match> [--when "YYYY-MM-DD HH:MM"]` and pushes;
+  - by setting `"approved": true` in `publish/queue.json`.
+  A draft approved after its time is published on the next run.
+- `scripts/publish_queue.py add <story> "YYYY-MM-DD HH:MM" [--draft]` (Athens time, `--langs en,el` by default) queues a story in `publish/queue.json`; without `--draft` it is approved already. Commit and push the queue: the workflow publishes every due, approved entry. `list` shows the queue with each language's state.
 - `scripts/publish_instagram.py <story> <lang>`: dry run; add `--yes` to publish. Writes `published.<lang>.json`, commits and pushes it right away, and never posts a story twice.
 - To test the workflow: `gh workflow run publish.yml -f dry_run=true`.
 - Backup on the owner's Mac (tokens in the Keychain, service `parquet-hoops-instagram`): `scripts/publish_story.sh <story>` publishes EN, then EL; `scripts/schedule_publish.py <story> "YYYY-MM-DD HH:MM"` sets a one-shot launchd job (`--list`, `--dry-run`; logs in `~/Library/Logs/parquet-hoops/`).
