@@ -83,15 +83,21 @@ body::before { content: ""; position: absolute; inset: 0; pointer-events: none;
 .items { display: flex; flex-direction: column; gap: 34px; }
 .item .tag { font-weight: 900; color: %(accent)s; font-size: %(kick)dpx; letter-spacing: .1em; text-transform: uppercase; }
 .item .txt { font-weight: 700; font-size: %(item)dpx; line-height: 1.12; margin-top: 4px; }
+.photo { position: absolute; inset: 0; background-size: cover; }
+.photo::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, %(bg)sd9 0%%, %(bg)s00 16%%, %(bg)s00 34%%, %(bg)se0 58%%, %(bg)s 72%%); }
+body.has-photo::before { display: none; }
+body.has-photo .main { justify-content: flex-end; padding-bottom: 28px; }
+.credit { font-size: %(credit)dpx; letter-spacing: .02em; text-transform: none; opacity: .8; }
 .foot { display: flex; justify-content: space-between; font-weight: 500; font-size: %(tiny)dpx; color: %(muted)s;
   letter-spacing: .06em; text-transform: uppercase; position: relative; }
 """
 
 SIZES = {
     "ig": dict(w=1080, h=1350, pad=72, small=26, kick=28, title=150, sub=38, body=56, team=72, pts=120,
-               line=44, item=50, tiny=22),
+               line=44, item=50, tiny=22, credit=17),
     "x": dict(w=1600, h=900, pad=64, small=26, kick=26, title=120, sub=34, body=48, team=64, pts=100,
-              line=36, item=44, tiny=22),
+              line=36, item=44, tiny=22, credit=17),
 }
 
 
@@ -130,14 +136,19 @@ def card_html(card):
     return inner
 
 
-def page(spec, card, fmt, n, total):
+def page(spec, card, fmt, n, total, photo=None):
+    """photo: {"uri", "credit", "focus"} puts a full-bleed photo behind this card (Instagram slide 1)."""
     size = SIZES[fmt]
     css = CSS % dict(size, f=FONTS, **BRAND["colors"])
     page_no = f"{n}/{total}" if total > 1 else ""
-    return f"""<!doctype html><html lang="{spec['lang']}"><head><meta charset="utf-8"><style>{css}</style></head><body>
+    bg = credit = ""
+    if photo:
+        bg = f'<div class="photo" style="background-image:url({photo["uri"]}); background-position:{photo["focus"]}"></div>'
+        credit = f'<span class="credit">{html.escape(photo["credit"])}</span>'
+    return f"""<!doctype html><html lang="{spec['lang']}"><head><meta charset="utf-8"><style>{css}</style></head><body class="{"has-photo" if photo else ""}">{bg}
 <div class="top"><span class="brand">{centre_disc(BRAND['colors']['accent'])}<b>{html.escape(BRAND['name'][spec['lang']])}</b> · {html.escape(spec['round_label'])}</span><span>{page_no}</span></div>
 <div class="main">{card_html(card)}</div>
-<div class="foot"><span>{html.escape(BRAND['handle'][fmt][spec['lang']])}</span></div>
+<div class="foot"><span>{html.escape(BRAND['handle'][fmt][spec['lang']])}</span>{credit}</div>
 </body></html>"""
 
 
@@ -159,8 +170,15 @@ def main():
     jobs = [("ig", c, i + 1, len(spec["ig"]), out_dir / f"ig-{i + 1}.png") for i, c in enumerate(spec["ig"])]
     if spec["lang"] in BRAND["handle"]["x"] and "x" in spec:  # some languages are Instagram-only
         jobs.append(("x", spec["x"], 1, 1, out_dir / "x.png"))
+    # A story's photo.jpg (from scripts/commons_photo.py) goes behind the first Instagram slide.
+    photo = None
+    if (spec_path.parent / "photo.jpg").exists():
+        meta = json.loads((spec_path.parent / "photo.json").read_text())
+        photo = {"uri": (spec_path.parent / "photo.jpg").as_uri(), "credit": meta["credit"],
+                 "focus": meta.get("focus", "50% 20%")}
     for fmt, card, n, total, out in jobs:
-        shoot(page(spec, card, fmt, n, total), SIZES[fmt]["w"], SIZES[fmt]["h"], out)
+        slide_photo = photo if (fmt == "ig" and n == 1) else None
+        shoot(page(spec, card, fmt, n, total, slide_photo), SIZES[fmt]["w"], SIZES[fmt]["h"], out)
         print(out.relative_to(ROOT))
 
 

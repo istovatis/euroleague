@@ -7,6 +7,7 @@ This runs every morning. Most days there is nothing new, and the run should exit
 3. Otherwise draft round N following `CLAUDE.md`, and use `rounds/E2026/round-06/` as the reference for format and tone. Create one folder per story (`01-<slug>` is the lead, then up to `04-<slug>`), and in each one:
    - `post.en.md` (X post + Instagram) and `post.el.md` (Instagram only: no X section, no `x` card). The Greek version is localized for Greek fans, not translated: it uses the Greek names of clubs and players and Greek venue names (OAKA = ΟΑΚΑ, Peace and Friendship Stadium = ΣΕΦ), and plays up Olympiacos and Panathinaikos angles.
    - `cards.en.json` and `cards.el.json`. Render each one with `python3 scripts/render_cards.py <spec>`. The renderer picks the right browser itself (on Linux it prefers Playwright's headless_shell, because the full Chromium build crops the bottom of the image). If none is found, run `npx -y playwright install chromium-headless-shell` first.
+   - If the story is about one person, find their photo on Wikimedia Commons (see "Photos" in `CLAUDE.md`) before rendering. If Commons is unreachable, skip the photo and note it in the round's `README.md`.
    - Open every PNG with Read and fix any overflow, clipping or wrong text before committing.
    - Then write the round's `README.md` posting plan (see `rounds/E2026/round-06/README.md`).
    - Check that each X post is 280 characters or fewer (`python3 -c "print(len(open(...).read()))"` on the text only).

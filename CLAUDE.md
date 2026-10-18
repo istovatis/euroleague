@@ -1,6 +1,6 @@
 # EuroLeague round recap: Instagram + X
 
-Every EuroLeague round becomes a set of posts: one lead story plus up to three more, each its own post with its own vivid angle. The project is not affiliated with EuroLeague. Never use the EuroLeague logo, club logos or official photos unless we hold the rights. Graphics are our own text and stat cards. Do **not** add a "fan account" or "not affiliated" disclaimer to cards, captions or X posts.
+Every EuroLeague round becomes a set of posts: one lead story plus up to three more, each its own post with its own vivid angle. The project is not affiliated with EuroLeague. Never use the EuroLeague logo, club logos or official, club or agency photos (they are copyrighted). Graphics are our own text and stat cards. Do **not** add a "fan account" or "not affiliated" disclaimer to cards, captions or X posts.
 
 ## Workflow per round (automated daily: see ROUTINE.md)
 1. `python3 scripts/round_digest.py` writes `rounds/<season>/round-NN/digest.json` and prints the round summary. It picks the latest fully played round by default, or use `--round N`.
@@ -20,6 +20,14 @@ Prefer the story with the strongest *narrative*, not just the biggest number. Th
 ## Channel style
 **X**: 280 characters or fewer, punchy hook on the first line, 3–4 stat lines, one hashtag `#EuroLeague` plus at most one club tag. No emoji spam (2 at most).
 **Instagram**: a carousel of 3 slides. Slide 1 is a big hook and the name; slide 2 is the stat card; slide 3 is a second narrative punch (a `hook` card with a big line, never a `text` card that explains). The caption opens with a hook, then 3–5 short lines and a question to drive comments, followed by 8–12 hashtags at the end.
+
+## Photos
+When a story is about one person (player or coach), Instagram slide 1 carries a photo of them. It doesn't need to be from that game.
+- Only freely licensed photos from Wikimedia Commons (CC BY, CC BY-SA, CC0, public domain). Never official EuroLeague, club or agency photos, even though the API links to them.
+- `python3 scripts/commons_photo.py --search "<name>"` lists candidates. Download a few as thumbnails, look at them, and pick: the person clearly visible and facing the camera, ideally in their current team's jersey, most recent first.
+- `python3 scripts/commons_photo.py --get <story> "File:…"` saves `photo.jpg` + `photo.json` (credit). The renderer then puts the photo full-bleed behind slide 1 with the credit in the footer. Set `"focus"` in `photo.json` (CSS background-position, default `50% 20%`) if the face is cropped.
+- Add the credit as the last caption line before the hashtags: `📷 <author> / Wikimedia Commons (<license>)`.
+- Team stories (no single person) and people without a usable photo get no photo. Example: `assets/brand/example-photo-slide.png`.
 
 ## Voice: vivid, not analytical
 Tell each round like a story, the way a commentator would, not like a stats report. The model is "The student won in Athens": a headline with a character, a rivalry and a payoff.
