@@ -170,14 +170,22 @@ def main():
     jobs = [("ig", c, i + 1, len(spec["ig"]), out_dir / f"ig-{i + 1}.png") for i, c in enumerate(spec["ig"])]
     if spec["lang"] in BRAND["handle"]["x"] and "x" in spec:  # some languages are Instagram-only
         jobs.append(("x", spec["x"], 1, 1, out_dir / "x.png"))
-    # A story's photo.jpg (from scripts/commons_photo.py) goes behind the first Instagram slide.
-    photo = None
-    if (spec_path.parent / "photo.jpg").exists():
-        meta = json.loads((spec_path.parent / "photo.json").read_text())
-        photo = {"uri": (spec_path.parent / "photo.jpg").as_uri(), "credit": meta["credit"],
-                 "focus": meta.get("focus", "50% 20%")}
+    # Photos come from scripts/commons_photo.py: <name>.jpg plus <name>.json (credit, optional focus).
+    # A card names its photo with "photo": "<name>"; otherwise a story's photo.jpg goes behind slide 1.
+    def load_photo(name):
+        jpg, meta = spec_path.parent / f"{name}.jpg", spec_path.parent / f"{name}.json"
+        if not jpg.exists():
+            sys.exit(f"Missing photo {jpg}")
+        m = json.loads(meta.read_text())
+        return {"uri": jpg.as_uri(), "credit": m["credit"], "focus": m.get("focus", "50% 20%")}
+
     for fmt, card, n, total, out in jobs:
-        slide_photo = photo if (fmt == "ig" and n == 1) else None
+        if fmt == "ig" and card.get("photo"):
+            slide_photo = load_photo(card["photo"])
+        elif fmt == "ig" and n == 1 and (spec_path.parent / "photo.jpg").exists():
+            slide_photo = load_photo("photo")
+        else:
+            slide_photo = None
         shoot(page(spec, card, fmt, n, total, slide_photo), SIZES[fmt]["w"], SIZES[fmt]["h"], out)
         print(out.relative_to(ROOT) if out.is_relative_to(ROOT) else out)
 

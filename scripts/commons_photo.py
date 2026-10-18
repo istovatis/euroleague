@@ -5,7 +5,8 @@ Usage:
   python3 scripts/commons_photo.py --search "Sasha Vezenkov"              # list candidates
   python3 scripts/commons_photo.py --get <story> "File:Sasha Vezenkov ... (4).jpg"
 
---get saves <story>/photo.jpg (1600 px wide) and <story>/photo.json with the credit line.
+--get saves <story>/photo.jpg (1600 px wide) and <story>/photo.json with the credit line;
+--name exterior saves exterior.jpg + exterior.json instead (several photos per post).
 Only Creative Commons BY / BY-SA, CC0 and public-domain files are accepted. Official
 EuroLeague, club or agency photos are never used: they are copyrighted.
 """
@@ -64,6 +65,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--search")
     ap.add_argument("--get", nargs=2, metavar=("STORY", "FILE_TITLE"))
+    ap.add_argument("--name", default="photo", help="file name to save as (photo -> photo.jpg + photo.json)")
     a = ap.parse_args()
     props = dict(prop="imageinfo", iiprop="url|size|extmetadata", iiurlwidth=1600,
                  iiextmetadatafilter="LicenseShortName|Artist|DateTimeOriginal")
@@ -84,10 +86,10 @@ def main():
         # Commons hands out thumbnails on thumb.wikimedia.org, but upload.wikimedia.org serves the
         # same path; use it so the cloud network allowlist needs only commons + upload.
         thumb = f["thumb"].split("?")[0].replace("://thumb.wikimedia.org/", "://upload.wikimedia.org/")
-        (story / "photo.jpg").write_bytes(fetch(thumb))
+        (story / f"{a.name}.jpg").write_bytes(fetch(thumb))
         f["credit"] = f"Photo: {f['author']} / Wikimedia Commons, {f['license']}"
-        (story / "photo.json").write_text(json.dumps(f, indent=2, ensure_ascii=False) + "\n")
-        print(f"Saved {story / 'photo.jpg'}\n{f['credit']}\n{f['source']}")
+        (story / f"{a.name}.json").write_text(json.dumps(f, indent=2, ensure_ascii=False) + "\n")
+        print(f"Saved {story / (a.name + '.jpg')}\n{f['credit']}\n{f['source']}")
         return
     ap.error("use --search or --get")
 

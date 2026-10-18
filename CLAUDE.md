@@ -22,6 +22,15 @@ One post that closes the round, in `round-NN/highlight/`, drafted after the last
 - **Slide 3 (list card):** the table after the round, the top 4 plus the biggest climber or faller, with vivid tags ("New leader", "Still perfect", "Up 3"). Use `standings_after` from the digest.
 - Caption and X post in the same vivid voice. Posting plan (`highlight/README.md`): the evening after the round's last day, at 19:00 Athens, after that day's posts.
 
+## Arena of the week (Sundays)
+One post every Sunday about a EuroLeague arena, in `arenas/<season>/<arena-slug>/`, published Sunday evening.
+- **Pick:** `python3 scripts/arena_facts.py --next` suggests an arena not covered yet that hosts a game in the next 7 days, so the post builds up to that game. `--list` shows every arena and which are done.
+- **Facts:** `python3 scripts/arena_facts.py --get "<ARENA NAME>"` writes `facts.json`: official capacity, address, home teams and upcoming games from the EuroLeague API, opening date from Wikidata, and the Wikipedia article text. **Every fact must come from `facts.json`.** The headline capacity is always the EuroLeague figure (sources often disagree; you may mention, for example, "built for 14,940" if Wikipedia says so). List the URLs under `## Sources` in each post file, and put anything surprising under `## Facts to verify`.
+- **Photos:** one outside and one inside photo from Wikimedia Commons (`commons_photo.py --search "<arena>"`, then `--get <folder> "File:…" --name exterior` and `--name interior`), same license rules as "Photos". Look at the candidates and pick ones where the building or the bowl is clearly visible. If no usable interior exists, drop that slide.
+- **Slides (4):** 1) `hook` with `"photo": "exterior"`, kicker "Arena of the week", a vivid title and the home team and city as subtitle; 2) `list` card with the facts: Capacity, Opened, Home of, This week (the upcoming game); 3) `hook` with `"photo": "interior"`, a line about what it is like inside; 4) `hook` with the single most surprising fact ("Did you know"). The X card (EN only) is a `list` card with the key facts.
+- **Voice:** same vivid rules as everything else: the arena is a character, not a spec sheet. The Greek version uses Greek names (ΣΕΦ, ΟΑΚΑ) and Greek angles.
+- **Posting plan:** a short `README.md` in the folder, with the post time Sunday 18:00 Athens. The `README.md` also marks the arena as covered.
+
 ## Picking the story (in priority order)
 - **Underdog**: a win that breaks the table. Examples: a bottom-4 team beating a top-4 team, ending an unbeaten run, or a road win at a top seed. Use `upset_score`, `standings_gap` and `road_win`.
 - **Coach**: when the result is clearly a coaching story, such as a tactical turnaround, a revenge game against a former club or mentor, or a big upset with a balanced box score where no single player dominated.

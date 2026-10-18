@@ -28,3 +28,11 @@ rounds/E2026/round-07/
 1. `python3 scripts/round_status.py --pending` lists played game days without a `README.md` and fully played rounds without a highlight (rounds 7+).
 2. If it prints nothing, stop: no changes, no commit.
 3. Otherwise, for each pending day, do steps 3–4 of the per-day run, and for each pending highlight, step 5. Then do steps 6–7.
+
+## Arena of the week run (Sundays, named in the prompt)
+1. `python3 scripts/arena_facts.py --next`. If it prints "All arenas covered", stop: no changes.
+2. `python3 scripts/arena_facts.py --get "<ARENA>"` (add `--wiki "<title>"` if it found the wrong Wikipedia page). Read `facts.json` in full.
+3. Find and download the exterior and interior photos (see "Arena of the week" in `CLAUDE.md`).
+4. Write `post.en.md` (X + Instagram, with `## Sources`) and `post.el.md` (Instagram only), plus `cards.en.json` and `cards.el.json`. Render them, open every PNG and fix any problems, and check the X post is 280 characters or fewer.
+5. Write the folder's `README.md`, commit `arenas/` to `main` with the message `Arena of the week: <arena> (EN + EL)` and push.
+
