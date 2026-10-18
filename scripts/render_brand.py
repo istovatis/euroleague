@@ -5,6 +5,7 @@ Usage: python3 scripts/render_brand.py
 Uses the palette in brand.json and the same headless Chrome as render_cards.py.
 """
 import pathlib
+import random
 import subprocess
 import tempfile
 
@@ -64,9 +65,43 @@ def wordmark(lang, mode):
     return CSS % dict(w=2900, h=640), lockup(lang, 340, text, markc), 2900, 640, mode == "ink"
 
 
-def header(lang):
+def parquet(w, h, seed=7, board=24):
+    """Dark floorboards in the brand ink: long staggered maple strips with hairline seams and
+    wavy grain, like a court floor under arena lights. Seeded, so every render is identical."""
+    rnd = random.Random(seed)
+    tones = ["#10151C", "#121820", "#141B24", "#0F1319", "#161D27", "#131922"]
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
+           f'style="position:absolute; inset:0">', f'<rect width="{w}" height="{h}" fill="#090C11"/>']
+    for y in range(0, h, board):
+        x = -rnd.randint(0, 500)
+        while x < w:
+            length = rnd.randint(320, 760)
+            out.append(f'<rect x="{x + 1.5}" y="{y + 1}" width="{length - 1.5}" height="{board - 1}" fill="{rnd.choice(tones)}"/>')
+            for _ in range(rnd.randint(4, 7)):  # grain: long, gently wavy strokes along the board
+                gy = y + rnd.uniform(3, board - 3)
+                gx = x + rnd.uniform(-40, length * 0.3)
+                seg = rnd.uniform(0.45, 0.9) * length
+                d = f"M{gx:.0f} {gy:.1f} c {seg / 3:.0f} {rnd.uniform(-3, 3):.1f} {2 * seg / 3:.0f} {rnd.uniform(-3, 3):.1f} {seg:.0f} {rnd.uniform(-1.5, 1.5):.1f}"
+                out.append(f'<path d="{d}" stroke="#F5F3EE" stroke-opacity="{rnd.uniform(0.025, 0.07):.3f}" '
+                           f'stroke-width="{rnd.choice((0.8, 1, 1.4))}" fill="none"/>')
+            x += length
+    out.append("</svg>")
+    return "".join(out)
+
+
+def header(lang, court=False):
     # X overlays the avatar bottom-left, so the lockup sits right of centre.
-    body = f"""<div style="position:absolute; right:110px; top:50%; transform:translateY(-50%);
+    lines = ""
+    if court:  # the brand mark's halfway line and centre circle, painted on the floor
+        lines = f"""<svg width="1500" height="500" style="position:absolute; inset:0">
+<g fill="none" stroke="{C['accent']}" stroke-opacity=".55" stroke-width="6">
+<line x1="190" y1="0" x2="190" y2="500"/><circle cx="190" cy="250" r="125"/></g></svg>"""
+    floor = f"""{parquet(1500, 500)}{lines}
+<div style="position:absolute; inset:0; background:
+  radial-gradient(ellipse at 72% 50%, {C['bg']}C2 0%, {C['bg']}66 40%, transparent 70%),
+  radial-gradient(circle at 80% 15%, {C['accent']}22, transparent 50%),
+  linear-gradient(180deg, transparent 55%, {C['bg']}CC 100%)"></div>"""
+    body = f"""{floor}<div style="position:absolute; right:110px; top:50%; transform:translateY(-50%);
   display:flex; flex-direction:column; align-items:flex-end; gap:20px">
 {lockup(lang, 140, C['fg'], C['accent'])}
 <span style="font-weight:700; font-size:40px; letter-spacing:.08em; text-transform:uppercase; color:{C['muted']}">{LANGS[lang]['tagline']}</span>
@@ -101,6 +136,7 @@ def main():
         shoot(*wordmark(lang, "light-text"), OUT / f"wordmark-{lang}-transparent.png", lang)
         shoot(*wordmark(lang, "mono"), OUT / f"wordmark-{lang}-mono.png", lang)
         shoot(*header(lang), OUT / f"header-x-{lang}.png", lang)
+        shoot(*header(lang, court=True), OUT / f"header-x-{lang}-court.png", lang)
 
 
 if __name__ == "__main__":
