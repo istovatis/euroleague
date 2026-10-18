@@ -34,15 +34,15 @@ ARENA OF THE WEEK
 ISTANBUL'S BASKETBALL CITY
 Anadolu Efes · Besiktas · Istanbul
 
-**Slide 2 (facts):**
+**Slide 2 (hook, interior photo):**
+ONE BOWL. TWO CLUBS. BOTH AT HOME.
+Efes vs Besiktas · Thursday
+
+**Slide 3 (facts):**
 Capacity: 10,000
 Opened: 29 September 2024
 Home of: Anadolu Efes & Besiktas
 This week: Efes vs Besiktas · Thu 22 Oct
-
-**Slide 3 (hook, interior photo):**
-ONE BOWL. TWO CLUBS. BOTH AT HOME.
-Efes vs Besiktas · Thursday
 
 **Slide 4 (did you know):**
 IT HAS ITS OWN HIGH SCHOOL.

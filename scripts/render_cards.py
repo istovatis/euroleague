@@ -45,6 +45,7 @@ def find_chrome():
 CHROME = find_chrome()
 BRAND = json.loads((ROOT / "brand.json").read_text())
 CLUBS = json.loads((ROOT / "assets" / "clubs.json").read_text())
+CREST_CACHE = ROOT / ".cache" / "crests"  # gitignored: crests are club trademarks, never committed
 FONTS = (ROOT / "assets" / "fonts").as_uri()
 
 CSS = """
@@ -68,6 +69,10 @@ body::before { content: ""; position: absolute; inset: 0; pointer-events: none;
   font-weight: 900; font-size: %(kick)dpx; letter-spacing: .06em; text-transform: uppercase;
   box-shadow: 0 0 0 2px #ffffff40, 0 2px 10px #0006; }
 .badge i { width: .62em; height: .62em; border-radius: 50%%; display: block; box-shadow: 0 0 0 2px #0002; }
+.crests { gap: 18px; margin-bottom: 28px; }
+.crest { width: 118px; height: 118px; border-radius: 50%%; background: #fff; display: flex; align-items: center;
+  justify-content: center; box-shadow: 0 2px 12px #0008; }
+.crest img { width: 84px; height: 84px; object-fit: contain; }
 .kicker { display: inline-block; align-self: flex-start; background: %(accent)s; color: %(bg)s; font-weight: 900;
   font-size: %(kick)dpx; letter-spacing: .08em; text-transform: uppercase; padding: 6px 16px; margin-bottom: 28px; }
 .title { font-weight: 900; font-size: %(title)dpx; line-height: .92; text-transform: uppercase; }
@@ -117,6 +122,38 @@ def rich(s):
     return "".join(f"<em>{p}</em>" if i % 2 else p for i, p in enumerate(parts))
 
 
+def crest_file(code):
+    """Official club crest from the EuroLeague API, cached locally. None if unavailable."""
+    import urllib.request
+    f = CREST_CACHE / f"{code}.png"
+    if f.exists():
+        return f
+    try:
+        req = urllib.request.Request("https://api-live.euroleague.net/v2/competitions/E/seasons/E2026/games",
+                                     headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            games = json.load(r)["data"]
+        urls = {g[s]["club"]["code"]: g[s]["club"]["images"]["crest"] for g in games for s in ("local", "road")}
+        req = urllib.request.Request(urls[code], headers={"User-Agent": "Mozilla/5.0"})
+        CREST_CACHE.mkdir(parents=True, exist_ok=True)
+        with urllib.request.urlopen(req, timeout=30) as r:
+            f.write_bytes(r.read())
+        return f
+    except Exception as e:  # network blocked, unknown code, ...
+        print(f"warning: no crest for {code} ({e}); using the styled badge", file=sys.stderr)
+        return None
+
+
+def club_marks_html(codes, lang):
+    """Crests or styled badges for the given clubs, per brand.json "club_marks"."""
+    if BRAND.get("club_marks") == "crests":
+        files = [crest_file(c) for c in codes]
+        if all(files):
+            items = "".join(f'<span class="crest"><img src="{f.as_uri()}"></span>' for f in files)
+            return f'<div class="badges crests">{items}</div>'
+    return badges_html(codes, lang)
+
+
 def badges_html(codes, lang):
     """Club badges in our own style (assets/clubs.json): never crests, which are trademarks."""
     out = []
@@ -131,7 +168,7 @@ def card_html(card, lang="en"):
     t = card["type"]
     k = f'<div class="kicker">{rich(card["kicker"])}</div>' if card.get("kicker") else ""
     if t == "hook":
-        inner = (badges_html(card["badges"], lang) if card.get("badges") else "") + f'{k}<div class="title">{rich(card["title"])}</div>' + (
+        inner = (club_marks_html(card["badges"], lang) if card.get("badges") else "") + f'{k}<div class="title">{rich(card["title"])}</div>' + (
             f'<div class="sub">{rich(card["subtitle"])}</div>' if card.get("subtitle") else "")
     elif t == "score":
         rows = "".join(

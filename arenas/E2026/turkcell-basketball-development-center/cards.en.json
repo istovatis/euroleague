@@ -14,6 +14,13 @@
       ]
     },
     {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "One bowl.\nTwo clubs.\nBoth at *home*.",
+      "subtitle": "Efes vs Besiktas · Thursday"
+    },
+    {
       "type": "list",
       "kicker": "Turkcell Basketball Development Center",
       "items": [
@@ -34,13 +41,6 @@
           "text": "Efes vs Besiktas · Thu 22 Oct"
         }
       ]
-    },
-    {
-      "type": "hook",
-      "photo": "interior",
-      "kicker": "Inside",
-      "title": "One bowl.\nTwo clubs.\nBoth at *home*.",
-      "subtitle": "Efes vs Besiktas · Thursday"
     },
     {
       "type": "hook",

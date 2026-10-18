@@ -14,6 +14,13 @@
       ]
     },
     {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Μέσα",
+      "title": "Ολυμπιακός\nκαι ΠΑΟ.\nΣτο ίδιο *παρκέ*.",
+      "subtitle": "Μπεσίκτας - Ολυμπιακός · Εφές - Παναθηναϊκός"
+    },
+    {
       "type": "list",
       "kicker": "Turkcell Basketball Development Center",
       "items": [
@@ -34,13 +41,6 @@
           "text": "Ολυμπιακός 28/10 · Παναθηναϊκός 30/10"
         }
       ]
-    },
-    {
-      "type": "hook",
-      "photo": "interior",
-      "kicker": "Μέσα",
-      "title": "Ολυμπιακός\nκαι ΠΑΟ.\nΣτο ίδιο *παρκέ*.",
-      "subtitle": "Μπεσίκτας - Ολυμπιακός · Εφές - Παναθηναϊκός"
     },
     {
       "type": "hook",
