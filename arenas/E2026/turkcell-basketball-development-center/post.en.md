@@ -4,7 +4,7 @@
 - Wikipedia lists the professional tenants as **Anadolu Efes and Galatasaray**; the EuroLeague API lists **Anadolu Efes and Besiktas** as home teams this season. The cards and copy use the EuroLeague figure (Besiktas). Wikipedia is probably out of date, but check.
 - Wikidata has two dates: inception Aug 2024 (P571) and opened 29 Sept 2024 (P1619). We use 29 Sept 2024, which Wikipedia also gives as the official opening.
 - The high school (200 students, 8 classrooms), the hotel and the basketball museum all come from Wikipedia only. Used on slide 4 and in the caption.
-- It stands where Abdi İpekçi Arena stood (opened 1989, closed 2017, demolished 2018), per Wikipedia. Used in the caption.
+- It stands where Abdi İpekçi Arena stood (opened 1989, closed 2017, demolished 2018), per Wikipedia. Used on slide 2 and in the caption.
 
 **Why this angle:** this isn't just an arena, it's a whole basketball campus (seven blocks, a hotel, a museum, a high school), and on Thursday it hosts Efes vs Besiktas: an Istanbul derby where both teams play at home.
 
@@ -31,12 +31,12 @@ Efes vs Besiktas, Thu 22 Oct.
 
 **Slide 1 (hook, exterior photo):**
 ARENA OF THE WEEK
-ISTANBUL'S BASKETBALL CITY
-Anadolu Efes · Besiktas · Istanbul
+THE DERBY WITH NO AWAY TEAM.
+[Anadolu Efes + Beşiktaş crests] · Turkcell Basketball Development Center
 
 **Slide 2 (hook, interior photo):**
-ONE BOWL. TWO CLUBS. BOTH AT HOME.
-Efes vs Besiktas · Thursday
+BUILT WHERE A LEGEND STOOD.
+On the site of the Abdi İpekçi Arena
 
 **Slide 3 (facts):**
 Capacity: 10,000

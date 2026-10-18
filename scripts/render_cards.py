@@ -202,6 +202,13 @@ def page(spec, card, fmt, n, total, photo=None):
 <div class="top"><span class="brand">{centre_disc(BRAND['colors']['accent'])}<b>{html.escape(BRAND['name'][spec['lang']])}</b> · {html.escape(spec['round_label'])}</span><span>{page_no}</span></div>
 <div class="main">{card_html(card, spec["lang"])}</div>
 <div class="foot"><span>{html.escape(BRAND['handle'][fmt][spec['lang']])}</span>{credit}</div>
+<script>
+// Long words (e.g. Greek) must never run off the card: shrink a headline until it fits its box.
+for (const el of document.querySelectorAll('.title, .team')) {{
+  let fs = parseFloat(getComputedStyle(el).fontSize);
+  while (el.scrollWidth > el.clientWidth + 1 && fs > 40) {{ fs -= 4; el.style.fontSize = fs + 'px'; }}
+}}
+</script>
 </body></html>"""
 
 
