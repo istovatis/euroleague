@@ -69,6 +69,17 @@ def caption_of(post_md):
     return caption
 
 
+def to_jpeg(png, jpg):
+    """PNG -> JPEG: sips on macOS, Pillow elsewhere (GitHub Actions)."""
+    import shutil
+    if shutil.which("sips"):
+        subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "92", str(png), "--out", str(jpg)],
+                       check=True, capture_output=True)
+    else:
+        from PIL import Image
+        Image.open(png).convert("RGB").save(jpg, "JPEG", quality=92)
+
+
 def jpegs_for(story, lang):
     """Convert ig-N.png to ig-N.jpg (Instagram's API rejects PNG) and return the repo paths."""
     pngs = sorted((story / "cards" / lang).glob("ig-*.png"))
@@ -78,10 +89,25 @@ def jpegs_for(story, lang):
     for png in pngs:
         jpg = png.with_suffix(".jpg")
         if not jpg.exists() or jpg.stat().st_mtime < png.stat().st_mtime:
-            subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "92", str(png), "--out", str(jpg)],
-                           check=True, capture_output=True)
+            to_jpeg(png, jpg)
         out.append(jpg.relative_to(ROOT))
     return out
+
+
+def push():
+    """Push main, rebasing first: drafting routines may have pushed in the meantime."""
+    subprocess.run(["git", "-C", str(ROOT), "pull", "-q", "--rebase", "origin", "main"], check=True)
+    subprocess.run(["git", "-C", str(ROOT), "push", "-q", "origin", "main"], check=True)
+
+
+def commit_record(record):
+    """Commit and push the publish record right away, so a later failure can't cause a double post."""
+    subprocess.run(["git", "-C", str(ROOT), "add", str(record)], check=True)
+    subprocess.run(["git", "-C", str(ROOT), "commit", "-q", "-m", f"Published {record.parent.name} ({record.stem})"], check=True)
+    try:
+        push()
+    except subprocess.CalledProcessError:
+        print(f"warning: could not push {record}; commit it by hand", file=sys.stderr)
 
 
 def ensure_public(paths):
@@ -89,7 +115,7 @@ def ensure_public(paths):
     subprocess.run(["git", "-C", str(ROOT), "add", *map(str, paths)], check=True)
     if subprocess.run(["git", "-C", str(ROOT), "diff", "--cached", "--quiet"]).returncode:
         subprocess.run(["git", "-C", str(ROOT), "commit", "-q", "-m", "Instagram JPEGs for publishing"], check=True)
-    subprocess.run(["git", "-C", str(ROOT), "push", "-q", "origin", "main"], check=True)
+    push()
     for p in paths:
         url = f"{RAW}/{p.as_posix()}"
         for _ in range(30):
@@ -147,6 +173,7 @@ def main():
     permalink = call("GET", media_id, token, fields="permalink").get("permalink")
     record.write_text(json.dumps({"media_id": media_id, "permalink": permalink, "account": handle,
                                   "published_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")
+    commit_record(record)
     print(f"Published: {permalink}")
 
 
