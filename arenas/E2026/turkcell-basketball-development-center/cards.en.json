@@ -51,6 +51,13 @@
   ],
   "x": [
     {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "Built where\na *legend* stood.",
+      "subtitle": "On the site of the Abdi İpekçi Arena"
+    },
+    {
       "type": "list",
       "kicker": "Arena of the week",
       "items": [
@@ -71,13 +78,6 @@
           "text": "Efes vs Besiktas · Thu 22 Oct"
         }
       ]
-    },
-    {
-      "type": "hook",
-      "photo": "interior",
-      "kicker": "Inside",
-      "title": "Built where\na *legend* stood.",
-      "subtitle": "On the site of the Abdi İpekçi Arena"
     }
   ]
 }
