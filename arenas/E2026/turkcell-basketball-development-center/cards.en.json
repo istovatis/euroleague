@@ -49,26 +49,35 @@
       "subtitle": "200 students · plus a hotel and a basketball museum"
     }
   ],
-  "x": {
-    "type": "list",
-    "kicker": "Arena of the week",
-    "items": [
-      {
-        "tag": "Capacity",
-        "text": "10,000"
-      },
-      {
-        "tag": "Opened",
-        "text": "29 Sept 2024"
-      },
-      {
-        "tag": "Home of",
-        "text": "Anadolu Efes & Besiktas"
-      },
-      {
-        "tag": "This week",
-        "text": "Efes vs Besiktas · Thu 22 Oct"
-      }
-    ]
-  }
+  "x": [
+    {
+      "type": "list",
+      "kicker": "Arena of the week",
+      "items": [
+        {
+          "tag": "Capacity",
+          "text": "10,000"
+        },
+        {
+          "tag": "Opened",
+          "text": "29 Sept 2024"
+        },
+        {
+          "tag": "Home of",
+          "text": "Anadolu Efes & Besiktas"
+        },
+        {
+          "tag": "This week",
+          "text": "Efes vs Besiktas · Thu 22 Oct"
+        }
+      ]
+    },
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "Built where\na *legend* stood.",
+      "subtitle": "On the site of the Abdi İpekçi Arena"
+    }
+  ]
 }

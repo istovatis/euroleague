@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Publish one story's X post (text + cards/en/x.png) via the X API v2.
+"""Publish one story's X post (text + cards/en/x.png, x-2.png, ...) via the X API v2.
 
 Usage:
   python3 scripts/publish_x.py rounds/E2026/round-07/day-1/01-<slug>          # dry run
@@ -148,17 +148,17 @@ def main():
     if record.exists():
         sys.exit(f"Already published: {json.loads(record.read_text()).get('url')}")
     text = post_text(story / "post.en.md")
-    image = story / "cards" / "en" / "x.png"
+    images = sorted((story / "cards" / "en").glob("x*.png"), key=lambda f: f.stem)  # x.png, x-2.png, ...
     print(f"Account: @{user['username']} (id {user['id']})")
-    print(f"Image: {image.relative_to(ROOT) if image.exists() else 'none'}")
+    print(f"Images: {', '.join(f.name for f in images) or 'none'}")
     print(f"Text ({x_length(text)} chars):\n{text}\n")
     if not a.yes:
         print("Dry run: nothing was posted. Re-run with --yes to publish.")
         return
 
     body = {"text": text}
-    if image.exists():
-        body["media"] = {"media_ids": [upload_png(image, creds)]}
+    if images:
+        body["media"] = {"media_ids": [upload_png(f, creds) for f in images[:4]]}
     tweet = request("POST", f"{API}/tweets", creds, json.dumps(body).encode(), "application/json")["data"]
     url = f"https://x.com/{user['username']}/status/{tweet['id']}"
     record.write_text(json.dumps({"id": tweet["id"], "url": url, "account": user["username"],

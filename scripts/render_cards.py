@@ -227,9 +227,14 @@ def main():
     spec = json.loads(spec_path.read_text())
     out_dir = spec_path.parent / "cards" / spec["lang"]
     out_dir.mkdir(parents=True, exist_ok=True)
-    jobs = [("ig", c, i + 1, len(spec["ig"]), out_dir / f"ig-{i + 1}.png") for i, c in enumerate(spec["ig"])]
+    x_only = "--x-only" in sys.argv[2:]  # re-render just the X cards (e.g. of a post already on Instagram)
+    jobs = [] if x_only else [("ig", c, i + 1, len(spec["ig"]), out_dir / f"ig-{i + 1}.png") for i, c in enumerate(spec["ig"])]
     if spec["lang"] in BRAND["handle"]["x"] and "x" in spec:  # some languages are Instagram-only
-        jobs.append(("x", spec["x"], 1, 1, out_dir / "x.png"))
+        # "x" is one card, or a list of up to 4 (X's image limit): x.png, x-2.png, ...
+        xs = spec["x"] if isinstance(spec["x"], list) else [spec["x"]]
+        if len(xs) > 4:
+            sys.exit("X allows at most 4 images per post")
+        jobs += [("x", c, i + 1, len(xs), out_dir / ("x.png" if i == 0 else f"x-{i + 1}.png")) for i, c in enumerate(xs)]
     # Photos come from scripts/commons_photo.py: <name>.jpg plus <name>.json (credit, optional focus).
     # A card names its photo with "photo": "<name>"; otherwise a story's photo.jpg goes behind slide 1.
     def load_photo(name):
@@ -240,7 +245,7 @@ def main():
         return {"uri": jpg.as_uri(), "credit": m["credit"], "focus": m.get("focus", "50% 20%")}
 
     for fmt, card, n, total, out in jobs:
-        if fmt == "ig" and card.get("photo"):
+        if card.get("photo"):
             slide_photo = load_photo(card["photo"])
         elif fmt == "ig" and n == 1 and (spec_path.parent / "photo.jpg").exists():
             slide_photo = load_photo("photo")
