@@ -56,7 +56,7 @@ def x_length(text):
 def credentials():
     out = {}
     for env, account in CREDS.items():
-        value = os.environ.get(env)
+        value = os.environ.get(env, "").strip()
         if not value:
             r = subprocess.run(["security", "find-generic-password", "-s", KEYCHAIN_SERVICE, "-a", account, "-w"],
                                capture_output=True, text=True) if sys.platform == "darwin" else None
