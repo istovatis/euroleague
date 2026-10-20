@@ -130,6 +130,37 @@ def ensure_public(paths):
             sys.exit(f"Image never became public: {url}")
 
 
+def publish_story(folder, lang, png):
+    """Publish one image as an Instagram Story (no approval step: used for final scores).
+    Writes <folder>/published.story-<lang>.json; a folder that has it is never posted twice."""
+    record = folder / f"published.story-{lang}.json"
+    if record.exists():
+        return
+    handle = BRAND["handle"]["ig"][lang].lstrip("@")
+    token = token_for(lang, handle)
+    me = call("GET", "me", token, fields="user_id,username")
+    if me.get("username") != handle:
+        sys.exit(f"Token belongs to @{me.get('username')}, expected @{handle}")
+    jpg = png.with_suffix(".jpg")
+    to_jpeg(png, jpg)
+    rel = jpg.relative_to(ROOT)
+    ensure_public([rel])
+    uid = me["user_id"]
+    container = call("POST", f"{uid}/media", token, image_url=f"{RAW}/{rel.as_posix()}", media_type="STORIES")["id"]
+    for _ in range(30):
+        status = call("GET", container, token, fields="status_code").get("status_code")
+        if status == "FINISHED":
+            break
+        if status in ("ERROR", "EXPIRED"):
+            sys.exit(f"Story container {container} failed: {status}")
+        time.sleep(5)
+    media_id = call("POST", f"{uid}/media_publish", token, creation_id=container)["id"]
+    record.write_text(json.dumps({"media_id": media_id, "account": handle,
+                                  "published_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")
+    commit_record(record)
+    print(f"Published story on @{handle}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("story", help="story folder, e.g. rounds/E2026/round-06/02-vezenkov")

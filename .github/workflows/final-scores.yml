@@ -1,0 +1,65 @@
+name: Final scores
+
+# Posts a final-score card to X and to an Instagram Story on both accounts minutes after each game ends.
+# No approval step (the owner's decision, 2026-10-20): the posts are pure data from the EuroLeague API.
+# Pause with the repository variable FINALS_ENABLED=false (X alone: X_ENABLED=false).
+on:
+  schedule:
+    - cron: "*/5 15-23 * * *"  # UTC; games tip off 16:00-19:00 UTC and end ~2 hours later
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: render and print, post nothing"
+        type: boolean
+        default: true
+      game:
+        description: "Optional game code (e.g. 58), to test on an older game"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: final-scores
+  cancel-in-progress: false
+
+jobs:
+  final-scores:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow==10.4.0
+      - name: Install headless Chrome
+        run: npx -y playwright@1.47.2 install chromium-headless-shell
+      - name: Configure git
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+      - name: Post final scores
+        env:
+          IG_TOKEN_EN: ${{ secrets.IG_TOKEN_EN }}
+          IG_TOKEN_EL: ${{ secrets.IG_TOKEN_EL }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+          X_ENABLED: ${{ vars.X_ENABLED }}
+          FINALS_ENABLED: ${{ vars.FINALS_ENABLED }}
+          GAME: ${{ inputs.game }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          args=()
+          if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          if [ -n "$GAME" ]; then args+=(--game "$GAME"); fi
+          python3 scripts/final_scores.py "${args[@]}"
+      - name: Keep the rendered cards (dry runs)
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-score-cards
+          path: finals/
+          if-no-files-found: ignore

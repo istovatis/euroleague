@@ -2,7 +2,8 @@
 """Render stat cards (PNG) from a cards.<lang>.json spec using headless Chrome.
 
 Usage: python3 scripts/render_cards.py rounds/E2026/round-06/cards.en.json
-Outputs next to the spec: cards/<lang>/ig-1.png ... (1080x1350) and x.png (1600x900).
+Outputs next to the spec: cards/<lang>/ig-1.png ... (1080x1350), x.png (1600x900) and, when the spec
+has a "story" card, story.png (1080x1920, an Instagram Story). "ig" may be empty.
 
 Card types: hook, score, text, list (see any cards.*.json for the fields).
 """
@@ -107,6 +108,9 @@ body.has-photo .main { justify-content: flex-end; padding-bottom: 28px; }
 SIZES = {
     "ig": dict(w=1080, h=1350, pad=72, small=26, kick=28, title=150, sub=38, body=56, team=72, pts=120,
                line=44, item=50, tiny=22, credit=17),
+    # Instagram Story: the top and bottom ~250px sit under Instagram's own UI, so the padding is taller.
+    "story": dict(w=1080, h=1920, pad=72, pad_y=250, small=28, kick=34, title=160, sub=40, body=56, team=84, pts=150,
+                  line=44, item=50, tiny=24, credit=17),
     "x": dict(w=1600, h=900, pad=64, small=26, kick=26, title=120, sub=34, body=48, team=64, pts=100,
               line=36, item=44, tiny=22, credit=17),
 }
@@ -177,7 +181,8 @@ def card_html(card, lang="en"):
         note = f'<div class="note">{rich(card["note"])}</div>' if card.get("note") else ""
         lines = "".join(f'<div class="line"><span>{rich(a)}</span><span>{rich(b)}</span></div>'
                         for a, b in card.get("lines", []))
-        inner = f'{k}<div class="score">{rows}</div>{note}<div class="lines">{lines}</div>'
+        marks = club_marks_html(card["badges"], lang) if card.get("badges") else ""
+        inner = f'{marks}{k}<div class="score">{rows}</div>{note}<div class="lines">{lines}</div>'
     elif t == "text":
         inner = k + '<div class="body">' + "".join(f"<p>{rich(p)}</p>" for p in card["paragraphs"]) + "</div>"
     elif t == "list":
@@ -193,6 +198,8 @@ def page(spec, card, fmt, n, total, photo=None):
     """photo: {"uri", "credit", "focus"} puts a full-bleed photo behind this card (Instagram slide 1)."""
     size = SIZES[fmt]
     css = CSS % dict(size, f=FONTS, **BRAND["colors"])
+    if size.get("pad_y"):
+        css += f"body {{ padding-top: {size['pad_y']}px; padding-bottom: {size['pad_y']}px; }}"
     page_no = f"{n}/{total}" if total > 1 else ""
     bg = credit = ""
     if photo:
@@ -201,7 +208,7 @@ def page(spec, card, fmt, n, total, photo=None):
     return f"""<!doctype html><html lang="{spec['lang']}"><head><meta charset="utf-8"><style>{css}</style></head><body class="{"has-photo" if photo else ""}">{bg}
 <div class="top"><span class="brand">{centre_disc(BRAND['colors']['accent'])}<b>{html.escape(BRAND['name'][spec['lang']])}</b> · {html.escape(spec['round_label'])}</span><span>{page_no}</span></div>
 <div class="main">{card_html(card, spec["lang"])}</div>
-<div class="foot"><span>{html.escape(BRAND['handle'][fmt][spec['lang']])}</span>{credit}</div>
+<div class="foot"><span>{html.escape(BRAND['handle']["ig" if fmt == "story" else fmt][spec['lang']])}</span>{credit}</div>
 <script>
 // Long words (e.g. Greek) must never run off the card: shrink a headline until it fits its box.
 for (const el of document.querySelectorAll('.title, .team')) {{
@@ -235,6 +242,8 @@ def main():
         if len(xs) > 4:
             sys.exit("X allows at most 4 images per post")
         jobs += [("x", c, i + 1, len(xs), out_dir / ("x.png" if i == 0 else f"x-{i + 1}.png")) for i, c in enumerate(xs)]
+    if "story" in spec and not x_only:
+        jobs.append(("story", spec["story"], 1, 1, out_dir / "story.png"))
     # Photos come from scripts/commons_photo.py: <name>.jpg plus <name>.json (credit, optional focus).
     # A card names its photo with "photo": "<name>"; otherwise a story's photo.jpg goes behind slide 1.
     def load_photo(name):

@@ -1,3 +1,5 @@
 __pycache__/
 .DS_Store
 .cache/
+# Final-score cards are re-rendered on demand; only the Story JPEGs (Instagram fetches them) and the records are committed.
+finals/**/*.png
