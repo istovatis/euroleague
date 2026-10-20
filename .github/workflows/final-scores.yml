@@ -34,7 +34,7 @@ jobs:
           python-version: "3.12"
       - run: pip install pillow==10.4.0
       - name: Install headless Chrome
-        run: npx -y playwright@1.47.2 install chromium-headless-shell
+        run: npx -y playwright@1.49.1 install --only-shell chromium
       - name: Configure git
         run: |
           git config user.name "parquet-hoops-bot"
