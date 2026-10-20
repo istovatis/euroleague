@@ -59,13 +59,10 @@ def avatar():
 
 
 def avatar_floor():
-    """Second avatar: just the centre disc on the X header's parquet floor; the cut-out
+    """Second avatar: centre.svg exactly as it is, on the parquet floor; the cut-out
     line and circle show the boards through the mark."""
     body = f"""{parquet(1080, 1080)}
-<div style="position:absolute; inset:0; background:
-  radial-gradient(circle at 50% 50%, transparent 30%, {C['bg']}99 75%),
-  radial-gradient(circle at 80% 15%, {C['accent']}22, transparent 50%)"></div>
-{centre_disc(C['accent'], 560, 'a')}"""
+<div style="position:absolute; inset:0">{centre_disc(C['accent'], 1080, 'a')}</div>"""
     return CSS % dict(w=1080, h=1080), body, 1080, 1080, True
 
 
