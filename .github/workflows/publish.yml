@@ -11,6 +11,9 @@ on:
         description: "Dry run: check tokens and posts, publish nothing"
         type: boolean
         default: true
+      reel_story:
+        description: "Preview a Reel: story folder to render (EN + EL); the videos are attached to the run, nothing is posted"
+        required: false
 
 permissions:
   contents: write
@@ -42,10 +45,21 @@ jobs:
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
           X_ENABLED: ${{ vars.X_ENABLED }}
+          REEL_STORY: ${{ inputs.reel_story }}
+          GH_TOKEN: ${{ github.token }}  # Reel videos are staged as assets of the "reels" release
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+          if [ -n "$REEL_STORY" ]; then
+            python3 scripts/publish_instagram.py "$REEL_STORY" en --reel
+            python3 scripts/publish_instagram.py "$REEL_STORY" el --reel
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
             python3 scripts/publish_queue.py check
             python3 scripts/publish_queue.py run --dry-run
           else
             python3 scripts/publish_queue.py run
           fi
+      - name: Keep the Reel previews
+        if: inputs.reel_story != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: reels
+          path: ${{ inputs.reel_story }}/cards/*/reel.mp4

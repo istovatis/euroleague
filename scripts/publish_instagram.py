@@ -4,6 +4,7 @@
 Usage:
   python3 scripts/publish_instagram.py rounds/E2026/round-06/02-vezenkov en          # dry run
   python3 scripts/publish_instagram.py rounds/E2026/round-06/02-vezenkov en --yes    # publish
+  python3 scripts/publish_instagram.py rounds/E2026/round-06/02-vezenkov en --reel --yes   # the Reel (render_reel.py)
 
 The dry run checks the token, confirms it belongs to the expected account, and prints the
 caption and image URLs without posting anything. --yes publishes and records the result in
@@ -18,6 +19,7 @@ import argparse
 import json
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
 import time
@@ -161,14 +163,87 @@ def publish_story(folder, lang, png):
     print(f"Published story on @{handle}")
 
 
+REELS_RELEASE = "reels"  # a GitHub release that holds each Reel video only until Instagram has fetched it
+
+
+def gh(*args, check=True):
+    exe = shutil.which("gh") or str(pathlib.Path.home() / ".local/bin/gh")
+    return subprocess.run([exe, *args, "--repo", "istovatis/euroleague"], check=check, capture_output=True, text=True)
+
+
+def host_video(mp4, name):
+    """Instagram fetches Reels from a public URL, and a video per post would bloat the repo, so the video
+    becomes an asset of the "reels" release (not in git history) and is deleted after publishing."""
+    if gh("release", "view", REELS_RELEASE, check=False).returncode:
+        gh("release", "create", REELS_RELEASE, "--title", "Reel videos (temporary)", "--prerelease",
+           "--notes", "Reel videos waiting to be fetched by Instagram; each is deleted once published.")
+    staged = mp4.with_name(name)
+    shutil.copyfile(mp4, staged)
+    try:
+        gh("release", "upload", REELS_RELEASE, str(staged), "--clobber")
+    finally:
+        staged.unlink()
+    return f"https://github.com/istovatis/euroleague/releases/download/{REELS_RELEASE}/{name}"
+
+
+def upload_reel(uid, token, mp4, caption, name):
+    """Create a Reel container from the hosted video; returns its id once Instagram has processed it.
+    Shown in the Reels tab only (share_to_feed=false), so the grid keeps just the carousel."""
+    url = host_video(mp4, name)
+    try:
+        container = call("POST", f"{uid}/media", token, media_type="REELS", video_url=url,
+                         caption=caption, share_to_feed="false")["id"]
+        for _ in range(90):  # video processing takes a minute or two
+            status = call("GET", container, token, fields="status_code,status")
+            if status.get("status_code") == "FINISHED":
+                return container
+            if status.get("status_code") in ("ERROR", "EXPIRED"):
+                sys.exit(f"Reel container {container} failed: {status}")
+            time.sleep(5)
+        sys.exit(f"Reel container {container} still processing after 7.5 minutes")
+    finally:
+        gh("release", "delete-asset", REELS_RELEASE, name, "-y", check=False)
+
+
+def publish_reel(story, lang, yes):
+    record = story / f"published.reel-{lang}.json"
+    if record.exists():
+        sys.exit(f"Already published: {json.loads(record.read_text()).get('permalink')}")
+    handle = BRAND["handle"]["ig"][lang].lstrip("@")
+    token = token_for(lang, handle)
+    me = call("GET", "me", token, fields="user_id,username")
+    if me.get("username") != handle:
+        sys.exit(f"Token belongs to @{me.get('username')}, expected @{handle}")
+    caption = caption_of(story / f"post.{lang}.md")
+    mp4 = story / "cards" / lang / "reel.mp4"
+    if not mp4.exists() or mp4.stat().st_mtime < (story / f"cards.{lang}.json").stat().st_mtime:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import render_reel
+        render_reel.render(str(story), lang)
+    print(f"Account: @{handle} (id {me['user_id']})\nReel: {mp4.relative_to(ROOT)} ({mp4.stat().st_size // 1024} KB)")
+    if not yes:
+        print("Dry run: nothing was posted. Re-run with --yes to publish.")
+        return
+    container = upload_reel(me["user_id"], token, mp4, caption, f"{story.name}-{lang}.mp4")
+    media_id = call("POST", f"{me['user_id']}/media_publish", token, creation_id=container)["id"]
+    permalink = call("GET", media_id, token, fields="permalink").get("permalink")
+    record.write_text(json.dumps({"media_id": media_id, "permalink": permalink, "account": handle,
+                                  "published_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")
+    commit_record(record)
+    print(f"Published: {permalink}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("story", help="story folder, e.g. rounds/E2026/round-06/02-vezenkov")
     ap.add_argument("lang", choices=sorted(BRAND["handle"]["ig"]))
     ap.add_argument("--yes", action="store_true", help="actually publish (default is a dry run)")
+    ap.add_argument("--reel", action="store_true", help="the story's Reel instead of the carousel")
     a = ap.parse_args()
 
     story = (ROOT / a.story).resolve() if not pathlib.Path(a.story).is_absolute() else pathlib.Path(a.story)
+    if a.reel:
+        return publish_reel(story, a.lang, a.yes)
     record = story / f"published.{a.lang}.json"
     if record.exists():
         sys.exit(f"Already published: {json.loads(record.read_text()).get('permalink')}")

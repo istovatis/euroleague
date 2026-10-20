@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Instagram publishing queue (publish/queue.json), run by the GitHub Actions workflow.
 
-  python3 scripts/publish_queue.py add <story> "YYYY-MM-DD HH:MM" [--langs en,el,x] [--draft]   # time is Athens local
+  python3 scripts/publish_queue.py add <story> "YYYY-MM-DD HH:MM" [--langs en,el,x,reel-en,reel-el] [--draft]   # time is Athens local
   python3 scripts/publish_queue.py approve <match> [--when "YYYY-MM-DD HH:MM"]   # approve drafts whose path contains <match> ("all" = every draft)
   python3 scripts/publish_queue.py list
   python3 scripts/publish_queue.py run [--dry-run]     # publish every due, unpublished entry (used by CI)
   python3 scripts/publish_queue.py check               # confirm each language's token works and matches its account
 
 An entry is published once per channel: "en" and "el" are the Instagram accounts (publish_instagram.py),
-"x" is the English X account (publish_x.py). Each writes <story>/published.<channel>.json and refuses to post a
+"x" is the English X account (publish_x.py), and "reel-en" / "reel-el" are the story's Reel on each Instagram
+account (publish_instagram.py --reel: rendered by render_reel.py at publish time, shown in the Reels tab only). Each writes <story>/published.<channel>.json and refuses to post a
 story twice, so re-running is always safe. X is skipped while its credentials aren't set up. Tokens come from IG_TOKEN_EN / IG_TOKEN_EL
 (GitHub Actions secrets) or the macOS Keychain when run locally.
 
@@ -68,7 +69,7 @@ def main():
     a = sub.add_parser("add")
     a.add_argument("story")
     a.add_argument("when", help='Athens local time, "YYYY-MM-DD HH:MM", or "now" / "now+N" (minutes)')
-    a.add_argument("--langs", default="en,el,x")
+    a.add_argument("--langs", default="en,el,x,reel-en,reel-el")
     a.add_argument("--draft", action="store_true", help="queue unapproved: publish only after approve")
     ap_ = sub.add_parser("approve")
     ap_.add_argument("match", help='part of the story path, e.g. "round-07/day-1" or "01-", or "all"')
@@ -150,6 +151,8 @@ def main():
         print(f"== {e['story']} [{lang}] due {e['when']}", flush=True)
         if lang == "x":
             cmd = [sys.executable, str(ROOT / "scripts" / "publish_x.py"), e["story"]]
+        elif lang.startswith("reel-"):
+            cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang[5:], "--reel"]
         else:
             cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang]
         if not args.dry_run:

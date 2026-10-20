@@ -3,3 +3,5 @@ __pycache__/
 .cache/
 # Final-score cards are re-rendered on demand; only the Story JPEGs (Instagram fetches them) and the records are committed.
 finals/**/*.png
+# Reels are rendered at publish time and handed to Instagram via a temporary release asset, never committed.
+**/cards/*/reel.mp4
