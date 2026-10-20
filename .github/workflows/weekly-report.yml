@@ -1,14 +1,15 @@
 name: Weekly report
 
-# Every Monday: last week's Instagram and X numbers -> reports/weekly/<date>.md and reports/latest.md,
-# plus a GitHub issue with the report so the owner gets a notification (last week's issue is closed).
+# Every Monday: last week's Instagram and X numbers, written to the PRIVATE repo istovatis/parquet-hoops-reports
+# (weekly/<date>.md, latest.md, data/<date>.json). This public repo only gets an issue with a link, so the owner
+# is notified without any numbers becoming public. REPORTS_DEPLOY_KEY is a write deploy key of the private repo.
 on:
   schedule:
     - cron: "0 7 * * 1"  # Monday 07:00 UTC (10:00 Athens)
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   issues: write
 
 concurrency:
@@ -21,6 +22,11 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: istovatis/parquet-hoops-reports
+          ssh-key: ${{ secrets.REPORTS_DEPLOY_KEY }}
+          path: private-reports
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -33,18 +39,21 @@ jobs:
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
           X_ENABLED: ${{ vars.X_ENABLED }}
-        run: python3 scripts/weekly_report.py
-      - name: Commit and open the issue
+        # The report goes to a file, not the log: logs of a public repo are public too.
+        run: python3 scripts/weekly_report.py --out private-reports > /dev/null
+      - name: Commit to the private repo and notify
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          cd private-reports
           git config user.name "parquet-hoops-bot"
           git config user.email "parquet-hoops-bot@users.noreply.github.com"
-          git add reports/
+          git add .
           git commit -q -m "Weekly report $(date -u +%F)"
-          git pull -q --rebase origin main
-          git push -q origin main
+          git push -q origin HEAD
+          cd ..
           for n in $(gh issue list --state open --search "Weekly report in:title" --json number -q '.[].number'); do
-            gh issue close "$n" --comment "Superseded by the new weekly report."
+            gh issue close "$n"
           done
-          gh issue create --title "Weekly report $(date -u +%F)" --assignee "${{ github.repository_owner }}" --body-file reports/latest.md
+          gh issue create --title "Weekly report $(date -u +%F)" --assignee "${{ github.repository_owner }}" \
+            --body "This week's report is ready (private): https://github.com/istovatis/parquet-hoops-reports/blob/main/weekly/$(date -u +%F).md"

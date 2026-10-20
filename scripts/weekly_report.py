@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """Weekly insights report: how last week's posts did on Instagram (both accounts) and X.
 
-  python3 scripts/weekly_report.py               # last 7 days -> reports/weekly/<date>.md + reports/latest.md
+  python3 scripts/weekly_report.py --out <dir>   # last 7 days -> <dir>/weekly/<date>.md + <dir>/latest.md
   python3 scripts/weekly_report.py --days 14     # a longer window
   python3 scripts/weekly_report.py --print       # print only, write nothing
 
-Run by .github/workflows/weekly-report.yml every Monday, which also opens a GitHub issue with the report so the
-owner gets a notification. The drafting routines read reports/latest.md ("What worked") before picking angles.
+The reports are private: .github/workflows/weekly-report.yml runs this every Monday with --out pointing at a checkout
+of the private repo istovatis/parquet-hoops-reports, commits there, and opens an issue in this (public) repo that
+holds only a link, so the owner gets a notification without any numbers becoming public. Never write reports into
+this repo (reports/ is gitignored).
 
 Per post: reach, views, likes, comments, saves, shares (Instagram insights; Reels also average watch time) and
-impressions, likes, reposts, replies (X public metrics). Follower counts are stored in reports/data/<date>.json, so
+impressions, likes, reposts, replies (X public metrics). Follower counts are stored in <dir>/data/<date>.json, so
 each report shows the change since the previous one. Instagram Stories (final scores) are left out: their insights
 expire after 24 hours. Every number comes from the APIs; the takeaways are simple comparisons of those numbers.
 """
@@ -28,7 +30,6 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import publish_instagram as ig  # noqa: E402
 import publish_x  # noqa: E402
 
-REPORTS = ROOT / "reports"
 IG_METRICS = ["reach", "views", "likes", "comments", "saved", "shares", "follows", "profile_visits"]
 REEL_EXTRA = ["ig_reels_avg_watch_time"]
 
@@ -142,6 +143,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=7)
     ap.add_argument("--print", action="store_true", help="print the report, write nothing")
+    ap.add_argument("--out", type=pathlib.Path, default=ROOT / "reports", help="report folder (the private repo's checkout)")
     a = ap.parse_args()
     now = dt.datetime.now(dt.timezone.utc)
     since = now - dt.timedelta(days=a.days)
@@ -168,7 +170,7 @@ def main():
                                      params={"ids": ",".join(ids[i:i + 100]), "tweet.fields": "public_metrics"})
             x_metrics.update({t["id"]: t["public_metrics"] for t in data.get("data", [])})
 
-    previous = sorted((REPORTS / "data").glob("*.json"))
+    previous = sorted((a.out / "data").glob("*.json"))
     before = json.loads(previous[-1].read_text())["followers"] if previous else {}
 
     lines = [f"# Weekly report: {since:%d %b} to {now:%d %b %Y}", "",
@@ -210,11 +212,11 @@ def main():
     if a.print:
         print(report)
         return
-    (REPORTS / "weekly").mkdir(parents=True, exist_ok=True)
-    (REPORTS / "data").mkdir(parents=True, exist_ok=True)
-    (REPORTS / "weekly" / f"{today}.md").write_text(report)
-    (REPORTS / "latest.md").write_text(report)
-    (REPORTS / "data" / f"{today}.json").write_text(json.dumps({"date": today, "followers": followers}, indent=2) + "\n")
+    (a.out / "weekly").mkdir(parents=True, exist_ok=True)
+    (a.out / "data").mkdir(parents=True, exist_ok=True)
+    (a.out / "weekly" / f"{today}.md").write_text(report)
+    (a.out / "latest.md").write_text(report)
+    (a.out / "data" / f"{today}.json").write_text(json.dumps({"date": today, "followers": followers}, indent=2) + "\n")
     print(report)
 
 

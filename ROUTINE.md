@@ -13,7 +13,7 @@ rounds/E2026/round-07/
 ## Per-day run (the prompt names round N, game day k of K, date D)
 1. `python3 scripts/round_status.py N --date D --wait`. It re-checks every 5 minutes for up to 100 minutes. If it exits non-zero (a game ran late or was postponed), stop with no changes and no commit; the daily run picks the day up later.
 2. If `rounds/E2026/round-NN/day-k/README.md` exists, the day is already drafted: skip to step 5.
-3. `python3 scripts/round_digest.py --round N --date D` writes `round-NN/day-k/digest.json`. If `reports/latest.md` exists, read its "What worked" section first: when two stories are close, prefer the angle and format that performed better (it never overrides the story-picking rules or the facts). Draft that day's posts following `CLAUDE.md` ("Day posts"): a lead story and up to two more, **only from that day's games**, one folder each under `day-k/`, then the day's `README.md` posting plan.
+3. `python3 scripts/round_digest.py --round N --date D` writes `round-NN/day-k/digest.json`. Draft that day's posts following `CLAUDE.md` ("Day posts"): a lead story and up to two more, **only from that day's games**, one folder each under `day-k/`, then the day's `README.md` posting plan.
 4. For every story folder:
    - `post.en.md` (X post + Instagram) and `post.el.md` (Instagram only: no X section, no `x` card). The Greek version is localized for Greek fans, not translated: it uses the Greek names of clubs and players and Greek venue names (OAKA = ΟΑΚΑ, Peace and Friendship Stadium = ΣΕΦ), and plays up Olympiacos and Panathinaikos angles.
    - If the story is about one person, find their photo on Wikimedia Commons (see "Photos" in `CLAUDE.md`). If Commons is unreachable, skip the photo and note it in the day's `README.md`.
