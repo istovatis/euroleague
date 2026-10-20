@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render brand assets (centre-court mark, avatar, wordmarks, X headers) into assets/brand/.
+"""Render brand assets (centre-court mark, avatars, wordmarks, X headers) into assets/brand/.
 
 Usage: python3 scripts/render_brand.py
 Uses the palette in brand.json and the same headless Chrome as render_cards.py.
@@ -56,6 +56,20 @@ def lockup(lang, font_px, color, mark_color):
 def avatar():
     # One avatar for every language.
     return CSS % dict(w=1080, h=1080), centre_avatar(C["accent"]), 1080, 1080, True
+
+
+def avatar_floor():
+    """Second avatar: the centre disc on the X header's floor (parquet + lime court lines),
+    so the cut-out line and circle show the boards through the mark."""
+    lines = f"""<svg width="1080" height="1080" style="position:absolute; inset:0">
+<g fill="none" stroke="{C['accent']}" stroke-opacity=".55" stroke-width="10">
+<line x1="540" y1="0" x2="540" y2="1080"/><circle cx="540" cy="540" r="420"/></g></svg>"""
+    body = f"""{parquet(1080, 1080)}{lines}
+<div style="position:absolute; inset:0; background:
+  radial-gradient(circle at 50% 50%, transparent 30%, {C['bg']}99 75%),
+  radial-gradient(circle at 80% 15%, {C['accent']}22, transparent 50%)"></div>
+{centre_disc(C['accent'], 560, 'a')}"""
+    return CSS % dict(w=1080, h=1080), body, 1080, 1080, True
 
 
 def wordmark(lang, mode):
@@ -131,6 +145,7 @@ def main():
         (OUT / name).write_text(svg)
         print(f"assets/brand/{name}")
     shoot(*avatar(), OUT / "avatar.png")
+    shoot(*avatar_floor(), OUT / "avatar-floor.png")
     for lang in LANGS:
         shoot(*wordmark(lang, "ink"), OUT / f"wordmark-{lang}.png", lang)
         shoot(*wordmark(lang, "light-text"), OUT / f"wordmark-{lang}-transparent.png", lang)
