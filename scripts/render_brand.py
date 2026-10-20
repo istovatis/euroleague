@@ -59,12 +59,9 @@ def avatar():
 
 
 def avatar_floor():
-    """Second avatar: the centre disc on the X header's floor (parquet + lime court lines),
-    so the cut-out line and circle show the boards through the mark."""
-    lines = f"""<svg width="1080" height="1080" style="position:absolute; inset:0">
-<g fill="none" stroke="{C['accent']}" stroke-opacity=".55" stroke-width="10">
-<line x1="540" y1="0" x2="540" y2="1080"/><circle cx="540" cy="540" r="420"/></g></svg>"""
-    body = f"""{parquet(1080, 1080)}{lines}
+    """Second avatar: just the centre disc on the X header's parquet floor; the cut-out
+    line and circle show the boards through the mark."""
+    body = f"""{parquet(1080, 1080)}
 <div style="position:absolute; inset:0; background:
   radial-gradient(circle at 50% 50%, transparent 30%, {C['bg']}99 75%),
   radial-gradient(circle at 80% 15%, {C['accent']}22, transparent 50%)"></div>
