@@ -40,7 +40,10 @@ CREDS = {"X_API_KEY": "api_key", "X_API_SECRET": "api_secret",
 
 
 def configured():
-    """True when credentials are available, so the queue can skip X until they are set up."""
+    """True when credentials are available, so the queue can skip X until they are set up.
+    X_ENABLED=false (the GitHub Actions variable) pauses X, e.g. while the account has no API credits."""
+    if os.environ.get("X_ENABLED", "").strip().lower() == "false":
+        return False
     if all(os.environ.get(env) for env in CREDS):
         return True
     return sys.platform == "darwin" and subprocess.run(
