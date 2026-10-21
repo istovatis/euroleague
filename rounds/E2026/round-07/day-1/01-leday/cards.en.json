@@ -1,0 +1,45 @@
+{
+  "lang": "en",
+  "round_label": "Round 7",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "Game changer",
+      "title": "Down 12.\nThen *Leday*.",
+      "subtitle": "Zach Leday · Hapoel Tel Aviv"
+    },
+    {
+      "type": "score",
+      "kicker": "Final · Sofia",
+      "sides": [
+        {"team": "Hapoel Tel Aviv", "score": 90, "won": true},
+        {"team": "Virtus", "score": 81, "won": false}
+      ],
+      "note": "36-48 at the half. Then a 28-14 third quarter.",
+      "lines": [
+        ["Leday", "22 pts · 10 reb · 33 PIR"],
+        ["Micic", "16 pts · +16"],
+        ["Odiase", "13 pts · 6 reb"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The flip",
+      "title": "Halftime: *-12*.\nFinal: *+9*.",
+      "subtitle": "Hapoel Tel Aviv move to 5-2"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "kicker": "Game changer · Leday",
+    "sides": [
+      {"team": "Hapoel Tel Aviv", "score": 90, "won": true},
+      {"team": "Virtus", "score": 81, "won": false}
+    ],
+    "note": "Down 12 at the half. Won the third 28-14.",
+    "lines": [
+      ["Leday", "22 pts · 10 reb · 33 PIR"],
+      ["Micic", "16 pts · +16"]
+    ]
+  }
+}
