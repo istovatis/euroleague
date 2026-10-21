@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Final-score posts: published automatically, minutes after each game ends (no approval step).
 
-  python3 scripts/final_scores.py                   # post every newly finished game (used by CI)
+  python3 scripts/final_scores.py                   # post every newly finished game
+  python3 scripts/final_scores.py --watch           # keep watching until tonight's games are over (used by CI)
   python3 scripts/final_scores.py --dry-run         # render and print, post nothing
   python3 scripts/final_scores.py --game 57 --dry-run   # one game by its code, even an old one
 
@@ -103,7 +104,8 @@ def x_text(f):
     out += [f"{s['name']} {s['score']}" + (f" ({s['top'][0]} {s['top'][1]})" if s.get("top") else "") for s in (w, l)]
     if note(f, "en"):
         out += ["", note(f, "en") + "."]
-    return "\n".join(out + ["", "#EuroLeague"])
+    from countdown import tags
+    return "\n".join(out + ["", " ".join(tags(f["home"]["code"], f["away"]["code"])["x"])])  # #EuroLeague #HTAVIR
 
 
 def build(season, f, folder):
@@ -120,17 +122,8 @@ def build(season, f, folder):
                                        f"{f['lose']['name']} {f['lose']['score']}\n\n## X\n{x_text(f)}\n")
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--season", default="E2026")
-    ap.add_argument("--dry-run", action="store_true")
-    ap.add_argument("--game", type=int, help="one game by its code (ignores the age and round limits)")
-    a = ap.parse_args()
-    if os.environ.get("FINALS_ENABLED", "").strip().lower() == "false":
-        print("Final-score posts are paused (FINALS_ENABLED=false)")
-        return
-
-    now = dt.datetime.now(dt.timezone.utc)
+def run_once(a, now, attempts):
+    """Post every newly finished game once. Returns the games of the watch window still to be played."""
     games = get(f"/v2/competitions/E/seasons/{a.season}/games")["data"]
     if a.game:
         due = [g for g in games if g["gameCode"] == a.game]
@@ -139,14 +132,15 @@ def main():
     sys.path.insert(0, str(ROOT / "scripts"))
     import publish_x
 
-    failed = False
     for g in sorted(due, key=tip):
         if not (g["local"]["score"] and g["road"]["score"]):
             continue
         folder = ROOT / "finals" / a.season / f"round-{g['round']:02d}" / \
             f"{g['gameCode']}-{g['local']['club']['code']}-{g['road']['club']['code']}"
         channels = (["x"] if publish_x.configured() else []) + ["story-en", "story-el"]
-        if not a.dry_run and all((folder / f"published.{c}.json").exists() for c in channels):
+        todo = [c for c in channels if a.dry_run or not (folder / f"published.{c}.json").exists()]
+        todo = [c for c in todo if attempts[(folder, c)] < 3]  # a channel that keeps failing is given up after 3 tries
+        if not todo:
             continue
         f = game_facts(a.season, g)
         if not (folder / "post.en.md").exists() or a.dry_run:
@@ -154,17 +148,51 @@ def main():
         print(f"== {folder.relative_to(ROOT)}\n{x_text(f)}\n", flush=True)
         if a.dry_run:
             continue
-        for c in channels:
-            if (folder / f"published.{c}.json").exists():
-                continue
+        for c in todo:
             if c == "x":
                 cmd = [sys.executable, str(ROOT / "scripts" / "publish_x.py"), str(folder.relative_to(ROOT)), "--yes"]
             else:
                 lang = c.split("-")[1]
                 cmd = [sys.executable, "-c", "import sys, pathlib; sys.path.insert(0, 'scripts'); import publish_instagram as ig; "
                        f"ig.publish_story(pathlib.Path({str(folder)!r}), {lang!r}, pathlib.Path({str(folder / 'cards' / lang / 'story.png')!r}))"]
-            failed |= subprocess.run(cmd, cwd=ROOT).returncode != 0
-    sys.exit(1 if failed else 0)
+            if subprocess.run(cmd, cwd=ROOT).returncode:
+                attempts[(folder, c)] += 1
+    window = (now - dt.timedelta(hours=6), now + dt.timedelta(hours=6))
+    return [g for g in games if not g["played"] and g["round"] >= FIRST_ROUND and window[0] <= tip(g) <= window[1]]
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--season", default="E2026")
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--game", type=int, help="one game by its code (ignores the age and round limits)")
+    ap.add_argument("--watch", action="store_true",
+                    help="keep checking every 2 minutes until tonight's games are all over (max ~5h40m: one CI job per game day)")
+    a = ap.parse_args()
+    if os.environ.get("FINALS_ENABLED", "").strip().lower() == "false":
+        print("Final-score posts are paused (FINALS_ENABLED=false)")
+        return
+
+    import collections
+    import time
+    attempts = collections.Counter()
+    deadline = time.time() + 5 * 3600 + 40 * 60
+    while True:
+        try:
+            pending = run_once(a, dt.datetime.now(dt.timezone.utc), attempts)
+        except Exception as e:  # a bad API moment must not end the watch
+            print(f"warning: {e}", file=sys.stderr)
+            pending = [None]
+        if not a.watch or a.dry_run or a.game:
+            break
+        if not pending:
+            print("No games left tonight")
+            break
+        if time.time() > deadline:
+            print(f"Stopping the watch: {len(pending)} game(s) still unfinished")
+            break
+        time.sleep(120)
+    sys.exit(1 if any(attempts.values()) else 0)
 
 
 if __name__ == "__main__":

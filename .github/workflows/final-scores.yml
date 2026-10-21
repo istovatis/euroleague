@@ -4,8 +4,12 @@ name: Final scores
 # No approval step (the owner's decision, 2026-10-20): the posts are pure data from the EuroLeague API.
 # Pause with the repository variable FINALS_ENABLED=false (X alone: X_ENABLED=false).
 on:
+  # One long job per day instead of a run every 5 minutes: GitHub skips most frequent scheduled runs. The job
+  # watches until the night's games are over (or exits at once on days without games). The 19:00 run is a backup
+  # in case the first start is dropped; with nothing left to post it ends at once.
   schedule:
-    - cron: "*/5 15-23 * * *"  # UTC; games tip off 16:00-19:00 UTC and end ~2 hours later
+    - cron: "40 16 * * *"
+    - cron: "0 19 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -26,7 +30,7 @@ concurrency:
 jobs:
   final-scores:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 355
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -52,7 +56,7 @@ jobs:
           GAME: ${{ inputs.game }}
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
         run: |
-          args=()
+          args=(--watch)
           if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
           if [ -n "$GAME" ]; then args+=(--game "$GAME"); fi
           python3 scripts/final_scores.py "${args[@]}"

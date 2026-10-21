@@ -12,6 +12,7 @@ import argparse
 import json
 import pathlib
 import sys
+import urllib.error
 import urllib.request
 
 from round_status import athens_date, round_days
@@ -20,10 +21,19 @@ API = "https://api-live.euroleague.net"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
-def get(path):
-    req = urllib.request.Request(API + path, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.load(r)
+def get(path, tries=5):
+    """GET from the EuroLeague API. It sometimes answers with an empty body or a 5xx: retry with a growing wait."""
+    import time
+    for attempt in range(tries):
+        try:
+            req = urllib.request.Request(API + path, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return json.load(r)
+        except (urllib.error.URLError, json.JSONDecodeError, TimeoutError) as e:
+            if attempt == tries - 1:
+                raise
+            print(f"warning: EuroLeague API {path}: {e}; retrying", file=sys.stderr)
+            time.sleep(5 * (attempt + 1))
 
 
 def latest_complete_round(games):
