@@ -2,7 +2,6 @@
 
 ## Facts to verify
 - "Last round they ended Panathinaikos' perfect start" (caption): from our Round 6 data (Panathinaikos 81-91 Hapoel, PAO 5-0 before). Not in this day's digest.
-- Photo is from March 2026 in an Olimpia Milan jersey (no Commons photo of him in Hapoel colours yet).
 
 **Why this story:** The day's only game. Hapoel (4-2) trailed Virtus (4-2) 36-48 at halftime, won the third quarter 28-14 to lead 64-62, then the fourth 26-19. Leday was the day's top PIR: 33, with 22 pts, 10 reb, 4 ast, 0 turnovers, 8/9 FT and +25. Played at Arena 8888 Sofia.
 
@@ -24,7 +23,7 @@ Hapoel go 5-2. #EuroLeague #HTAVIR
 
 ## Instagram carousel
 
-**Slide 1 (hook, photo):**
+**Slide 1 (hook):**
 DOWN 12. THEN LEDAY.
 Zach Leday · Hapoel Tel Aviv
 
@@ -50,7 +49,5 @@ Leday: 22 points, 10 rebounds, 33 PIR. Zero turnovers. +25.
 Last round they ended Panathinaikos' perfect start. Now Itoudis' Hapoel are 5-2.
 
 Is Hapoel the real deal this season? 👇
-
-📷 Zafer / Wikimedia Commons (CC BY 4.0)
 
 #EuroLeague #HTAVIR #HapoelTelAviv #Virtus #Leday #Itoudis #VirtusBologna #Basketball #EuroLeagueBasketball #BasketballEurope

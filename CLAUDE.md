@@ -45,7 +45,8 @@ Prefer the story with the strongest *narrative*, not just the biggest number. Th
 ## Photos
 When a story is about one person (player or coach), Instagram slide 1 carries a photo of them. It doesn't need to be from that game.
 - Only freely licensed photos from Wikimedia Commons (CC BY, CC BY-SA, CC0, public domain). Never official EuroLeague, club or agency photos, even though the API links to them.
-- `python3 scripts/commons_photo.py --search "<name>"` lists candidates. Download a few as thumbnails, look at them, and pick: the person clearly visible and facing the camera, ideally in their current team's jersey, most recent first.
+- `python3 scripts/commons_photo.py --search "<name>"` lists candidates. Download a few as thumbnails, look at them, and pick: the person clearly visible and facing the camera, most recent first.
+- **Players must be in their current team's jersey** (the owner's rule, 2026-10-21). A photo in a former club's jersey is never used: no photo at all is better. Coaches: current team's kit or neutral clothes.
 - `python3 scripts/commons_photo.py --get <story> "File:…"` saves `photo.jpg` + `photo.json` (credit). The renderer then puts the photo full-bleed behind slide 1 with the credit in the footer. Set `"focus"` in `photo.json` (CSS background-position, default `50% 20%`) if the face is cropped.
 - Add the credit as the last caption line before the hashtags: `📷 <author> / Wikimedia Commons (<license>)`.
 - Team stories (no single person) and people without a usable photo get no photo. Example: `assets/brand/example-photo-slide.png`.
