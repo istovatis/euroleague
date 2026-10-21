@@ -11,6 +11,9 @@ on:
         description: "Dry run: check tokens and posts, publish nothing"
         type: boolean
         default: true
+      x_upload_test:
+        description: "Test an X media upload: story folder; uploads its X image or video, posts nothing"
+        required: false
       reel_story:
         description: "Preview a Reel: story folder to render (EN + EL); the videos are attached to the run, nothing is posted"
         required: false
@@ -46,9 +49,12 @@ jobs:
           X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
           X_ENABLED: ${{ vars.X_ENABLED }}
           REEL_STORY: ${{ inputs.reel_story }}
+          X_UPLOAD_TEST: ${{ inputs.x_upload_test }}
           GH_TOKEN: ${{ github.token }}  # Reel videos are staged as assets of the "reels" release
         run: |
-          if [ -n "$REEL_STORY" ]; then
+          if [ -n "$X_UPLOAD_TEST" ]; then
+            python3 scripts/publish_x.py "$X_UPLOAD_TEST" --upload-only
+          elif [ -n "$REEL_STORY" ]; then
             python3 scripts/publish_instagram.py "$REEL_STORY" en --reel
             python3 scripts/publish_instagram.py "$REEL_STORY" el --reel
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then

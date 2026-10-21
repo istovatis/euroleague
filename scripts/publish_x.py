@@ -94,8 +94,9 @@ def request(method, url, creds, body=None, content_type=None, params=None):
     if content_type:
         req.add_header("Content-Type", content_type)
     try:
-        with urllib.request.urlopen(req, timeout=60) as r:
-            return json.load(r)
+        with urllib.request.urlopen(req, timeout=120) as r:
+            raw = r.read()
+            return json.loads(raw) if raw.strip() else {}
     except urllib.error.HTTPError as e:
         text = e.read().decode(errors="replace")
         for v in creds.values():
@@ -121,6 +122,30 @@ def upload_png(path, creds):
     return data.get("data", data).get("id") or data.get("media_id_string")
 
 
+def upload_mp4(path, creds):
+    """Chunked video upload (initialize, append in 4 MB segments, finalize), then wait until X has processed it."""
+    data = path.read_bytes()
+    init = request("POST", f"{API}/media/upload/initialize", creds, json.dumps(
+        {"media_type": "video/mp4", "total_bytes": len(data), "media_category": "tweet_video"}).encode(), "application/json")
+    media_id = init["data"]["id"]
+    for i in range(0, len(data), 4 * 1024 * 1024):
+        boundary = secrets.token_hex(16)
+        body = (f'--{boundary}\r\nContent-Disposition: form-data; name="segment_index"\r\n\r\n{i // (4 * 1024 * 1024)}\r\n'
+                f'--{boundary}\r\nContent-Disposition: form-data; name="media"; filename="{path.name}"\r\n'
+                f'Content-Type: application/octet-stream\r\n\r\n').encode() + data[i:i + 4 * 1024 * 1024] + f"\r\n--{boundary}--\r\n".encode()
+        request("POST", f"{API}/media/upload/{media_id}/append", creds, body, f"multipart/form-data; boundary={boundary}")
+    info = request("POST", f"{API}/media/upload/{media_id}/finalize", creds).get("data", {}).get("processing_info")
+    for _ in range(60):
+        if not info or info.get("state") == "succeeded":
+            return media_id
+        if info.get("state") == "failed":
+            sys.exit(f"X could not process {path.name}: {info}")
+        time.sleep(info.get("check_after_secs", 3))
+        info = request("GET", f"{API}/media/upload", creds, params={"command": "STATUS", "media_id": media_id}) \
+            .get("data", {}).get("processing_info")
+    sys.exit(f"X was still processing {path.name} after the wait")
+
+
 def post_text(post_md):
     """The text under '## X (...)' up to the '---' line or the next section."""
     text = post_md.read_text()
@@ -138,6 +163,7 @@ def main():
     ap.add_argument("story", nargs="?", help="story folder, e.g. rounds/E2026/round-07/day-1/01-<slug>")
     ap.add_argument("--yes", action="store_true", help="actually publish (default is a dry run)")
     ap.add_argument("--check", action="store_true", help="only check the credentials")
+    ap.add_argument("--upload-only", action="store_true", help="upload the media to test it, post nothing")
     a = ap.parse_args()
 
     creds = credentials()
@@ -152,15 +178,21 @@ def main():
         sys.exit(f"Already published: {json.loads(record.read_text()).get('url')}")
     text = post_text(story / "post.en.md")
     images = sorted((story / "cards" / "en").glob("x*.png"), key=lambda f: f.stem)  # x.png, x-2.png, ...
+    video = story / "cards" / "en" / "x.mp4"  # a video post (e.g. a countdown) instead of images
     print(f"Account: @{user['username']} (id {user['id']})")
-    print(f"Images: {', '.join(f.name for f in images) or 'none'}")
+    print(f"Media: {video.name if video.exists() else ', '.join(f.name for f in images) or 'none'}")
     print(f"Text ({x_length(text)} chars):\n{text}\n")
+    if a.upload_only:
+        print(f"Uploaded, not posted: media {upload_mp4(video, creds) if video.exists() else [upload_png(f, creds) for f in images[:4]]}")
+        return
     if not a.yes:
         print("Dry run: nothing was posted. Re-run with --yes to publish.")
         return
 
     body = {"text": text}
-    if images:
+    if video.exists():
+        body["media"] = {"media_ids": [upload_mp4(video, creds)]}
+    elif images:
         body["media"] = {"media_ids": [upload_png(f, creds) for f in images[:4]]}
     tweet = request("POST", f"{API}/tweets", creds, json.dumps(body).encode(), "application/json")["data"]
     url = f"https://x.com/{user['username']}/status/{tweet['id']}"
