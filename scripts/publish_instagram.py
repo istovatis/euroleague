@@ -216,7 +216,8 @@ def publish_reel(story, lang, yes):
         sys.exit(f"Token belongs to @{me.get('username')}, expected @{handle}")
     caption = caption_of(story / f"post.{lang}.md")
     mp4 = story / "cards" / lang / "reel.mp4"
-    if not mp4.exists() or mp4.stat().st_mtime < (story / f"cards.{lang}.json").stat().st_mtime:
+    spec = story / f"cards.{lang}.json"  # no spec: a finished video (e.g. a countdown), used as it is
+    if spec.exists() and (not mp4.exists() or mp4.stat().st_mtime < spec.stat().st_mtime):
         sys.path.insert(0, str(ROOT / "scripts"))
         import render_reel
         render_reel.render(str(story), lang)

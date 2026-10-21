@@ -7,7 +7,7 @@ AI-generated fan clip (Veo, via Artlist; no crests, logos or real people), with 
 
 Olympiacos vs Fenerbahçe · Fri 21:15
 
-AI-generated visual · #EuroLeague
+AI-generated visual · #EuroLeague #OLYFEN
 
 ## Instagram caption
 1 day. Piraeus is already loud. 🔴⚪
@@ -17,4 +17,4 @@ Who takes it?
 
 AI-generated visual
 
-#EuroLeague #Olympiacos #Fenerbahce #Basketball #Piraeus #EuroLeagueBasketball #GameDay #ParquetHoops
+#EuroLeague #OLYFEN #Olympiacos #Fenerbahce #Basketball #Piraeus #EuroLeagueBasketball #GameDay #ParquetHoops

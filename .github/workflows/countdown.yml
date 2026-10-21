@@ -1,0 +1,86 @@
+name: Countdown
+
+# Weekly countdown (scripts/countdown.py):
+# - Sundays: pick the coming week's biggest game, write countdowns/<season>/round-NN/<home>-<away>/ with the AI video
+#   prompt, and open an issue for the owner with the prompt and an upload link.
+# - When the owner uploads clip.mp4 into that folder: build the X video and both Reels (our text layer + outro, silent)
+#   and queue them as a draft for 12:00 Athens the day before the game. The owner approves it like any other post.
+on:
+  schedule:
+    - cron: "0 7 * * 0"  # Sunday 07:00 UTC (10:00 Athens)
+  push:
+    branches: [main]
+    paths: ["countdowns/**/clip.mp4"]
+  workflow_dispatch:
+    inputs:
+      folder:
+        description: "Build this countdown folder now (leave empty to run the weekly pick)"
+        required: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: countdown
+  cancel-in-progress: false
+
+jobs:
+  countdown:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install tools
+        run: |
+          pip install -q pillow==10.4.0 playwright==1.49.1 imageio-ffmpeg==0.5.1
+          npx -y playwright@1.49.1 install --only-shell chromium
+      - name: Pick or build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FOLDER: ${{ inputs.folder }}
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          if [ "${{ github.event_name }}" = "push" ]; then
+            folders=$(git diff --name-only HEAD~1 HEAD -- 'countdowns/**/clip.mp4' | xargs -r -n1 dirname | sort -u)
+          else
+            folders="$FOLDER"
+          fi
+          if [ -z "$folders" ]; then
+            folder=$(python3 scripts/countdown.py pick | tail -1 | sed 's/^Already picked: //')
+            if [ ! -d "$folder" ]; then echo "$folder"; exit 0; fi
+            git add "$folder"
+            if git diff --cached --quiet; then echo "Already picked: $folder"; exit 0; fi
+            git commit -q -m "Countdown picked: $folder"
+            git pull -q --rebase origin main && git push -q origin main
+            {
+              echo "This week's countdown game is picked: \`$folder\` (see its README)."
+              echo
+              echo "1. Generate a clip with this prompt (9:16 vertical, 6-8 s, no sound):"
+              echo
+              echo '```'
+              cat "$folder/prompt.txt"
+              echo '```'
+              echo
+              echo "2. Upload it as **clip.mp4** here: https://github.com/istovatis/euroleague/upload/main/$folder"
+              echo
+              echo "3. The X video and both Reels are then built and queued as a draft for $(python3 -c "import json;print(json.load(open('$folder/meta.json'))['post_at'])") Athens. Approve it as usual."
+            } > /tmp/body.md
+            gh issue create --title "Countdown: $(basename "$folder")" --assignee "${{ github.repository_owner }}" --body-file /tmp/body.md
+            exit 0
+          fi
+          for folder in $folders; do
+            python3 scripts/countdown.py build "$folder"
+            git add "$folder" publish/queue.json
+            git commit -q -m "Countdown built: $folder"
+            git pull -q --rebase origin main && git push -q origin main
+            n=$(gh issue list --state open --search "Countdown: $(basename "$folder") in:title" --json number -q '.[0].number')
+            msg="Built and queued as a draft: \`$folder\` (X video + both Reels). Watch them in the folder, then approve with the **Approve posts** workflow (match: \`$(basename "$folder")\`)."
+            if [ -n "$n" ]; then gh issue comment "$n" --body "$msg"; fi
+          done

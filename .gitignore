@@ -5,5 +5,8 @@ __pycache__/
 finals/**/*.png
 # Reels are rendered at publish time and handed to Instagram via a temporary release asset, never committed.
 **/cards/*/reel.mp4
+# ...except countdowns, whose Reels are built from an uploaded clip and published as they are.
+!countdowns/**/cards/*/reel.mp4
+countdowns/**/.build/
 # Weekly reports are private: they live in istovatis/parquet-hoops-reports, never here.
 reports/
