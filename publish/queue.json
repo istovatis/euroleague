@@ -41,7 +41,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": false,
+    "notified": "https://github.com/istovatis/euroleague/issues/6"
   },
   {
     "story": "rounds/E2026/round-07/day-2/02-lessort",
@@ -53,7 +54,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": false,
+    "notified": "https://github.com/istovatis/euroleague/issues/6"
   },
   {
     "story": "rounds/E2026/round-07/day-2/03-kabengele",
@@ -65,6 +67,7 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": false,
+    "notified": "https://github.com/istovatis/euroleague/issues/6"
   }
 ]
