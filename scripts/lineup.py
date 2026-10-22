@@ -9,7 +9,8 @@ so the guard with more assists is the PG and the forward with more rebounds the 
 shown: the post is names and faces.
 
 Photos: <folder>/photo-<player code>.jpg + .json from commons_photo.py (--get <folder> "File:..." --name
-photo-<code>), only when the photo shows the player in his CURRENT club's jersey. Without one, the tile shows the
+photo-<code>), only when the photo shows the player in his CURRENT club's jersey. In its JSON, "focus" (CSS
+background-position) and "zoom" (e.g. 220: the photo's width as % of the tile, for full-length shots) frame the face. Without one, the tile shows the
 club's crest (or our styled badge) instead. Credits go under each photo and into the caption.
 """
 import argparse
@@ -97,7 +98,8 @@ def tile(folder, p, lang, w, h):
     if photo.exists():
         meta = json.loads((folder / f"photo-{p['code']}.json").read_text())
         face = (f'<div class="face" style="background-image:url({photo.as_uri()});'
-                f'background-position:{meta.get("focus", "50% 20%")}">{mark(p["club"], 64)}</div>'
+                f'background-position:{meta.get("focus", "50% 20%")};'
+                f'{"background-size:" + str(meta["zoom"]) + "% auto;" if meta.get("zoom") else ""}">{mark(p["club"], 64)}</div>'
                 f'<div class="credit">{html.escape(meta["credit"])}</div>')
     else:
         face = f'<div class="face none">{mark(p["club"], round(w * .5))}</div><div class="credit"></div>'
@@ -187,7 +189,7 @@ def render(folder):
         out.parent.mkdir(parents=True, exist_ok=True)
         doc, w, h = page(folder, data, lang, fmt)
         shoot(doc, w, h, out)
-        print(out.relative_to(ROOT))
+        print(out.relative_to(ROOT) if out.is_relative_to(ROOT) else out)
 
 
 def main():
