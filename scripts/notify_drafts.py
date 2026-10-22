@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Email the owner when posts wait for approval, and approve them from a reply.
 
-  python3 scripts/notify_drafts.py notify                       # open an issue for drafts not announced yet
+  python3 scripts/notify_drafts.py notify [--test]              # open an issue for drafts not announced yet (--test: mock data)
   python3 scripts/notify_drafts.py comment <issue> <author> <text>   # a comment on such an issue (run by CI)
   python3 scripts/notify_drafts.py cleanup                      # close issues whose drafts were approved elsewhere
 
@@ -63,9 +63,14 @@ def preview(story):
     return None  # a video post: the folder link shows the videos
 
 
-def notify():
+def notify(test=False):
     entries = q.load()
     new = [e for e in entries if not e.get("approved", True) and not e.get("notified")]
+    if test:  # mock drafts: real cards for the previews, paths that aren't in the queue, so nothing can be approved
+        new = [{"story": "rounds/E2026/round-07/day-1/01-leday", "when": "2026-10-23T23:40:00+03:00",
+                "langs": ["en", "el", "x", "reel-en", "reel-el"]},
+               {"story": "rounds/E2026/round-06/02-vezenkov", "when": "2026-10-23T23:41:00+03:00",
+                "langs": ["en", "el", "x", "reel-en", "reel-el"]}]
     if not new:
         print("No new drafts to announce")
         return False
@@ -85,18 +90,23 @@ def notify():
         text = x_text(s)
         if text:
             lines += ["X text:", "", "> " + text.replace("\n", "\n> "), ""]
-    lines.append(f"<!-- drafts: {','.join(e['story'] for e in new)} -->")
+    if test:
+        lines.insert(0, "**TEST with mock data: replying `approve` approves nothing and just closes this issue.**\n")
+    lines.append(f"<!-- drafts: {'rounds/E2026/round-99/test' if test else ','.join(e['story'] for e in new)} -->")
     if gh("label", "view", LABEL, check=False).returncode:
         gh("label", "create", LABEL, "--color", "D7FF3A", "--description", "Posts waiting for the owner's approval", check=False)
     body = ROOT / ".approval-body.md"
     body.write_text("\n".join(lines))
     try:
-        url = gh("issue", "create", "--title", f"Approve: {', '.join(titles)}", "--label", LABEL,
+        url = gh("issue", "create", "--title", ("TEST: " if test else "") + f"Approve: {', '.join(titles)}", "--label", LABEL,
                  "--assignee", OWNER, "--body-file", str(body)).stdout.strip()
     finally:
         body.unlink()
     # Locked: only people with write access (the owner) can comment, so strangers can't post on approval issues.
     gh("issue", "lock", url.rsplit("/", 1)[1], check=False)
+    if test:
+        print(url)
+        return True
     for e in new:
         e["notified"] = url
     q.save(entries)
@@ -151,7 +161,7 @@ def cleanup():
 
 if __name__ == "__main__":
     if sys.argv[1:2] == ["notify"]:
-        notify()
+        notify(test="--test" in sys.argv)
     elif sys.argv[1:2] == ["cleanup"]:
         cleanup()
     elif sys.argv[1:2] == ["comment"] and len(sys.argv) == 5:

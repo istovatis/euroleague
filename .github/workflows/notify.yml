@@ -7,6 +7,11 @@ on:
     branches: [main]
     paths: ["publish/queue.json"]
   workflow_dispatch:
+    inputs:
+      test:
+        description: "Send a test email with mock drafts (approves nothing)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -31,6 +36,7 @@ jobs:
         run: |
           git config user.name "parquet-hoops-bot"
           git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          if [ "${{ inputs.test }}" = "true" ]; then python3 scripts/notify_drafts.py notify --test; exit 0; fi
           python3 scripts/notify_drafts.py notify
           git add publish/queue.json
           if git diff --cached --quiet; then exit 0; fi
