@@ -38,3 +38,11 @@ rounds/E2026/round-07/
 5. Write the folder's `README.md`. Queue the post as a draft for that Sunday at 18:00 Athens: `python3 scripts/publish_queue.py add arenas/E2026/<slug> "YYYY-MM-DD 18:00" --draft`.
 6. Commit `arenas/` and `publish/queue.json` to `main` with the message `Arena of the week: <arena> (EN + EL)` and push.
 
+## Lineup of the week run (Saturdays, named in the prompt)
+1. `python3 scripts/lineup.py pick` picks the latest fully played round's five (PG, SG, SF, PF, C by PIR) into `lineups/E2026/round-NN/lineup.json`. If it prints "Already picked" and that folder has a `README.md`, stop: no changes. If the round isn't fully played, stop.
+2. For each player, look for a photo: `python3 scripts/commons_photo.py --search "<first> <last>"` (also try with the club name). Download a few candidates as thumbnails and **look at them**. Use one only if the player is clearly visible **in his current club's jersey** (the club in `lineup.json`); a photo in any other jersey is never used. Save it with `python3 scripts/commons_photo.py --get lineups/E2026/round-NN "File:…" --name photo-<player code>` and set `"focus"` in its JSON if the face is cropped. No suitable photo: skip it; the tile shows the club's crest.
+3. `python3 scripts/lineup.py render lineups/E2026/round-NN`. Open all three PNGs (`cards/en/ig-1.png`, `cards/el/ig-1.png`, `cards/en/x.png`) and fix any problems (overlaps, cut-off names, a bad crop).
+4. Write `post.en.md` (`## X` and `## Instagram caption`) and `post.el.md` (`## Instagram caption`). No stats anywhere: a short hook ("Round 7's five."), the five names with their clubs, a question ("Who's missing?"), then the hashtags. Credit every photo in the caption: `📷 <author> / Wikimedia Commons (<license>)`. X: 280 characters or fewer, `#EuroLeague` plus at most two tags.
+5. Write a short `README.md` (who, how they were picked: the round's top PIR per position; which photos are missing and why). Queue it as a draft for that Saturday at 19:00 Athens, single image, no Reel: `python3 scripts/publish_queue.py add lineups/E2026/round-NN "YYYY-MM-DD 19:00" --langs en,el,x --draft`.
+6. Commit `lineups/` and `publish/queue.json` to `main` with the message `Lineup of the week: round N (EN + EL)` and push.
+

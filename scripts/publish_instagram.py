@@ -85,8 +85,8 @@ def to_jpeg(png, jpg):
 def jpegs_for(story, lang):
     """Convert ig-N.png to ig-N.jpg (Instagram's API rejects PNG) and return the repo paths."""
     pngs = sorted((story / "cards" / lang).glob("ig-*.png"))
-    if not 2 <= len(pngs) <= 10:
-        sys.exit(f"A carousel needs 2-10 images; found {len(pngs)} in {story / 'cards' / lang}")
+    if not 1 <= len(pngs) <= 10:
+        sys.exit(f"A post needs 1 image or a carousel of 2-10; found {len(pngs)} in {story / 'cards' / lang}")
     out = []
     for png in pngs:
         jpg = png.with_suffix(".jpg")
@@ -266,9 +266,12 @@ def main():
 
     ensure_public(images)
     uid = me["user_id"]
-    children = [call("POST", f"{uid}/media", token, image_url=f"{RAW}/{p.as_posix()}", is_carousel_item="true")["id"]
-                for p in images]
-    container = call("POST", f"{uid}/media", token, media_type="CAROUSEL", children=",".join(children), caption=caption)["id"]
+    if len(images) == 1:  # a single-image post (e.g. the lineup of the week)
+        container = call("POST", f"{uid}/media", token, image_url=f"{RAW}/{images[0].as_posix()}", caption=caption)["id"]
+    else:
+        children = [call("POST", f"{uid}/media", token, image_url=f"{RAW}/{p.as_posix()}", is_carousel_item="true")["id"]
+                    for p in images]
+        container = call("POST", f"{uid}/media", token, media_type="CAROUSEL", children=",".join(children), caption=caption)["id"]
     for _ in range(30):
         status = call("GET", container, token, fields="status_code").get("status_code")
         if status == "FINISHED":
