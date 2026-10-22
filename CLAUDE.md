@@ -64,7 +64,7 @@ Live: English (`post.en.md`: Instagram + X), Greek (`post.el.md`: **Instagram on
 ## Publishing (Instagram)
 Publishing runs in GitHub Actions (`.github/workflows/publish.yml`, every 15 minutes). The tokens are the encrypted repository secrets `IG_TOKEN_EN` and `IG_TOKEN_EL`; they never go into the repo or a chat. Only the owner approves posts: never publish or approve one without their go-ahead.
 - The drafting routines queue every post as a draft (`"approved": false`) at its suggested time. **Drafts are never published.** The owner approves them in one of three ways:
-  - **by email:** when drafts are queued, `notify.yml` (`scripts/notify_drafts.py`) opens an issue labelled `approval` that @mentions the owner, so GitHub emails the previews; replying `approve` (or `approve 01`) approves them via `approve-reply.yml` (only the owner's comments count);
+  - **by email:** when drafts are queued, `notify.yml` (`scripts/notify_drafts.py`) opens an issue labelled `approval` that @mentions the owner, so GitHub emails the previews; ticking "Approve all" (or one post's box) on GitHub, or replying `approve` (or `approve 01`), approves them via `approve-reply.yml` (only the owner counts);
   - the **Approve posts** workflow (Actions tab or the GitHub mobile app; match e.g. `round-07/day-1`, `day-1/01-` or `all`, with an optional new time);
   - by telling Claude, who runs `publish_queue.py approve <match> [--when "YYYY-MM-DD HH:MM"]` and pushes;
   - by setting `"approved": true` in `publish/queue.json`.

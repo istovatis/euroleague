@@ -1,10 +1,12 @@
 name: Approve by reply
 
-# The owner approves drafts by commenting (or replying to the notification email) "approve" on an approval issue.
-# Only the repository owner's comments count; the comment text reaches the script through an env var, never the shell.
+# The owner approves drafts on an approval issue by ticking a box ("Approve all" or one post) or by commenting /
+# replying to the email "approve". Only the repository owner counts; text reaches the script through env vars.
 on:
   issue_comment:
     types: [created]
+  issues:
+    types: [edited]
 
 permissions:
   contents: write
@@ -17,9 +19,11 @@ concurrency:
 jobs:
   approve:
     if: >-
-      github.event.comment.user.login == github.repository_owner &&
-      github.event.comment.author_association == 'OWNER' &&
-      contains(github.event.issue.labels.*.name, 'approval')
+      contains(github.event.issue.labels.*.name, 'approval') && (
+        (github.event_name == 'issue_comment' &&
+         github.event.comment.user.login == github.repository_owner &&
+         github.event.comment.author_association == 'OWNER') ||
+        (github.event_name == 'issues' && github.event.sender.login == github.repository_owner))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -33,10 +37,15 @@ jobs:
           ISSUE: ${{ github.event.issue.number }}
           AUTHOR: ${{ github.event.comment.user.login }}
           BODY: ${{ github.event.comment.body }}
+          SENDER: ${{ github.event.sender.login }}
         run: |
           git config user.name "parquet-hoops-bot"
           git config user.email "parquet-hoops-bot@users.noreply.github.com"
-          python3 scripts/notify_drafts.py comment "$ISSUE" "$AUTHOR" "$BODY"
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            python3 scripts/notify_drafts.py boxes "$ISSUE" "$SENDER"
+          else
+            python3 scripts/notify_drafts.py comment "$ISSUE" "$AUTHOR" "$BODY"
+          fi
           git add publish/queue.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -q -m "Approve posts: issue #$ISSUE"

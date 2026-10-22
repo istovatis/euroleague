@@ -3,11 +3,15 @@
 
   python3 scripts/notify_drafts.py notify [--test]              # open an issue for drafts not announced yet (--test: mock data)
   python3 scripts/notify_drafts.py comment <issue> <author> <text>   # a comment on such an issue (run by CI)
+  python3 scripts/notify_drafts.py boxes <issue> <sender>       # the owner ticked boxes in such an issue (run by CI)
   python3 scripts/notify_drafts.py cleanup                      # close issues whose drafts were approved elsewhere
 
 notify: every draft in publish/queue.json that hasn't been announced ("notified" not set) goes into one GitHub
 issue that @mentions the owner, so GitHub emails it: each post's first slide, its X text, a link to its folder,
 and how to approve. The entries are then marked "notified" (the caller commits publish/queue.json).
+
+boxes: the issue lists "- [ ] Approve all" and one box per post; when the owner ticks one (an issue edit, which only
+people with write access can make on the bot's issue), those drafts are approved.
 
 comment: when the owner comments on (or replies by email to) that issue with "approve", every draft listed in it is
 approved; "approve 01" approves only the drafts whose path contains "01". Comments by anyone else are ignored.
@@ -76,9 +80,10 @@ def notify(test=False):
         return False
     titles = sorted({title_of(e["story"]) for e in new})
     lines = [f"@{OWNER} {len(new)} post{'s' if len(new) > 1 else ''} waiting for your approval.", "",
-             "**To approve all of them, reply to this email with `approve`** (or comment it here). "
-             "`approve 01` approves only the posts whose folder contains `01`.", "",
-             f"Or use the [Approve posts workflow](https://github.com/{REPO}/actions/workflows/approve.yml).", ""]
+             "**Approve with one tap:** open this on GitHub (\"View it on GitHub\" below) and tick a box.", "",
+             "- [ ] **Approve all**"] + [f"- [ ] Approve `{e['story'].split('/')[-1]}`" for e in new] + ["",
+             "Or reply to this email with `approve` (`approve 01`: only the posts whose folder contains `01`), "
+             f"or use the [Approve posts workflow](https://github.com/{REPO}/actions/workflows/approve.yml).", ""]
     for e in new:
         s = e["story"]
         when = q.dt.datetime.fromisoformat(e["when"]).astimezone(q.ATHENS)
@@ -114,6 +119,48 @@ def notify(test=False):
     return True
 
 
+def approve(number, stories, pick):
+    """Approve the issue's drafts for which pick(story) is true; comment, and close once nothing waits."""
+    entries = q.load()
+    approved = []
+    for e in entries:
+        if e["story"] in stories and not e.get("approved", True) and pick(e["story"]):
+            e["approved"] = True
+            approved.append(e["story"])
+    q.save(entries)
+    waiting = [e for e in entries if e["story"] in stories and not e.get("approved", True)]
+    msg = (f"Approved {len(approved)}: " + ", ".join(f"`{s.split('/')[-1]}`" for s in approved) +
+           ". They go out on the next publishing run (within 15 minutes), 30 minutes apart." if approved
+           else "Nothing new to approve here.")
+    if waiting:
+        msg += f" Still waiting: {', '.join(e['story'].split('/')[-1] for e in waiting)}."
+    gh("issue", "comment", str(number), "--body", msg)
+    if not waiting:
+        gh("issue", "close", str(number))
+    print(msg)
+    return bool(approved)
+
+
+def boxes(number, sender):
+    """The owner ticked boxes in the issue: approve "all" or the ticked posts."""
+    if sender != OWNER:
+        print(f"Ignoring an edit by {sender}")
+        return False
+    issue = json.loads(gh("issue", "view", str(number), "--json", "body,labels,state").stdout)
+    if issue["state"] != "OPEN" or LABEL not in [l["name"] for l in issue["labels"]] or not MARK.search(issue["body"]):
+        print("Not an open approval issue")
+        return False
+    stories = MARK.search(issue["body"]).group(1).split(",")
+    ticked = re.findall(r"^- \[[xX]\] (.+)$", issue["body"], re.M)
+    if not ticked:
+        print("No box ticked")
+        return False
+    if any("Approve all" in t for t in ticked):
+        return approve(number, stories, lambda s: True)
+    names = {m for t in ticked for m in re.findall(r"`([^`]+)`", t)}
+    return approve(number, stories, lambda s: s.split("/")[-1] in names)
+
+
 def comment(number, author, text):
     if author != OWNER:
         print(f"Ignoring a comment by {author}")
@@ -129,24 +176,7 @@ def comment(number, author, text):
         return False
     stories = MARK.search(issue["body"]).group(1).split(",")
     only = words[1] if len(words) > 1 else None
-    entries = q.load()
-    approved = []
-    for e in entries:
-        if e["story"] in stories and not e.get("approved", True) and (not only or only in e["story"]):
-            e["approved"] = True
-            approved.append(e["story"])
-    q.save(entries)
-    waiting = [e for e in entries if e["story"] in stories and not e.get("approved", True)]
-    msg = (f"Approved {len(approved)}: " + ", ".join(f"`{s.split('/')[-1]}`" for s in approved) +
-           ". They go out on the next publishing run (within 15 minutes), 30 minutes apart." if approved
-           else "Nothing new to approve here.")
-    if waiting:
-        msg += f" Still waiting: {', '.join(e['story'].split('/')[-1] for e in waiting)}."
-    gh("issue", "comment", str(number), "--body", msg)
-    if not waiting:
-        gh("issue", "close", str(number))
-    print(msg)
-    return bool(approved)
+    return approve(number, stories, lambda s: not only or only in s)
 
 
 def cleanup():
@@ -164,6 +194,8 @@ if __name__ == "__main__":
         notify(test="--test" in sys.argv)
     elif sys.argv[1:2] == ["cleanup"]:
         cleanup()
+    elif sys.argv[1:2] == ["boxes"] and len(sys.argv) == 4:
+        boxes(int(sys.argv[2]), sys.argv[3])
     elif sys.argv[1:2] == ["comment"] and len(sys.argv) == 5:
         comment(int(sys.argv[2]), sys.argv[3], sys.argv[4])
     else:
