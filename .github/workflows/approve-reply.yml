@@ -16,7 +16,10 @@ concurrency:
 
 jobs:
   approve:
-    if: github.event.comment.user.login == github.repository_owner && contains(github.event.issue.labels.*.name, 'approval')
+    if: >-
+      github.event.comment.user.login == github.repository_owner &&
+      github.event.comment.author_association == 'OWNER' &&
+      contains(github.event.issue.labels.*.name, 'approval')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

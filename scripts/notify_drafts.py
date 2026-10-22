@@ -95,6 +95,8 @@ def notify():
                  "--assignee", OWNER, "--body-file", str(body)).stdout.strip()
     finally:
         body.unlink()
+    # Locked: only people with write access (the owner) can comment, so strangers can't post on approval issues.
+    gh("issue", "lock", url.rsplit("/", 1)[1], check=False)
     for e in new:
         e["notified"] = url
     q.save(entries)
