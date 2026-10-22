@@ -9,9 +9,10 @@ so the guard with more assists is the PG and the forward with more rebounds the 
 shown: the post is names and faces.
 
 Photos: <folder>/photo-<player code>.jpg + .json from commons_photo.py (--get <folder> "File:..." --name
-photo-<code>), only when the photo shows the player in his CURRENT club's jersey. In its JSON, "focus" (CSS
-background-position) and "zoom" (e.g. 220: the photo's width as % of the tile, for full-length shots) frame the face. Without one, the tile shows the
-club's crest (or our styled badge) instead. Credits go under each photo and into the caption.
+photo-<code>), only when the photo shows the player in his CURRENT club's jersey. Without one, the tile shows our
+own drawing of a vest in the club's colours with his name and number (never someone else's photo). In its JSON, "focus" (CSS
+background-position) and "zoom" (e.g. 220: the photo's width as % of the tile, for full-length shots) frame the face. Credits go under each photo
+and into the caption.
 """
 import argparse
 import html
@@ -62,6 +63,7 @@ def pick(season, rnd):
                     continue
                 first, last = display_name(pl["person"])
                 pool.append({"code": pl["person"]["code"], "first": first, "last": last, "club": pl["club"]["code"],
+                             "dorsal": pl.get("dorsal") or s.get("dorsal"),
                              "position": pl.get("positionName"), "pir": s["valuation"], "pts": s["points"],
                              "ast": s["assistances"], "reb": s["totalRebounds"], "won": won, "game": g["gameCode"]})
     best = lambda pos, n: sorted([p for p in pool if p["position"] == pos], key=lambda p: (-p["pir"], -p["pts"]))[:n]
@@ -92,6 +94,18 @@ def mark(club, size):
             f'box-shadow:inset 0 0 0 {size // 18}px {c["dot"]}"><span>{html.escape(c["en"][:3].upper())}</span></div>')
 
 
+def jersey(p, size):
+    """Our own drawing when there's no usable photo: a vest in the club's colours with the player's name and number."""
+    c = CLUBS[p["club"]]
+    num, name = html.escape(str(p.get("dorsal") or "")), html.escape(p["last"].upper())
+    fs = 18 if len(name) <= 9 else max(11, 18 * 9 // len(name))
+    return f"""<svg viewBox="0 0 200 220" width="{size}" height="{size * 1.1:.0f}" style="filter:drop-shadow(0 10px 18px #000a)">
+<path d="M62 12 Q100 46 138 12 L162 20 Q164 62 186 78 L186 208 Q100 220 14 208 L14 78 Q36 62 38 20 Z" fill="{c['bg']}"/>
+<path d="M62 12 Q100 46 138 12 M162 20 Q164 62 186 78 M38 20 Q36 62 14 78" fill="none" stroke="{c['dot']}" stroke-width="7" stroke-linecap="round"/>
+<text x="100" y="92" text-anchor="middle" font-family="F" font-weight="900" font-size="{fs}" letter-spacing="1" fill="{c['fg']}">{name}</text>
+<text x="100" y="178" text-anchor="middle" font-family="F" font-weight="900" font-size="84" fill="{c['fg']}">{num}</text></svg>"""
+
+
 def tile(folder, p, lang, w, h):
     photo = folder / f"photo-{p['code']}.jpg"
     club = CLUBS[p["club"]].get(lang) or CLUBS[p["club"]]["en"]
@@ -102,7 +116,8 @@ def tile(folder, p, lang, w, h):
                 f'{"background-size:" + str(meta["zoom"]) + "% auto;" if meta.get("zoom") else ""}">{mark(p["club"], 64)}</div>'
                 f'<div class="credit">{html.escape(meta["credit"])}</div>')
     else:
-        face = f'<div class="face none">{mark(p["club"], round(w * .5))}</div><div class="credit"></div>'
+        face = (f'<div class="face none">{jersey(p, round(w * .58)) if p.get("dorsal") else mark(p["club"], round(w * .5))}'
+                f'{mark(p["club"], 64) if p.get("dorsal") else ""}</div><div class="credit"></div>')
     return (f'<div class="tile" style="width:{w}px"><div style="height:{h}px;position:relative">{face}</div>'
             f'<div class="plate"><b>{p["slot"]}</b><div class="first">{html.escape(p["first"])}</div>'
             f'<div class="last">{html.escape(p["last"])}</div><div class="club">{html.escape(club)}</div></div></div>')
@@ -157,7 +172,7 @@ body {{ font-family:F, sans-serif; color:{C['fg']}; background:{C['bg']}; positi
 .face.none {{ display:flex; align-items:center; justify-content:center;
   background:linear-gradient(160deg, #222b37, #12171f); }}
 .face .mark {{ position:absolute; right:10px; bottom:10px; }}
-.face.none .mark {{ position:static; }}
+.face.none > .mark:only-child {{ position:static; }}
 .mark {{ border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px #0008; }}
 .mark img {{ width:72%; height:72%; object-fit:contain; }}
 .mark span {{ font-weight:900; font-size:150%; letter-spacing:.04em; }}
