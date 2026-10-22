@@ -10,7 +10,8 @@ shown: the post is names and faces.
 
 Photos: <folder>/photo-<player code>.jpg + .json from commons_photo.py (--get <folder> "File:..." --name
 photo-<code>), only when the photo shows the player in his CURRENT club's jersey. Without one, the tile shows our
-own drawing of a vest in the club's colours with his name and number (never someone else's photo). In its JSON, "focus" (CSS
+own drawing of a vest in the club's colours with his name and number (never someone else's photo). Photos are used
+only if all five have one; otherwise every tile shows the drawing, so the card stays consistent. In its JSON, "focus" (CSS
 background-position) and "zoom" (e.g. 220: the photo's width as % of the tile, for full-length shots) frame the face. Credits go under each photo
 and into the caption.
 """
@@ -106,10 +107,15 @@ def jersey(p, size):
 <text x="100" y="178" text-anchor="middle" font-family="F" font-weight="900" font-size="84" fill="{c['fg']}">{num}</text></svg>"""
 
 
-def tile(folder, p, lang, w, h):
+def all_photos(folder, data):
+    """Photos are used only when every player has one (the owner's rule): a mixed card looks inconsistent."""
+    return all((folder / f"photo-{p['code']}.jpg").exists() for p in data["players"])
+
+
+def tile(folder, p, lang, w, h, photos=True):
     photo = folder / f"photo-{p['code']}.jpg"
     club = CLUBS[p["club"]].get(lang) or CLUBS[p["club"]]["en"]
-    if photo.exists():
+    if photos and photo.exists():
         meta = json.loads((folder / f"photo-{p['code']}.json").read_text())
         face = (f'<div class="face" style="background-image:url({photo.as_uri()});'
                 f'background-position:{meta.get("focus", "50% 20%")};'
@@ -151,7 +157,8 @@ def page(folder, data, lang, fmt):
         spots = {s: (180 + i * 310, 300) for i, s in enumerate(SLOTS)}
         floor = court(w, h, 800, 960, .75)
         title_css = "left:64px; top:118px; font-size:84px"
-    tiles = "".join(f'<div style="position:absolute;left:{x - tw // 2}px;top:{y}px">{tile(folder, players[s], lang, tw, th)}</div>'
+    photos = all_photos(folder, data)
+    tiles = "".join(f'<div style="position:absolute;left:{x - tw // 2}px;top:{y}px">{tile(folder, players[s], lang, tw, th, photos)}</div>'
                     for s, (x, y) in spots.items())
     css = f"""
 @font-face {{ font-family: F; font-weight: 500; src: url({FONTS}/FiraSansExtraCondensed-Medium.ttf); }}
@@ -205,6 +212,8 @@ def render(folder):
         doc, w, h = page(folder, data, lang, fmt)
         shoot(doc, w, h, out)
         print(out.relative_to(ROOT) if out.is_relative_to(ROOT) else out)
+    if not all_photos(folder, data):
+        print("Not every player has a photo: all five tiles show the jersey drawing, and the caption credits no photo.")
 
 
 def main():
