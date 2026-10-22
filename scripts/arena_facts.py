@@ -32,7 +32,7 @@ def get_json(url):
     """GET with retries: Wikipedia/Wikidata answer 429 to busy shared IPs (cloud runners) with a Retry-After."""
     for attempt in range(8):
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
+            with urllib.request.urlopen(urllib.request.Request(url, headers={**UA, "Accept": "application/json"}), timeout=30) as r:
                 return json.load(r)
         except urllib.error.HTTPError as e:
             if e.code not in (429, 503) or attempt == 7:

@@ -24,7 +24,7 @@ RUN_AFTER_LAST_TIP = dt.timedelta(hours=1, minutes=50)  # a game takes ~1h45-2h;
 
 
 def games(season):
-    req = urllib.request.Request(API.format(season=season), headers={"User-Agent": "Mozilla/5.0"})
+    req = urllib.request.Request(API.format(season=season), headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.load(r)["data"]
 

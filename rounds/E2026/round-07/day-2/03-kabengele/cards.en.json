@@ -1,0 +1,47 @@
+{
+  "lang": "en",
+  "round_label": "Round 7",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "MVP of the night",
+      "title": "63 by\nhalftime.\n*In Munich.*",
+      "subtitle": "Mfiondu Kabengele · Dubai"
+    },
+    {
+      "type": "score",
+      "badges": ["MUN", "DUB"],
+      "kicker": "Final · Munich",
+      "sides": [
+        {"team": "Bayern", "score": 91, "won": false},
+        {"team": "Dubai", "score": 107, "won": true}
+      ],
+      "note": "63-36 at the half. Never looked back.",
+      "lines": [
+        ["Kabengele", "24 pts · 7 reb · 29 PIR"],
+        ["Okobo", "17 pts · 9 ast · 28 PIR"],
+        ["Wright IV", "15 pts · 5 ast"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Road trip",
+      "title": "*107* on the road.\nDubai go *5-2*.",
+      "subtitle": "Kabengele: 9/12 inside the arc"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["MUN", "DUB"],
+    "kicker": "MVP of the night · Kabengele",
+    "sides": [
+      {"team": "Bayern", "score": 91, "won": false},
+      {"team": "Dubai", "score": 107, "won": true}
+    ],
+    "note": "63-36 at the half. Dubai go 5-2.",
+    "lines": [
+      ["Kabengele", "24 pts · 7 reb · 29 PIR"],
+      ["Okobo", "17 pts · 9 ast · 28 PIR"]
+    ]
+  }
+}

@@ -26,7 +26,7 @@ def get(path, tries=5):
     import time
     for attempt in range(tries):
         try:
-            req = urllib.request.Request(API + path, headers={"User-Agent": "Mozilla/5.0"})
+            req = urllib.request.Request(API + path, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
             with urllib.request.urlopen(req, timeout=30) as r:
                 return json.load(r)
         except (urllib.error.URLError, json.JSONDecodeError, TimeoutError) as e:

@@ -30,5 +30,41 @@
       "reel-el"
     ],
     "approved": true
+  },
+  {
+    "story": "rounds/E2026/round-07/day-2/01-carlik-jones",
+    "when": "2026-10-23T00:12:00+03:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-07/day-2/02-lessort",
+    "when": "2026-10-23T00:13:00+03:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-07/day-2/03-kabengele",
+    "when": "2026-10-23T00:14:00+03:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]

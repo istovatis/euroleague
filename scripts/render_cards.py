@@ -134,7 +134,7 @@ def crest_file(code):
         return f
     try:
         req = urllib.request.Request("https://api-live.euroleague.net/v2/competitions/E/seasons/E2026/games",
-                                     headers={"User-Agent": "Mozilla/5.0"})
+                                     headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
         with urllib.request.urlopen(req, timeout=30) as r:
             games = json.load(r)["data"]
         urls = {g[s]["club"]["code"]: g[s]["club"]["images"]["crest"] for g in games for s in ("local", "road")}

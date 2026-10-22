@@ -1,0 +1,47 @@
+{
+  "lang": "en",
+  "round_label": "Round 7",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "MVP of the night",
+      "title": "9 of 10.\n*Lessort.*",
+      "subtitle": "Mathias Lessort · Panathinaikos"
+    },
+    {
+      "type": "score",
+      "badges": ["PAN", "BAS"],
+      "kicker": "Final · Athens",
+      "sides": [
+        {"team": "Panathinaikos", "score": 85, "won": true},
+        {"team": "Baskonia", "score": 79, "won": false}
+      ],
+      "note": "20 points in 24 minutes. 9/10 inside the arc.",
+      "lines": [
+        ["Lessort", "20 pts · 6 reb · 28 PIR"],
+        ["Hayes-Davis", "18 pts · 7 reb"],
+        ["Francisco", "10 pts · 11 ast"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Back on track",
+      "title": "Six wins.\n*One loss.*",
+      "subtitle": "Panathinaikos 85-79 Baskonia"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["PAN", "BAS"],
+    "kicker": "MVP of the night · Lessort",
+    "sides": [
+      {"team": "Panathinaikos", "score": 85, "won": true},
+      {"team": "Baskonia", "score": 79, "won": false}
+    ],
+    "note": "9/10 inside the arc. Panathinaikos go 6-1.",
+    "lines": [
+      ["Lessort", "20 pts · 6 reb · 28 PIR"],
+      ["Hayes-Davis", "18 pts · 7 reb"]
+    ]
+  }
+}
