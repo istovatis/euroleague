@@ -41,6 +41,7 @@ jobs:
             python3 scripts/publish_queue.py approve "$MATCH"
           fi
           git add publish/queue.json
+          if git diff --cached --quiet; then exit 0; fi  # nothing was approved
           git commit -q -m "Approve posts: $MATCH"
           git pull -q --rebase origin main
           git push -q origin main

@@ -114,7 +114,8 @@ def main():
         hits = [e for e in entries if not e.get("approved", True)
                 and (args.match == "all" or args.match in e["story"])]
         if not hits:
-            sys.exit(f"No drafts awaiting approval match {args.match!r}")
+            print(f"Nothing to approve: no drafts awaiting approval match {args.match!r} (new drafts arrive about 1h50m after a game day's last tip-off)")
+            return
         for e in hits:
             e["approved"] = True
             if args.when:
