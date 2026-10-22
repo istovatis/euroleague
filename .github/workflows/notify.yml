@@ -1,0 +1,39 @@
+name: Notify drafts
+
+# When the drafting routines push new drafts to publish/queue.json, open an issue that @mentions the owner, so GitHub
+# emails it with the previews and how to approve (reply "approve"). See scripts/notify_drafts.py.
+on:
+  push:
+    branches: [main]
+    paths: ["publish/queue.json"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Announce new drafts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          python3 scripts/notify_drafts.py notify
+          git add publish/queue.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -q -m "Queue: drafts announced"
+          git pull -q --rebase origin main
+          git push -q origin main

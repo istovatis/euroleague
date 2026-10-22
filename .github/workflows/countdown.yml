@@ -77,6 +77,7 @@ jobs:
           fi
           for folder in $folders; do
             python3 scripts/countdown.py build "$folder"
+            python3 scripts/notify_drafts.py notify  # this push uses the workflow token, so notify.yml won't fire
             git add "$folder" publish/queue.json
             git commit -q -m "Countdown built: $folder"
             git pull -q --rebase origin main && git push -q origin main

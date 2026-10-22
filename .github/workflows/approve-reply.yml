@@ -1,0 +1,41 @@
+name: Approve by reply
+
+# The owner approves drafts by commenting (or replying to the notification email) "approve" on an approval issue.
+# Only the repository owner's comments count; the comment text reaches the script through an env var, never the shell.
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    if: github.event.comment.user.login == github.repository_owner && contains(github.event.issue.labels.*.name, 'approval')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Approve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          AUTHOR: ${{ github.event.comment.user.login }}
+          BODY: ${{ github.event.comment.body }}
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          python3 scripts/notify_drafts.py comment "$ISSUE" "$AUTHOR" "$BODY"
+          git add publish/queue.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -q -m "Approve posts: issue #$ISSUE"
+          git pull -q --rebase origin main
+          git push -q origin main
