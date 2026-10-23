@@ -74,6 +74,16 @@ body::before { content: ""; position: absolute; inset: 0; pointer-events: none;
 .crest { width: 118px; height: 118px; border-radius: 50%%; background: #fff; display: flex; align-items: center;
   justify-content: center; box-shadow: 0 2px 12px #0008; }
 .crest img { width: 84px; height: 84px; object-fit: contain; }
+.scoreline { display: flex; align-items: center; gap: 14px; align-self: flex-start; margin-bottom: 30px;
+  background: %(bg)sCC; padding: 10px 18px; border-radius: 999px; box-shadow: 0 0 0 2px #ffffff26;
+  font-weight: 900; font-size: %(kick)dpx; text-transform: uppercase; letter-spacing: .03em; }
+.sl-side { display: inline-flex; align-items: center; gap: 12px; }
+.sl-crest { width: 1.9em; height: 1.9em; border-radius: 50%%; background: #fff; display: inline-flex;
+  align-items: center; justify-content: center; flex: none; }
+.sl-crest img { width: 72%%; height: 72%%; object-fit: contain; }
+.sl-pts { font-size: 1.45em; color: %(accent)s; }
+.sl-lost { color: %(muted)s; } .sl-lost .sl-pts { color: %(muted)s; }
+.sl-dash { color: %(muted)s; }
 .kicker { display: inline-block; align-self: flex-start; background: %(accent)s; color: %(bg)s; font-weight: 900;
   font-size: %(kick)dpx; letter-spacing: .08em; text-transform: uppercase; padding: 6px 16px; margin-bottom: 28px; }
 .title { font-weight: 900; font-size: %(title)dpx; line-height: .92; text-transform: uppercase; }
@@ -168,11 +178,29 @@ def badges_html(codes, lang):
     return f'<div class="badges">{"".join(out)}</div>'
 
 
+def scoreline_html(game, lang):
+    """The game a story is about, for slide 1: crest, club, score - score, club, crest; the winner stands out.
+    game = ["PAN", 85, "BAS", 79] (home first)."""
+    home, hs, away, as_ = game
+    def side(code, pts, won, crest_first):
+        f = crest_file(code) if BRAND.get("club_marks") == "crests" else None
+        c = CLUBS[code]
+        crest = (f'<span class="sl-crest"><img src="{f.as_uri()}"></span>' if f else
+                 f'<span class="sl-crest" style="background:{c["bg"]};box-shadow:inset 0 0 0 4px {c["dot"]}"></span>')
+        name = f'<span class="sl-team">{html.escape(c.get(lang) or c["en"])}</span>'
+        num = f'<span class="sl-pts">{pts}</span>'
+        parts = [crest, name, num] if crest_first else [num, name, crest]
+        return f'<span class="sl-side{"" if won else " sl-lost"}">{"".join(parts)}</span>'
+    return (f'<div class="scoreline">{side(home, hs, hs > as_, True)}<span class="sl-dash">–</span>'
+            f'{side(away, as_, as_ > hs, False)}</div>')
+
+
 def card_html(card, lang="en"):
     t = card["type"]
     k = f'<div class="kicker">{rich(card["kicker"])}</div>' if card.get("kicker") else ""
     if t == "hook":
-        inner = (club_marks_html(card["badges"], lang) if card.get("badges") else "") + f'{k}<div class="title">{rich(card["title"])}</div>' + (
+        inner = (scoreline_html(card["game"], lang) if card.get("game") else "") + (
+            club_marks_html(card["badges"], lang) if card.get("badges") else "") + f'{k}<div class="title">{rich(card["title"])}</div>' + (
             f'<div class="sub">{rich(card["subtitle"])}</div>' if card.get("subtitle") else "")
     elif t == "score":
         rows = "".join(

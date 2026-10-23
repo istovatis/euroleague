@@ -14,6 +14,7 @@ Every EuroLeague game day becomes a set of posts (a lead story plus up to two mo
 - One lead post (`01-…`) plus up to two more (`02-…`, `03-…`), **only from that day's games**. Include a story only if it stands on its own; a quiet day can have just one post.
 - Posting plan (`day-K/README.md`): fresh, the same night. The posts are queued for "now" and go out as soon as the owner approves them, lead first, 30 minutes apart.
 - Don't repeat a story that an earlier day of the same round already told.
+- **Slide 1 always shows the game:** give the first `hook` card `"game": ["<HOME>", <home pts>, "<AWAY>", <away pts>]` (club codes and scores from `digest.json`, home first). It renders a score bar with both crests, both club names and the final score above the kicker, winner highlighted, in every language and in the Reel.
 
 ## Round highlight
 One post that closes the round, in `round-NN/highlight/`, drafted after the last game day:

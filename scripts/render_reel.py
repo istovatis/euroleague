@@ -119,7 +119,7 @@ function setup() {
     const step = (el, frames, dur, gap) => { anim(el, frames, t, dur); t += gap; };
     const fromLeft = [{opacity: 0, transform: 'translateX(-80px)'}, {opacity: 1, transform: 'none'}];
     const rise = [{opacity: 0, transform: 'translateY(70px)'}, {opacity: 1, transform: 'none'}];
-    for (const el of sc.querySelectorAll('.badges, .kicker')) step(el, fromLeft, 420, 120);
+    for (const el of sc.querySelectorAll('.scoreline, .badges, .kicker')) step(el, fromLeft, 420, 120);
     for (const el of sc.querySelectorAll('.title .ln')) step(el, rise, 480, 140);
     for (const el of sc.querySelectorAll('.score .team')) {
       step(el, fromLeft, 420, 0);
