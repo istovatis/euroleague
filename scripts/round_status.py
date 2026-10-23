@@ -20,7 +20,7 @@ import zoneinfo
 API = "https://api-live.euroleague.net/v2/competitions/E/seasons/{season}/games"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ATHENS = zoneinfo.ZoneInfo("Europe/Athens")
-RUN_AFTER_LAST_TIP = dt.timedelta(hours=1, minutes=50)  # a game takes ~1h45-2h; --wait covers late finishes
+RUN_AFTER_LAST_TIP = dt.timedelta(hours=1, minutes=30)  # a game takes ~1h45-2h; --wait (every 5 min, 100 min) waits for the finish
 
 
 def games(season):

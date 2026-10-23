@@ -1,6 +1,6 @@
 # Cloud routine steps
 
-Every game day of a round has its own one-time routine that fires 1h50m after that day's last tip-off; the last day of the round also drafts the round highlight. A daily routine at 06:00 UTC is the safety net. The schedule is in `rounds/E2026/SCHEDULE.md`. Folder layout:
+Every game day of a round has its own one-time routine that fires 1h30m after that day's last tip-off; the last day of the round also drafts the round highlight. A daily routine at 06:00 UTC is the safety net. The schedule is in `rounds/E2026/SCHEDULE.md`. Folder layout:
 
 ```
 rounds/E2026/round-07/
