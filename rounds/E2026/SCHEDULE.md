@@ -35,44 +35,44 @@ Every game day has a one-time cloud routine that fires 1h30m after that day's la
 | 19 | 2/2 | Wed 23 Dec 21:30 | Wed 23 Dec 23:00 | round highlight |
 | 20 | 1/2 | Tue 29 Dec 22:00 | Tue 29 Dec 23:30 |  |
 | 20 | 2/2 | Wed 30 Dec 21:45 | Wed 30 Dec 23:15 | round highlight |
-| 21 | 1/3 | Wed 06 Jan 21:30 | Tue 06 Jan 23:00 |  |
-| 21 | 2/3 | Thu 07 Jan 21:45 | Wed 07 Jan 23:15 |  |
-| 21 | 3/3 | Fri 08 Jan 21:30 | Thu 08 Jan 23:00 | round highlight |
-| 22 | 1/2 | Tue 12 Jan 21:30 | Mon 12 Jan 23:00 |  |
-| 22 | 2/2 | Wed 13 Jan 21:15 | Tue 13 Jan 22:45 | round highlight |
-| 23 | 1/2 | Thu 14 Jan 21:45 | Wed 14 Jan 23:15 |  |
-| 23 | 2/2 | Fri 15 Jan 21:45 | Thu 15 Jan 23:15 | round highlight |
-| 24 | 1/2 | Thu 21 Jan 21:45 | Wed 21 Jan 23:15 |  |
-| 24 | 2/2 | Fri 22 Jan 21:30 | Thu 22 Jan 23:00 | round highlight |
-| 25 | 1/2 | Thu 28 Jan 21:30 | Wed 28 Jan 23:00 |  |
-| 25 | 2/2 | Fri 29 Jan 21:30 | Thu 29 Jan 23:00 | round highlight |
-| 26 | 1/2 | Tue 02 Feb 21:45 | Mon 02 Feb 23:15 |  |
-| 26 | 2/2 | Wed 03 Feb 21:45 | Tue 03 Feb 23:15 | round highlight |
-| 27 | 1/2 | Thu 04 Feb 21:45 | Wed 04 Feb 23:15 |  |
-| 27 | 2/2 | Fri 05 Feb 21:45 | Thu 05 Feb 23:15 | round highlight |
-| 28 | 1/3 | Wed 10 Feb 21:00 | Tue 10 Feb 22:30 |  |
-| 28 | 2/3 | Thu 11 Feb 21:30 | Wed 11 Feb 23:00 |  |
-| 28 | 3/3 | Fri 12 Feb 21:15 | Thu 12 Feb 22:45 | round highlight |
-| 29 | 1/2 | Thu 04 Mar 21:45 | Wed 04 Mar 23:15 |  |
-| 29 | 2/2 | Fri 05 Mar 21:30 | Thu 05 Mar 23:00 | round highlight |
-| 30 | 1/2 | Tue 09 Mar 21:45 | Mon 09 Mar 23:15 |  |
-| 30 | 2/2 | Wed 10 Mar 21:30 | Tue 10 Mar 23:00 | round highlight |
-| 31 | 1/2 | Thu 11 Mar 21:45 | Wed 11 Mar 23:15 |  |
-| 31 | 2/2 | Fri 12 Mar 21:30 | Thu 12 Mar 23:00 | round highlight |
-| 32 | 1/2 | Thu 18 Mar 21:45 | Wed 18 Mar 23:15 |  |
-| 32 | 2/2 | Fri 19 Mar 21:30 | Thu 19 Mar 23:00 | round highlight |
-| 33 | 1/2 | Tue 23 Mar 21:45 | Mon 23 Mar 23:15 |  |
-| 33 | 2/2 | Wed 24 Mar 21:30 | Tue 24 Mar 23:00 | round highlight |
-| 34 | 1/2 | Thu 25 Mar 21:15 | Wed 25 Mar 22:45 |  |
-| 34 | 2/2 | Fri 26 Mar 21:45 | Thu 26 Mar 23:15 | round highlight |
-| 35 | 1/3 | Wed 31 Mar 21:30 | Tue 31 Mar 23:00 |  |
-| 35 | 2/3 | Thu 01 Apr 21:45 | Wed 01 Apr 23:15 |  |
-| 35 | 3/3 | Fri 02 Apr 21:45 | Thu 02 Apr 23:15 | round highlight |
-| 36 | 1/2 | Tue 06 Apr 21:45 | Mon 06 Apr 23:15 |  |
-| 36 | 2/2 | Wed 07 Apr 19:00 | Tue 07 Apr 20:30 | round highlight |
-| 37 | 1/2 | Thu 08 Apr 21:45 | Wed 08 Apr 23:15 |  |
-| 37 | 2/2 | Fri 09 Apr 21:45 | Thu 09 Apr 23:15 | round highlight |
-| 38 | 1/2 | Thu 15 Apr 21:45 | Wed 15 Apr 23:15 |  |
-| 38 | 2/2 | Fri 16 Apr 21:30 | Thu 16 Apr 23:00 | round highlight |
+| 21 | 1/3 | Wed 06 Jan 21:30 | Wed 06 Jan 23:00 |  |
+| 21 | 2/3 | Thu 07 Jan 21:45 | Thu 07 Jan 23:15 |  |
+| 21 | 3/3 | Fri 08 Jan 21:30 | Fri 08 Jan 23:00 | round highlight |
+| 22 | 1/2 | Tue 12 Jan 21:30 | Tue 12 Jan 23:00 |  |
+| 22 | 2/2 | Wed 13 Jan 21:15 | Wed 13 Jan 22:45 | round highlight |
+| 23 | 1/2 | Thu 14 Jan 21:45 | Thu 14 Jan 23:15 |  |
+| 23 | 2/2 | Fri 15 Jan 21:45 | Fri 15 Jan 23:15 | round highlight |
+| 24 | 1/2 | Thu 21 Jan 21:45 | Thu 21 Jan 23:15 |  |
+| 24 | 2/2 | Fri 22 Jan 21:30 | Fri 22 Jan 23:00 | round highlight |
+| 25 | 1/2 | Thu 28 Jan 21:30 | Thu 28 Jan 23:00 |  |
+| 25 | 2/2 | Fri 29 Jan 21:30 | Fri 29 Jan 23:00 | round highlight |
+| 26 | 1/2 | Tue 02 Feb 21:45 | Tue 02 Feb 23:15 |  |
+| 26 | 2/2 | Wed 03 Feb 21:45 | Wed 03 Feb 23:15 | round highlight |
+| 27 | 1/2 | Thu 04 Feb 21:45 | Thu 04 Feb 23:15 |  |
+| 27 | 2/2 | Fri 05 Feb 21:45 | Fri 05 Feb 23:15 | round highlight |
+| 28 | 1/3 | Wed 10 Feb 21:00 | Wed 10 Feb 22:30 |  |
+| 28 | 2/3 | Thu 11 Feb 21:30 | Thu 11 Feb 23:00 |  |
+| 28 | 3/3 | Fri 12 Feb 21:15 | Fri 12 Feb 22:45 | round highlight |
+| 29 | 1/2 | Thu 04 Mar 21:45 | Thu 04 Mar 23:15 |  |
+| 29 | 2/2 | Fri 05 Mar 21:30 | Fri 05 Mar 23:00 | round highlight |
+| 30 | 1/2 | Tue 09 Mar 21:45 | Tue 09 Mar 23:15 |  |
+| 30 | 2/2 | Wed 10 Mar 21:30 | Wed 10 Mar 23:00 | round highlight |
+| 31 | 1/2 | Thu 11 Mar 21:45 | Thu 11 Mar 23:15 |  |
+| 31 | 2/2 | Fri 12 Mar 21:30 | Fri 12 Mar 23:00 | round highlight |
+| 32 | 1/2 | Thu 18 Mar 21:45 | Thu 18 Mar 23:15 |  |
+| 32 | 2/2 | Fri 19 Mar 21:30 | Fri 19 Mar 23:00 | round highlight |
+| 33 | 1/2 | Tue 23 Mar 21:45 | Tue 23 Mar 23:15 |  |
+| 33 | 2/2 | Wed 24 Mar 21:30 | Wed 24 Mar 23:00 | round highlight |
+| 34 | 1/2 | Thu 25 Mar 21:15 | Thu 25 Mar 22:45 |  |
+| 34 | 2/2 | Fri 26 Mar 21:45 | Fri 26 Mar 23:15 | round highlight |
+| 35 | 1/3 | Wed 31 Mar 21:30 | Wed 31 Mar 23:00 |  |
+| 35 | 2/3 | Thu 01 Apr 21:45 | Thu 01 Apr 23:15 |  |
+| 35 | 3/3 | Fri 02 Apr 21:45 | Fri 02 Apr 23:15 | round highlight |
+| 36 | 1/2 | Tue 06 Apr 21:45 | Tue 06 Apr 23:15 |  |
+| 36 | 2/2 | Wed 07 Apr 19:00 | Wed 07 Apr 20:30 | round highlight |
+| 37 | 1/2 | Thu 08 Apr 21:45 | Thu 08 Apr 23:15 |  |
+| 37 | 2/2 | Fri 09 Apr 21:45 | Fri 09 Apr 23:15 | round highlight |
+| 38 | 1/2 | Thu 15 Apr 21:45 | Thu 15 Apr 23:15 |  |
+| 38 | 2/2 | Fri 16 Apr 21:30 | Fri 16 Apr 23:00 | round highlight |
 
 Playoffs and Final Four are not scheduled yet; add them once EuroLeague publishes the dates (`python3 scripts/round_status.py --schedule`).
