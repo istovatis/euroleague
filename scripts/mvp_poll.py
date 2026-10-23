@@ -6,8 +6,8 @@
   python3 scripts/mvp_poll.py --now        # ignore the time window
 
 The options come from the latest Lineup of the week (lineups/<season>/round-NN/lineup.json), and only once that
-post is published. X polls take at most 4 options, so the 4 with the highest PIR are the options and the fifth is
-named in the text. Text only, no media; the poll runs 24 hours. Writes published.poll.json in the lineup folder,
+post is published. X polls take at most 4 options, so the 4 with the highest PIR are the options (the fifth is not
+mentioned). Text only, no media; the poll runs 24 hours. Writes published.poll.json in the lineup folder,
 so it is posted once.
 """
 import argparse
@@ -42,13 +42,12 @@ def label(p):
 def build(folder):
     data = json.loads((folder / "lineup.json").read_text())
     ranked = sorted(data["players"], key=lambda p: (-p["pir"], -p.get("pts", 0)))
-    options, fifth = ranked[:4], ranked[4]
-    # #EuroLeague, #MVP and the club tag of every player in the lineup (each club once): the owner's choice, so every
-    # featured club's fans find the poll.
+    options = ranked[:4]  # X polls take 4 options: the lineup's top 4 by PIR; the fifth isn't mentioned
+    # #EuroLeague, #MVP and the club tag of each option (each club once), so those clubs' fans find the poll.
     from countdown import tags
-    clubs = list(dict.fromkeys(tags(p["club"], p["club"])["ig"][2] for p in ranked))
-    text = (f"Round {data['round']} MVP? 🏆\n\nVote from our Lineup of the week.\n"
-            f"X polls take four: {fifth['first']} {fifth['last']} fans, reply 👇\n\n#EuroLeague #MVP {' '.join(clubs)}")
+    clubs = list(dict.fromkeys(tags(p["club"], p["club"])["ig"][2] for p in options))
+    text = (f"Round {data['round']} MVP? 🏆\n\nVote from our Lineup of the week.\n\n"
+            f"#EuroLeague #MVP {' '.join(clubs)}")
     return text, [label(p) for p in options]
 
 
