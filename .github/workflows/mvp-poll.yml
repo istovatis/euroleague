@@ -1,0 +1,43 @@
+name: MVP poll
+
+# Saturday ~20:00 Athens: an X poll for the round's MVP among the Lineup of the week (scripts/mvp_poll.py).
+# Fully automatic. Several runs (UTC, so both summer and winter time are covered); the script posts only between
+# 20:00 and 23:00 Athens, once, and only after the lineup itself is published.
+on:
+  schedule:
+    - cron: "5,25,45 17-20 * * 6"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: print the poll, post nothing"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mvp-poll
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Post the poll
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+          X_ENABLED: ${{ vars.X_ENABLED }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          if [ "$DRY_RUN" = "true" ]; then python3 scripts/mvp_poll.py --dry-run; else python3 scripts/mvp_poll.py; fi
