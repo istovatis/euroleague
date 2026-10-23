@@ -43,12 +43,12 @@ def build(folder):
     data = json.loads((folder / "lineup.json").read_text())
     ranked = sorted(data["players"], key=lambda p: (-p["pir"], -p.get("pts", 0)))
     options, fifth = ranked[:4], ranked[4]
-    # Three hashtags at most (more reads as spam on X): the competition, MVP, and the PIR leader's club, whose fans
-    # are the likeliest to vote and share.
+    # #EuroLeague, #MVP and the club tag of every player in the lineup (each club once): the owner's choice, so every
+    # featured club's fans find the poll.
     from countdown import tags
-    club_tag = tags(ranked[0]["club"], ranked[0]["club"])["ig"][2]
+    clubs = list(dict.fromkeys(tags(p["club"], p["club"])["ig"][2] for p in ranked))
     text = (f"Round {data['round']} MVP? 🏆\n\nVote from our Lineup of the week.\n"
-            f"X polls take four: {fifth['first']} {fifth['last']} fans, reply 👇\n\n#EuroLeague #MVP {club_tag}")
+            f"X polls take four: {fifth['first']} {fifth['last']} fans, reply 👇\n\n#EuroLeague #MVP {' '.join(clubs)}")
     return text, [label(p) for p in options]
 
 
