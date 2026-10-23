@@ -145,7 +145,6 @@ def page(folder, data, lang, fmt):
     C = BRAND["colors"]
     w, h = (1080, 1350) if fmt == "ig" else (1600, 900)
     players = {p["slot"]: p for p in data["players"]}
-    handle = BRAND["handle"]["ig" if fmt == "ig" else "x"][lang]
     t1, t2 = TITLE[lang]
     if fmt == "ig":   # two rows: the backcourt and wing (SG, PG, SF), then the bigs (PF, C) nearer the basket
         tw, th = 290, 270
@@ -197,7 +196,6 @@ body {{ font-family:F, sans-serif; color:{C['fg']}; background:{C['bg']}; positi
 <div class="top"><span class="brand">{centre_disc(C['accent'])}<b>{html.escape(BRAND['name'][lang])}</b> · {ROUND[lang].format(n=data['round'])}</span></div>
 <div class="title">{html.escape(t1)}<br><em>{html.escape(t2)}</em></div>
 {tiles}
-<div class="foot">{html.escape(handle)}</div>
 <script>for (const el of document.querySelectorAll('.last')) {{ let fs = parseFloat(getComputedStyle(el).fontSize);
   while (el.scrollWidth > el.parentElement.clientWidth + 1 && fs > 20) {{ fs -= 2; el.style.fontSize = fs + 'px'; }} }}</script>"""
     return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><style>{css}</style></head><body>{body}</body></html>', w, h

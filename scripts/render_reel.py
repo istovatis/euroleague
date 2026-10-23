@@ -75,7 +75,7 @@ body {{ padding: 0; }}
         scenes.append(f"""<section class="scene{' has-photo' if photo else ''}">{bg}
 <div class="top"><span class="brand">{centre_disc(colors['accent'])}<b>{html.escape(BRAND['name'][lang])}</b> · {html.escape(spec['round_label'])}</span><span></span></div>
 <div class="main">{card_html(card, lang)}</div>
-<div class="foot"><span>{html.escape(BRAND['handle']['ig'][lang])}</span>{credit}</div></section>""")
+<div class="foot"><span></span>{credit}</div></section>""")
     scenes.append(f"""<section class="scene outro">{centre_disc(colors['accent'], 300, 'o')}
 <div class="word">{html.escape(BRAND['name'][lang])}</div><div class="tag">{html.escape(TAGLINE[lang])}</div>
 <div class="handle">{html.escape(BRAND['handle']['ig'][lang])}</div></section>""")

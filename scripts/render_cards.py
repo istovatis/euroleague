@@ -236,7 +236,7 @@ def page(spec, card, fmt, n, total, photo=None):
     return f"""<!doctype html><html lang="{spec['lang']}"><head><meta charset="utf-8"><style>{css}</style></head><body class="{"has-photo" if photo else ""}">{bg}
 <div class="top"><span class="brand">{centre_disc(BRAND['colors']['accent'])}<b>{html.escape(BRAND['name'][spec['lang']])}</b> · {html.escape(spec['round_label'])}</span><span>{page_no}</span></div>
 <div class="main">{card_html(card, spec["lang"])}</div>
-<div class="foot"><span>{html.escape(BRAND['handle']["ig" if fmt == "story" else fmt][spec['lang']])}</span>{credit}</div>
+<div class="foot"><span></span>{credit}</div>
 <script>
 // Long words (e.g. Greek) must never run off the card: shrink a headline until it fits its box.
 for (const el of document.querySelectorAll('.title, .team')) {{
