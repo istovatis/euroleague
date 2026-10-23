@@ -1,0 +1,47 @@
+{
+  "lang": "en",
+  "round_label": "Round 7",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "Round 7",
+      "title": "Round 7 belonged\nto the *road*.",
+      "subtitle": "5 road wins in 10 games · Fenerbahçe took Olympiacos' floor"
+    },
+    {
+      "type": "score",
+      "badges": ["HTA", "PAM"],
+      "kicker": "Players of the round · PIR",
+      "sides": [
+        {"team": "Zach Leday", "score": 33, "won": true},
+        {"team": "TJ Shorts", "score": 33, "won": true}
+      ],
+      "note": "Dead heat. Both won.",
+      "lines": [
+        ["Leday (Hapoel)", "22 pts · 10 reb · 8/9 FT"],
+        ["Shorts (Valencia)", "25 pts · 9 ast · 5/5 FT"]
+      ]
+    },
+    {
+      "type": "list",
+      "kicker": "The table after Round 7",
+      "items": [
+        {"tag": "1 · 6-1", "text": "Panathinaikos · *Still on top*"},
+        {"tag": "2 · 6-1", "text": "Fenerbahçe · *Level at the top*"},
+        {"tag": "3 · 5-2", "text": "Valencia · *Up to 3rd*"},
+        {"tag": "4 · 5-2", "text": "Olympiacos · *Down 1*"},
+        {"tag": "8 · 4-3", "text": "Crvena Zvezda · *Down 3 after the derby*"}
+      ]
+    }
+  ],
+  "x": {
+    "type": "list",
+    "kicker": "Round 7 · the table",
+    "items": [
+      {"tag": "1 · 6-1", "text": "Panathinaikos · *Still on top*"},
+      {"tag": "2 · 6-1", "text": "Fenerbahçe · *Won at Olympiacos*"},
+      {"tag": "3 · 5-2", "text": "Valencia · *Up to 3rd*"},
+      {"tag": "MVP", "text": "Leday & Shorts · *33 PIR each*"}
+    ]
+  }
+}

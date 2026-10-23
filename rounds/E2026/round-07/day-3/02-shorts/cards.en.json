@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 7",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["PRS", 93, "PAM", 104],
+      "kicker": "MVP of the night",
+      "title": "33 PIR.\nIn *24 minutes*.",
+      "subtitle": "TJ Shorts · Valencia"
+    },
+    {
+      "type": "score",
+      "badges": ["PRS", "PAM"],
+      "kicker": "Final · Paris",
+      "sides": [
+        {"team": "Paris", "score": 93, "won": false},
+        {"team": "Valencia", "score": 104, "won": true}
+      ],
+      "note": "57 at the half. 83 after three.",
+      "lines": [
+        ["Shorts", "25 pts · 9 ast · 33 PIR"],
+        ["Brooks", "22 pts · 4/7 3P · 29 PIR"],
+        ["Rhoden (PRS)", "20 pts · 4 ast"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The climb",
+      "title": "*104* in Paris.\nValencia up to *3rd*.",
+      "subtitle": "5-2 after Round 7"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["PRS", "PAM"],
+    "kicker": "MVP of the night · TJ Shorts",
+    "sides": [
+      {"team": "Paris", "score": 93, "won": false},
+      {"team": "Valencia", "score": 104, "won": true}
+    ],
+    "note": "33 PIR in 24 minutes.",
+    "lines": [
+      ["Shorts", "25 pts · 9 ast · 33 PIR"],
+      ["Brooks", "22 pts · 4/7 3P · 29 PIR"]
+    ]
+  }
+}

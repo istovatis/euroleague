@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 7",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["OLY", 61, "ULK", 64],
+      "kicker": "Game changer",
+      "title": "8 points in the first.\n*Won* anyway.",
+      "subtitle": "Shavon Shields · Fenerbahçe"
+    },
+    {
+      "type": "score",
+      "badges": ["OLY", "ULK"],
+      "kicker": "Final · #3 vs #2",
+      "sides": [
+        {"team": "Olympiacos", "score": 61, "won": false},
+        {"team": "Fenerbahçe", "score": 64, "won": true}
+      ],
+      "note": "20-8 after one. Then Fenerbahçe 56-41.",
+      "lines": [
+        ["Shields", "17 pts · 7 reb · 25 PIR"],
+        ["Larkin", "13 pts · 5 ast · +13"],
+        ["Vezenkov (OLY)", "17 pts · 10 reb"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The table",
+      "title": "*6-1*.\nLevel with *Panathinaikos* at the top.",
+      "subtitle": "Olympiacos drop to 5-2"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["OLY", "ULK"],
+    "kicker": "Game changer · Shavon Shields",
+    "sides": [
+      {"team": "Olympiacos", "score": 61, "won": false},
+      {"team": "Fenerbahçe", "score": 64, "won": true}
+    ],
+    "note": "Down 20-8 after one. Won the rest 56-41.",
+    "lines": [
+      ["Shields", "17 pts · 7 reb · 25 PIR"],
+      ["Larkin", "13 pts · 5 ast · +13"]
+    ]
+  }
+}

@@ -69,5 +69,41 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/6"
+  },
+  {
+    "story": "rounds/E2026/round-07/day-3/01-shields",
+    "when": "2026-10-24T00:18:00+03:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-07/day-3/02-shorts",
+    "when": "2026-10-24T00:19:00+03:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-07/highlight",
+    "when": "2026-10-24T12:00:00+03:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]
