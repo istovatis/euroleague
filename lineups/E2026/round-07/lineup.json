@@ -1,0 +1,81 @@
+{
+  "season": "E2026",
+  "round": 7,
+  "players": [
+    {
+      "code": "012608",
+      "first": "Tj",
+      "last": "Shorts",
+      "club": "PAM",
+      "dorsal": "0",
+      "position": "Guard",
+      "pir": 33.0,
+      "pts": 25.0,
+      "ast": 9.0,
+      "reb": 4.0,
+      "won": true,
+      "game": 69,
+      "slot": "PG"
+    },
+    {
+      "code": "013384",
+      "first": "Armoni",
+      "last": "Brooks",
+      "club": "PAM",
+      "dorsal": "12",
+      "position": "Guard",
+      "pir": 29.0,
+      "pts": 22.0,
+      "ast": 3.0,
+      "reb": 7.0,
+      "won": true,
+      "game": 69,
+      "slot": "SG"
+    },
+    {
+      "code": "007831",
+      "first": "Shavon",
+      "last": "Shields",
+      "club": "ULK",
+      "dorsal": "31",
+      "position": "Forward",
+      "pir": 25.0,
+      "pts": 17.0,
+      "ast": 1.0,
+      "reb": 7.0,
+      "won": true,
+      "game": 70,
+      "slot": "SF"
+    },
+    {
+      "code": "008987",
+      "first": "Zach",
+      "last": "Leday",
+      "club": "HTA",
+      "dorsal": "16",
+      "position": "Forward",
+      "pir": 33.0,
+      "pts": 22.0,
+      "ast": 4.0,
+      "reb": 10.0,
+      "won": true,
+      "game": 61,
+      "slot": "PF"
+    },
+    {
+      "code": "012796",
+      "first": "Mfiondu",
+      "last": "Kabengele",
+      "club": "DUB",
+      "dorsal": "17",
+      "position": "Center",
+      "pir": 29.0,
+      "pts": 24.0,
+      "ast": 2.0,
+      "reb": 7.0,
+      "won": true,
+      "game": 65,
+      "slot": "C"
+    }
+  ]
+}

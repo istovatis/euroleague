@@ -108,5 +108,15 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/7"
+  },
+  {
+    "story": "lineups/E2026/round-07",
+    "when": "2026-10-24T19:00:00+03:00",
+    "langs": [
+      "en",
+      "el",
+      "x"
+    ],
+    "approved": false
   }
 ]
