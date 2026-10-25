@@ -1,0 +1,83 @@
+{
+  "lang": "en",
+  "round_label": "Belgrade",
+  "ig": [
+    {
+      "type": "hook",
+      "photo": "exterior",
+      "kicker": "Arena of the week",
+      "title": "The arena\nthat *wouldn't\nquit*.",
+      "subtitle": "Belgrade Arena",
+      "badges": [
+        "RED",
+        "PAR"
+      ]
+    },
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "22,198 in.\n*Phones up.*",
+      "subtitle": "ABA Finals Game 5 · Partizan vs Zvezda · 22 June 2023"
+    },
+    {
+      "type": "list",
+      "kicker": "Belgrade Arena",
+      "items": [
+        {
+          "tag": "Capacity",
+          "text": "21,000"
+        },
+        {
+          "tag": "Opened",
+          "text": "31 July 2004"
+        },
+        {
+          "tag": "Home of",
+          "text": "Crvena Zvezda & Partizan"
+        },
+        {
+          "tag": "This week",
+          "text": "Zvezda vs Maccabi · Tue 27 Oct"
+        }
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Did you know",
+      "title": "24,232\nfor a *Eurocup*\ngame.",
+      "subtitle": "Zvezda vs Budivelnyk, 2014 · the arena's record crowd"
+    }
+  ],
+  "x": [
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "22,198 in.\n*Phones up.*",
+      "subtitle": "ABA Finals Game 5 · 22 June 2023"
+    },
+    {
+      "type": "list",
+      "kicker": "Arena of the week",
+      "items": [
+        {
+          "tag": "Capacity",
+          "text": "21,000"
+        },
+        {
+          "tag": "Opened",
+          "text": "31 July 2004"
+        },
+        {
+          "tag": "Home of",
+          "text": "Crvena Zvezda & Partizan"
+        },
+        {
+          "tag": "This week",
+          "text": "Zvezda vs Maccabi · Tue 27 Oct"
+        }
+      ]
+    }
+  ]
+}
