@@ -62,6 +62,10 @@ def kind(folder):
         return "Arena"
     if rel.startswith("finals/"):
         return "Final score"
+    if rel.startswith("lineups/"):
+        return "Lineup of the week"
+    if rel.startswith("countdowns/"):
+        return "Countdown"
     if "/highlight" in rel:
         return "Round highlight"
     return "Lead story" if folder.name.startswith("01-") else "Day story"
@@ -93,9 +97,9 @@ def collect(since):
         if when < since or channel.startswith("story-"):
             continue
         folder = record.parent
-        if channel == "x":
-            x_posts.append({"folder": folder, "id": data["id"], "url": data["url"], "when": when})
-        else:
+        if channel in ("x", "poll"):  # X posts, including the Saturday MVP poll
+            x_posts.append({"folder": folder, "id": data["id"], "url": data["url"], "when": when, "poll": channel == "poll"})
+        elif "media_id" in data:  # Instagram (carousel, single image or Reel); anything else is skipped
             lang = channel.split("-")[-1]
             posts.append({"folder": folder, "lang": lang, "reel": channel.startswith("reel-"), "when": when,
                           "media_id": data["media_id"], "url": data.get("permalink") or ""})
@@ -198,7 +202,7 @@ def main():
         finals = [p for p in x_posts if kind(p["folder"]) == "Final score"]
         for p in sorted([p for p in x_posts if p not in finals], key=lambda p: -x_metrics.get(p["id"], {}).get("impression_count", 0)):
             m = x_metrics.get(p["id"], {})
-            lines.append(f"| [{p['folder'].name}]({p['url']}) | {kind(p['folder'])} | " + " | ".join(
+            lines.append(f"| [{p['folder'].name}]({p['url']}) | {'MVP poll' if p.get('poll') else kind(p['folder'])} | " + " | ".join(
                 str(m.get(k, "-")) for k in ("impression_count", "like_count", "retweet_count", "reply_count", "bookmark_count")) + " |")
         if finals:
             tot = lambda k: sum(x_metrics.get(p["id"], {}).get(k, 0) for p in finals)
