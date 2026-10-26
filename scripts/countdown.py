@@ -9,6 +9,7 @@
    meetings) and writes the folder: meta.json, prompt.txt (the AI video prompt in the home fans' colours),
    post.en.md / post.el.md and a README. The workflow opens an issue with the prompt and an upload link.
 2. The owner generates the clip (Veo or similar, 9:16, no sound) and uploads it to the folder as clip.mp4.
+   Optional: "clip_start" in meta.json (seconds) picks where the ~4 seconds we use begin (default 0).
 3. build (runs on that upload): our text layer ("1 DAY TO GO", the matchup, the time) and the logo outro over the
    clip, silent: cards/en/x.mp4 for X and cards/<lang>/reel.mp4 for the Reels. It queues the post as a draft for
    12:00 Athens the day before the game. AI video can go wrong, so the owner approves it like any other post.
@@ -176,23 +177,23 @@ def layer(m, lang, w, h):
     else:
         txt = ("1 day to go", home["en"], f"vs {away['en']}", f"{t:%a %d %b} · {t:%H:%M} · {FANS[m['home']][1]}")
     vertical = h > w
-    pad, big = (72, 150) if vertical else (80, 130)
+    pad, big = (72, 132) if vertical else (80, 120)
     # The home club's real crest (rendered by us; the AI clip itself must never draw logos)
     from render_cards import crest_file
     cf = crest_file(m["home"]) if b.BRAND.get("club_marks") == "crests" else None
-    size = 150 if vertical else 120
+    size = 110 if vertical else 96
     crest = (f'<div style="width:{size}px;height:{size}px;border-radius:50%;background:#fff;display:flex;align-items:center;'
-             f'justify-content:center;box-shadow:0 6px 24px #000a;margin-bottom:26px"><img src="{cf.as_uri()}" '
+             f'justify-content:center;box-shadow:0 6px 24px #000a;flex:none"><img src="{cf.as_uri()}" '
              f'style="width:72%;height:72%;object-fit:contain"></div>') if cf else ""
     body = f"""<div style="position:absolute; inset:0; background: linear-gradient(180deg, {C['bg']}AA 0%, transparent 18%,
       transparent {48 if vertical else 35}%, {C['bg']}E6 {78 if vertical else 80}%, {C['bg']} 100%)"></div>
     <div style="position:absolute; left:{pad}px; top:{250 if vertical else 60}px; display:flex; align-items:center; gap:14px;
       font-weight:700; font-size:30px; letter-spacing:.12em; text-transform:uppercase; color:{C['fg']}">
       {centre_disc(C['accent'], 36, 'k')}<b style="font-weight:900">{b.BRAND['name'][lang]}</b></div>
-    <div style="position:absolute; left:{pad}px; right:{pad}px; bottom:{330 if vertical else 70}px">
-      {crest}
+    <div style="position:absolute; left:{pad}px; right:{pad}px; bottom:{250 if vertical else 60}px">
+      <div style="display:flex; align-items:center; gap:22px; margin-bottom:22px">{crest}
       <div style="display:inline-block; background:{C['accent']}; color:{C['bg']}; font-weight:900; font-size:{48 if vertical else 40}px;
-        letter-spacing:.08em; text-transform:uppercase; padding:8px 20px; margin-bottom:24px">{txt[0]}</div>
+        letter-spacing:.08em; text-transform:uppercase; padding:8px 20px">{txt[0]}</div></div>
       <div class="t" style="font-weight:900; font-size:{big}px; line-height:.92; text-transform:uppercase; color:{C['fg']}">{txt[1]}<br>
         <span style="color:{C['accent']}">{txt[2]}</span></div>
       <div style="margin-top:22px; font-weight:700; font-size:{40 if vertical else 36}px; letter-spacing:.06em; text-transform:uppercase;
@@ -223,13 +224,13 @@ def probe(ffmpeg, clip):
     return w, h, int(hh) * 3600 + int(mm) * 60 + float(ss)
 
 
-def compose(ffmpeg, clip, size, txt_png, end_png, out, seconds):
+def compose(ffmpeg, clip, size, txt_png, end_png, out, seconds, start=0.0):
     """Clip (cropped to fill the frame, up to 4.2 s) + text layer rising in + 0.8 s logo outro. No audio."""
     w, h = size
-    body = min(seconds, 4.2)
+    body = min(seconds - start, 4.2)
     total = body + 0.8
     fill = f"scale={w}:{h}:force_original_aspect_ratio=increase:flags=lanczos,crop={w}:{h}"
-    subprocess.run([ffmpeg, "-y", "-loglevel", "error", "-t", f"{body:.2f}", "-i", str(clip),
+    subprocess.run([ffmpeg, "-y", "-loglevel", "error", "-ss", f"{start:.2f}", "-t", f"{body:.2f}", "-i", str(clip),
                     "-loop", "1", "-t", f"{total:.2f}", "-i", str(txt_png), "-loop", "1", "-t", f"{total:.2f}", "-i", str(end_png),
                     "-filter_complex",
                     f"[0:v]{fill},setsar=1,fps=30,tpad=stop_mode=clone:stop_duration=0.8[bg];"
@@ -266,7 +267,7 @@ def build(folder, queue_it=True):
         txt, end = tmp / f"txt-{lang}-{w}.png", tmp / f"end-{lang}-{w}-{handle.strip('@')}.png"
         b.shoot(*layer(m, lang, w, h), txt, lang)
         b.shoot(*outro(lang, w, h, handle), end, lang)
-        compose(ffmpeg, clip, (w, h), txt, end, out, seconds)
+        compose(ffmpeg, clip, (w, h), txt, end, out, seconds, float(m.get("clip_start", 0)))
         print(out.relative_to(ROOT))
     for f in tmp.iterdir():
         f.unlink()
