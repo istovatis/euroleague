@@ -132,5 +132,16 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/10"
+  },
+  {
+    "story": "countdowns/E2026/round-09/bar-pam",
+    "when": "2026-10-29T12:00:00+02:00",
+    "langs": [
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false,
+    "notified": "https://github.com/istovatis/euroleague/issues/11"
   }
 ]
