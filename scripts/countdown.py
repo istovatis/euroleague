@@ -50,13 +50,14 @@ DAYS_EL = ["Δευ", "Τρί", "Τετ", "Πέμ", "Παρ", "Σάβ", "Κυρ"]
 
 PROMPT = """Vertical 9:16 video, 8 seconds, cinematic, photorealistic. No audio.
 
-Inside a packed indoor basketball arena about an hour before tip-off. The camera starts close behind a young fan
-standing in the lower stands, holding a {colors} striped knitted scarf stretched above their head with both hands.
-Slow, steady push-in over their shoulder, revealing the glowing empty hardwood court below and thousands of fans
-behind and around them, all in {colors}, waving scarves and clapping in rhythm. Light haze hangs under the arena
-spotlights, warm golden light on the court, the crowd slightly darker and full of motion. The fan turns their head
-slightly toward the court, excited, anticipating. Shallow depth of field, anamorphic lens look, subtle film grain,
-dramatic sports-broadcast atmosphere.
+A packed indoor basketball arena minutes before tip-off. Medium close-up, the camera facing a man in his early
+thirties standing in the lower stands among the home fans. He wears a plain {colors} t-shirt with no print and holds
+a {colors} striped knitted scarf high above his head with both hands. He is chanting for his team at the top of his
+voice: mouth wide open, neck straining, eyes fierce and shining, completely lost in the moment, pure passion and
+pride. Around and behind him thousands of fans in {colors} chant with him, scarves raised, arms pumping in rhythm,
+some jumping. Slow push-in toward his face; behind him, out of focus, the glowing hardwood court and the arena
+lights. Haze under the spotlights, warm golden light on his face, strong contrast. Shallow depth of field,
+anamorphic lens, subtle film grain, emotional sports-documentary atmosphere.
 
 Strictly no text, no letters, no numbers, no logos, no crests, no sponsor boards with readable writing, no team
 names, no recognizable real people, no players on the court.
@@ -176,12 +177,20 @@ def layer(m, lang, w, h):
         txt = ("1 day to go", home["en"], f"vs {away['en']}", f"{t:%a %d %b} · {t:%H:%M} · {FANS[m['home']][1]}")
     vertical = h > w
     pad, big = (72, 150) if vertical else (80, 130)
+    # The home club's real crest (rendered by us; the AI clip itself must never draw logos)
+    from render_cards import crest_file
+    cf = crest_file(m["home"]) if b.BRAND.get("club_marks") == "crests" else None
+    size = 150 if vertical else 120
+    crest = (f'<div style="width:{size}px;height:{size}px;border-radius:50%;background:#fff;display:flex;align-items:center;'
+             f'justify-content:center;box-shadow:0 6px 24px #000a;margin-bottom:26px"><img src="{cf.as_uri()}" '
+             f'style="width:72%;height:72%;object-fit:contain"></div>') if cf else ""
     body = f"""<div style="position:absolute; inset:0; background: linear-gradient(180deg, {C['bg']}AA 0%, transparent 18%,
       transparent {48 if vertical else 35}%, {C['bg']}E6 {78 if vertical else 80}%, {C['bg']} 100%)"></div>
     <div style="position:absolute; left:{pad}px; top:{250 if vertical else 60}px; display:flex; align-items:center; gap:14px;
       font-weight:700; font-size:30px; letter-spacing:.12em; text-transform:uppercase; color:{C['fg']}">
       {centre_disc(C['accent'], 36, 'k')}<b style="font-weight:900">{b.BRAND['name'][lang]}</b></div>
     <div style="position:absolute; left:{pad}px; right:{pad}px; bottom:{330 if vertical else 70}px">
+      {crest}
       <div style="display:inline-block; background:{C['accent']}; color:{C['bg']}; font-weight:900; font-size:{48 if vertical else 40}px;
         letter-spacing:.08em; text-transform:uppercase; padding:8px 20px; margin-bottom:24px">{txt[0]}</div>
       <div class="t" style="font-weight:900; font-size:{big}px; line-height:.92; text-transform:uppercase; color:{C['fg']}">{txt[1]}<br>
