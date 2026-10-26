@@ -13,11 +13,12 @@ on:
         required: false
 
 permissions:
+  actions: write
   contents: write
   issues: write
 
 concurrency:
-  group: publish
+  group: approve
   cancel-in-progress: false
 
 jobs:
@@ -48,3 +49,4 @@ jobs:
           git pull -q --rebase origin main
           git push -q origin main
           python3 scripts/notify_drafts.py cleanup
+          gh workflow run publish.yml -f dry_run=false  # publish now: GitHub's timer often skips runs

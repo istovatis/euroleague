@@ -9,11 +9,12 @@ on:
     types: [edited]
 
 permissions:
+  actions: write
   contents: write
   issues: write
 
 concurrency:
-  group: publish
+  group: approve
   cancel-in-progress: false
 
 jobs:
@@ -51,3 +52,4 @@ jobs:
           git commit -q -m "Approve posts: issue #$ISSUE"
           git pull -q --rebase origin main
           git push -q origin main
+          gh workflow run publish.yml -f dry_run=false  # publish now: GitHub's timer often skips runs

@@ -77,6 +77,7 @@ def main():
     sub.add_parser("list")
     r = sub.add_parser("run")
     r.add_argument("--dry-run", action="store_true")
+    r.add_argument("--drain", action="store_true", help="keep going until every due post is out, GAP_MINUTES apart (CI)")
     sub.add_parser("check")
     args = ap.parse_args()
     entries = load()
@@ -132,34 +133,51 @@ def main():
             print(f"{dt.datetime.fromisoformat(e['when']):%a %d %b %H:%M}  {e['story']}  {state}")
         return
 
-    now = dt.datetime.now(dt.timezone.utc)
     sys.path.insert(0, str(ROOT / "scripts"))
     import publish_x
+    import time
     channels = lambda e: [c for c in e["langs"] if c != "x" or publish_x.configured()]
-    due = [e for e in entries if dt.datetime.fromisoformat(e["when"]) <= now and e.get("approved", True)
-           and not all(done(e, lang) for lang in channels(e))]
-    if not due:
-        return
-    last = last_published()
-    if last and now - last < dt.timedelta(minutes=GAP_MINUTES) and not args.dry_run:
-        print(f"{len(due)} due; the last post went out at {last:%H:%M} UTC, waiting for the {GAP_MINUTES}-minute gap")
-        return
-    e = due[0]
-    failed = False
-    for lang in channels(e):
-        if done(e, lang):
+    failed_any = False
+    tried = set()
+    deadline = time.time() + 5 * 3600  # --drain: one CI job publishes the whole batch, GAP_MINUTES apart
+    while True:
+        if args.drain:  # pick up approvals made while this job runs
+            subprocess.run(["git", "-C", str(ROOT), "pull", "-q", "--rebase", "--autostash", "origin", "main"], check=False)
+            entries = load()
+        now = dt.datetime.now(dt.timezone.utc)
+        due = [e for e in entries if dt.datetime.fromisoformat(e["when"]) <= now and e.get("approved", True)
+               and not all(done(e, lang) for lang in channels(e)) and e["story"] not in tried]
+        if not due:
+            break
+        last = last_published()
+        if last and now - last < dt.timedelta(minutes=GAP_MINUTES) and not args.dry_run:
+            wait = (last + dt.timedelta(minutes=GAP_MINUTES) - now).total_seconds()
+            if not args.drain or time.time() + wait > deadline:
+                print(f"{len(due)} due; the last post went out at {last:%H:%M} UTC, waiting for the {GAP_MINUTES}-minute gap")
+                break
+            print(f"{len(due)} due; next in {wait / 60:.0f} min (the {GAP_MINUTES}-minute gap)", flush=True)
+            time.sleep(wait + 5)
             continue
-        print(f"== {e['story']} [{lang}] due {e['when']}", flush=True)
-        if lang == "x":
-            cmd = [sys.executable, str(ROOT / "scripts" / "publish_x.py"), e["story"]]
-        elif lang.startswith("reel-"):
-            cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang[5:], "--reel"]
-        else:
-            cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang]
-        if not args.dry_run:
-            cmd.append("--yes")
-        failed |= subprocess.run(cmd).returncode != 0
-    sys.exit(1 if failed else 0)
+        e = due[0]
+        tried.add(e["story"])  # a failing entry is tried once per job, so it can't loop
+        failed = False
+        for lang in channels(e):
+            if done(e, lang):
+                continue
+            print(f"== {e['story']} [{lang}] due {e['when']}", flush=True)
+            if lang == "x":
+                cmd = [sys.executable, str(ROOT / "scripts" / "publish_x.py"), e["story"]]
+            elif lang.startswith("reel-"):
+                cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang[5:], "--reel"]
+            else:
+                cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang]
+            if not args.dry_run:
+                cmd.append("--yes")
+            failed |= subprocess.run(cmd).returncode != 0
+        failed_any |= failed
+        if not args.drain:
+            break
+    sys.exit(1 if failed_any else 0)
 
 
 if __name__ == "__main__":

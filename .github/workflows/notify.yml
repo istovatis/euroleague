@@ -18,7 +18,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: publish
+  group: approve
   cancel-in-progress: false
 
 jobs:
