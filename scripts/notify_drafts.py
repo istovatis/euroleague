@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Email the owner when posts wait for approval, and approve them from a reply.
 
-  python3 scripts/notify_drafts.py notify [--test]              # open an issue for drafts not announced yet (--test: mock data)
+  python3 scripts/notify_drafts.py notify [--test]              # open an issue for drafts not announced yet (--test: mock data);
+                                                                # with AUTO_APPROVE_DAY_POSTS=true, game-day drafts are approved first
   python3 scripts/notify_drafts.py comment <issue> <author> <text>   # a comment on such an issue (run by CI)
   python3 scripts/notify_drafts.py boxes <issue> <sender>       # the owner ticked boxes in such an issue (run by CI)
   python3 scripts/notify_drafts.py cleanup                      # close issues whose drafts were approved elsewhere
@@ -18,6 +19,7 @@ approved; "approve 01" approves only the drafts whose path contains "01". Commen
 Once nothing in the issue waits any more, it is closed.
 """
 import json
+import os
 import pathlib
 import re
 import subprocess
@@ -65,6 +67,49 @@ def preview(story):
         if (cards / name).exists():
             return f"{RAW}/{story}/cards/en/{name}"
     return None  # a video post: the folder link shows the videos
+
+
+DAY_POST = re.compile(r"^rounds/[^/]+/round-\d+/day-\d+/")
+
+
+def auto_approve():
+    """Feature flag AUTO_APPROVE_DAY_POSTS=true (repository variable): game-day stories are approved as soon as they
+    are drafted, and the owner gets an FYI email (a closed issue with the previews) instead of an approval request.
+    Highlights, arenas, countdowns and lineups still wait for the owner. Returns the approved stories."""
+    if os.environ.get("AUTO_APPROVE_DAY_POSTS", "").strip().lower() != "true":
+        return []
+    entries = q.load()
+    hits = [e for e in entries if not e.get("approved", True) and not e.get("notified") and DAY_POST.match(e["story"])]
+    if not hits:
+        return []
+    for e in hits:
+        e["approved"] = True
+        e["notified"] = "auto-approved"
+    q.save(entries)
+    titles = sorted({title_of(e["story"]) for e in hits})
+    lines = [f"@{OWNER} Published automatically (AUTO_APPROVE_DAY_POSTS is on): {len(hits)} post"
+             f"{'s' if len(hits) > 1 else ''}, going out now, 30 minutes apart. Nothing to do.", "",
+             "To review these again yourself, turn the flag off: "
+             f"`gh variable set AUTO_APPROVE_DAY_POSTS --body false --repo {REPO}`", ""]
+    for e in hits:
+        s = e["story"]
+        lines += [f"### [{s.split('/')[-1]}](https://github.com/{REPO}/tree/main/{s})", ""]
+        img = preview(s)
+        if img:
+            lines += [f'<img src="{img}" width="360">', ""]
+        text = x_text(s)
+        if text:
+            lines += ["X text:", "", "> " + text.replace("\n", "\n> "), ""]
+    body = ROOT / ".approval-body.md"
+    body.write_text("\n".join(lines))
+    try:
+        url = gh("issue", "create", "--title", f"Auto-published: {', '.join(titles)}", "--assignee", OWNER,
+                 "--body-file", str(body)).stdout.strip()
+    finally:
+        body.unlink()
+    gh("issue", "close", url.rsplit("/", 1)[1], check=False)  # an FYI: nothing to act on
+    print(f"AUTO-APPROVED {len(hits)}: {url}")
+    return [e["story"] for e in hits]
 
 
 def notify(test=False):
@@ -191,6 +236,8 @@ def cleanup():
 
 if __name__ == "__main__":
     if sys.argv[1:2] == ["notify"]:
+        if not "--test" in sys.argv:
+            auto_approve()
         notify(test="--test" in sys.argv)
     elif sys.argv[1:2] == ["cleanup"]:
         cleanup()
