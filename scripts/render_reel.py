@@ -3,7 +3,8 @@
 
 Usage: python3 scripts/render_reel.py <story> <lang>      e.g. rounds/E2026/round-07/day-1/01-<slug> en
 
-The same slides as the carousel (cards.<lang>.json "ig"), in motion: the photo slowly pushes in, kickers and
+The same slides as the carousel (cards.<lang>.json "ig"), in motion. Slide 1 is fully on screen from the first frame
+(viewers decide in under a second); after it, the photo slowly pushes in, kickers and
 badges slide in, headline lines rise one by one, scores count up, stat lines stagger in; then a short brand
 outro. Scenes are HTML (render_cards.py's styles at Story size); headless Chrome is stepped frame by frame
 through Playwright and the frames go to ffmpeg. No music: the API can't add licensed audio, so the track
@@ -115,6 +116,13 @@ function setup() {
     if (!last) anim(sc, [{opacity: 1}, {opacity: 0}], s + d - 180, 180, 'linear', 'forwards');
     const photo = sc.querySelector('.photo');
     if (photo) anim(photo, [{transform: 'scale(1.12)'}, {transform: 'scale(1)'}], s, d, 'linear');
+    // Slide 1 is complete from the very first frame (most viewers decide in under a second): no build-up,
+    // just a slight settle so the frame isn't static.
+    if (i === 0) {
+      const settle = sc.querySelector('.main');
+      if (settle) anim(settle, [{transform: 'scale(1.06)'}, {transform: 'none'}], 0, 700);
+      return;
+    }
     let t = s + 150;
     const step = (el, frames, dur, gap) => { anim(el, frames, t, dur); t += gap; };
     const fromLeft = [{opacity: 0, transform: 'translateX(-80px)'}, {opacity: 1, transform: 'none'}];
