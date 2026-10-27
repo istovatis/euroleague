@@ -1,0 +1,90 @@
+{
+  "lang": "en",
+  "round_label": "Round 8",
+  "ig": [
+    {
+      "type": "hook",
+      "game": [
+        "PAN",
+        80,
+        "MIL",
+        75
+      ],
+      "kicker": "Game changer",
+      "title": "Down after three.\n*Nunn* closed it.",
+      "subtitle": "Kendrick Nunn · Panathinaikos"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "PAN",
+        "MIL"
+      ],
+      "kicker": "Final · Athens",
+      "sides": [
+        {
+          "team": "Panathinaikos",
+          "score": 80,
+          "won": true
+        },
+        {
+          "team": "Milan",
+          "score": 75,
+          "won": false
+        }
+      ],
+      "note": "Milan led 61-60 after three. Then a 20-14 fourth.",
+      "lines": [
+        [
+          "Nunn",
+          "20 pts · 6 ast · 26 PIR"
+        ],
+        [
+          "Lessort",
+          "13 pts · 11 reb · 22 PIR"
+        ],
+        [
+          "Hernangómez",
+          "11 pts · 2/2 from three"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The table",
+      "title": "*7-1*.\nAlone at the top.",
+      "subtitle": "The only team with one loss"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": [
+      "PAN",
+      "MIL"
+    ],
+    "kicker": "Game changer · Kendrick Nunn",
+    "sides": [
+      {
+        "team": "Panathinaikos",
+        "score": 80,
+        "won": true
+      },
+      {
+        "team": "Milan",
+        "score": 75,
+        "won": false
+      }
+    ],
+    "note": "Down 61-60 after three. Won the 4th 20-14. 7-1.",
+    "lines": [
+      [
+        "Nunn",
+        "20 pts · 6 ast · 26 PIR"
+      ],
+      [
+        "Lessort",
+        "13 pts · 11 reb"
+      ]
+    ]
+  }
+}

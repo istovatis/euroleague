@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 8",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["DUB", 93, "PRS", 99],
+      "kicker": "Upset of the night",
+      "title": "1-6 coming in.\nWon in *Dubai*.",
+      "subtitle": "Paris · 18th beat 6th on the road"
+    },
+    {
+      "type": "score",
+      "badges": ["DUB", "PRS"],
+      "kicker": "Final · Dubai",
+      "sides": [
+        {"team": "Dubai", "score": 93, "won": false},
+        {"team": "Paris", "score": 99, "won": true}
+      ],
+      "note": "31-22 in the second. 73-72 after three. 26-21 to close.",
+      "lines": [
+        ["Rhoden", "20 pts · 22 PIR · +20"],
+        ["Hifi", "20 pts · 10/10 FT"],
+        ["Bacon (DUB)", "24 pts · 10 reb · 27 PIR"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The upset",
+      "title": "*#18* beat *#6*.\nOn the road.",
+      "subtitle": "Paris 2-6 · Dubai 5-3"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["DUB", "PRS"],
+    "kicker": "Upset of the night · Paris",
+    "sides": [
+      {"team": "Dubai", "score": 93, "won": false},
+      {"team": "Paris", "score": 99, "won": true}
+    ],
+    "note": "1-6 coming in. 18th beat 6th, on the road.",
+    "lines": [
+      ["Rhoden", "20 pts · 22 PIR · +20"],
+      ["Hifi", "20 pts · 10/10 FT"]
+    ]
+  }
+}

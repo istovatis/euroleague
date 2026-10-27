@@ -134,6 +134,42 @@
     "notified": "https://github.com/istovatis/euroleague/issues/10"
   },
   {
+    "story": "rounds/E2026/round-08/day-1/01-paris",
+    "when": "2026-10-28T00:14:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-08/day-1/02-nunn",
+    "when": "2026-10-28T00:15:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-08/day-1/03-valencia",
+    "when": "2026-10-28T00:16:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
     "story": "countdowns/E2026/round-09/bar-pam",
     "when": "2026-10-29T12:00:00+02:00",
     "langs": [

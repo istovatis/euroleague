@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 8",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["PAM", 86, "ULK", 78],
+      "kicker": "Statement win",
+      "title": "*9* points in the first.\n*32* in the fourth.\nToo late.",
+      "subtitle": "Valencia take down No. 2 Fenerbahçe"
+    },
+    {
+      "type": "score",
+      "badges": ["PAM", "ULK"],
+      "kicker": "Final · Valencia · #3 vs #2",
+      "sides": [
+        {"team": "Valencia", "score": 86, "won": true},
+        {"team": "Fenerbahçe", "score": 78, "won": false}
+      ],
+      "note": "19-9 after one. 60-46 after three. Fenerbahçe's 4th: 32-26.",
+      "lines": [
+        ["Shorts", "23 pts · 9/10 FT · 25 PIR"],
+        ["Mirotić", "12 pts · 6/6 inside"],
+        ["Baldwin (FEN)", "19 pts · 23 PIR"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The table",
+      "title": "*6-2*.\nLevel with *Fenerbahçe*.",
+      "subtitle": "Valencia 86-78 Fenerbahçe"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["PAM", "ULK"],
+    "kicker": "Statement win · Valencia",
+    "sides": [
+      {"team": "Valencia", "score": 86, "won": true},
+      {"team": "Fenerbahçe", "score": 78, "won": false}
+    ],
+    "note": "9 points in Fenerbahçe's first quarter. Both now 6-2.",
+    "lines": [
+      ["Shorts", "23 pts · 9/10 FT · 25 PIR"],
+      ["Mirotić", "12 pts · 6/6 inside"]
+    ]
+  }
+}
