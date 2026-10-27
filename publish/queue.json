@@ -143,7 +143,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-08/day-1/02-nunn",
@@ -155,7 +156,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-08/day-1/03-valencia",
@@ -167,7 +169,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "countdowns/E2026/round-09/bar-pam",
