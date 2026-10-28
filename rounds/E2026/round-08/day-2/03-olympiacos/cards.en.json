@@ -1,0 +1,94 @@
+{
+  "lang": "en",
+  "round_label": "Round 8",
+  "ig": [
+    {
+      "type": "hook",
+      "game": [
+        "BES",
+        73,
+        "OLY",
+        81
+      ],
+      "kicker": "Road win",
+      "title": "Lost at home.\nWon in *Istanbul*.",
+      "subtitle": "Olympiacos · 81-73 at Beşiktaş"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "BES",
+        "OLY"
+      ],
+      "kicker": "Final · Istanbul",
+      "sides": [
+        {
+          "team": "Beşiktaş",
+          "score": 73,
+          "won": false
+        },
+        {
+          "team": "Olympiacos",
+          "score": 81,
+          "won": true
+        }
+      ],
+      "note": "Beşiktaş closed to 61-58 after three. Then a 20-15 fourth.",
+      "lines": [
+        [
+          "Vezenkov",
+          "16 pts · 5 reb"
+        ],
+        [
+          "T. Jones",
+          "15 pts · 7/9 FG"
+        ],
+        [
+          "Hall",
+          "14 pts · 6/7 FG · 23 PIR"
+        ],
+        [
+          "Ward",
+          "13 pts · 5 ast · +15"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The answer",
+      "title": "Four scorers.\nOne *road win*.",
+      "subtitle": "Olympiacos 6-2 · Beşiktaş 3-5"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": [
+      "BES",
+      "OLY"
+    ],
+    "kicker": "Road win · Olympiacos",
+    "sides": [
+      {
+        "team": "Beşiktaş",
+        "score": 73,
+        "won": false
+      },
+      {
+        "team": "Olympiacos",
+        "score": 81,
+        "won": true
+      }
+    ],
+    "note": "61-58 after three. 20-15 to close. 6-2.",
+    "lines": [
+      [
+        "Vezenkov",
+        "16 pts · 5 reb"
+      ],
+      [
+        "Hall",
+        "14 pts · 6/7 FG · 23 PIR"
+      ]
+    ]
+  }
+}

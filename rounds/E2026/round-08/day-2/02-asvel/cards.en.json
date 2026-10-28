@@ -1,0 +1,90 @@
+{
+  "lang": "en",
+  "round_label": "Round 8",
+  "ig": [
+    {
+      "type": "hook",
+      "game": [
+        "ASV",
+        82,
+        "PAR",
+        75
+      ],
+      "kicker": "Comeback",
+      "title": "Down 3 after three.\n*ASVEL* answered.",
+      "subtitle": "ASVEL · 17th beat 11th at home"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "ASV",
+        "PAR"
+      ],
+      "kicker": "Final · LDLC Arena",
+      "sides": [
+        {
+          "team": "ASVEL",
+          "score": 82,
+          "won": true
+        },
+        {
+          "team": "Partizan",
+          "score": 75,
+          "won": false
+        }
+      ],
+      "note": "Partizan led 59-56 after three. Then a 26-16 fourth.",
+      "lines": [
+        [
+          "Waters",
+          "14 pts · 7 ast · 3 stl"
+        ],
+        [
+          "Mills",
+          "14 pts · +14"
+        ],
+        [
+          "Bolomboy",
+          "12 pts · 4/4 FT · +14"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The fourth",
+      "title": "*26-16*.\nThe last 10 minutes\nwere theirs.",
+      "subtitle": "ASVEL 3-5 · Partizan 4-4"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": [
+      "ASV",
+      "PAR"
+    ],
+    "kicker": "Comeback · ASVEL",
+    "sides": [
+      {
+        "team": "ASVEL",
+        "score": 82,
+        "won": true
+      },
+      {
+        "team": "Partizan",
+        "score": 75,
+        "won": false
+      }
+    ],
+    "note": "Down 59-56 after three. Won the 4th 26-16.",
+    "lines": [
+      [
+        "Waters",
+        "14 pts · 7 ast · 3 stl"
+      ],
+      [
+        "Mills",
+        "14 pts · +14"
+      ]
+    ]
+  }
+}

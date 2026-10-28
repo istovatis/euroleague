@@ -1,0 +1,90 @@
+{
+  "lang": "en",
+  "round_label": "Round 8",
+  "ig": [
+    {
+      "type": "hook",
+      "game": [
+        "HTA",
+        118,
+        "IST",
+        88
+      ],
+      "kicker": "MVP of the night",
+      "title": "8 of 9\nfrom *three*.",
+      "subtitle": "Antonio Blakeney · Hapoel Tel Aviv · 35 pts in 22 min"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "HTA",
+        "IST"
+      ],
+      "kicker": "Final",
+      "sides": [
+        {
+          "team": "Hapoel",
+          "score": 118,
+          "won": true
+        },
+        {
+          "team": "Efes",
+          "score": 88,
+          "won": false
+        }
+      ],
+      "note": "36-20 in the second. 90-59 after three.",
+      "lines": [
+        [
+          "Blakeney",
+          "35 pts · 8/9 3PT · 35 PIR"
+        ],
+        [
+          "Bryant",
+          "16 pts · 12 ast · 35 PIR"
+        ],
+        [
+          "Oturu",
+          "20 pts · 9/12 FG"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The night",
+      "title": "*35* points.\n*22* minutes.",
+      "subtitle": "Hapoel 6-2 · Efes 3-5"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": [
+      "HTA",
+      "IST"
+    ],
+    "kicker": "MVP of the night · Antonio Blakeney",
+    "sides": [
+      {
+        "team": "Hapoel",
+        "score": 118,
+        "won": true
+      },
+      {
+        "team": "Efes",
+        "score": 88,
+        "won": false
+      }
+    ],
+    "note": "35 points in 22 minutes. 8 of 9 from three.",
+    "lines": [
+      [
+        "Blakeney",
+        "35 pts · 8/9 3PT · 35 PIR"
+      ],
+      [
+        "Bryant",
+        "16 pts · 12 ast · 35 PIR"
+      ]
+    ]
+  }
+}

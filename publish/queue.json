@@ -182,6 +182,42 @@
     "approved": true
   },
   {
+    "story": "rounds/E2026/round-08/day-2/01-blakeney",
+    "when": "2026-10-28T23:52:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-08/day-2/02-asvel",
+    "when": "2026-10-28T23:54:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-08/day-2/03-olympiacos",
+    "when": "2026-10-28T23:55:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
     "story": "countdowns/E2026/round-09/bar-pam",
     "when": "2026-10-29T12:00:00+02:00",
     "langs": [
@@ -191,5 +227,17 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/11"
+  },
+  {
+    "story": "rounds/E2026/round-08/highlight",
+    "when": "2026-10-29T12:00:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]

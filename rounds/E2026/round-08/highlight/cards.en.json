@@ -1,0 +1,87 @@
+{
+  "lang": "en",
+  "round_label": "Round 8",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "Round 8",
+      "title": "Round 8 left\n*Panathinaikos*\nalone at the top.",
+      "subtitle": "7-1 · Four teams one game behind"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "HTA",
+        "HTA"
+      ],
+      "kicker": "Players of the round · PIR",
+      "sides": [
+        {
+          "team": "Antonio Blakeney",
+          "score": 35,
+          "won": true
+        },
+        {
+          "team": "Elijah Bryant",
+          "score": 35,
+          "won": true
+        }
+      ],
+      "note": "Same team. Same night. 35 each.",
+      "lines": [
+        [
+          "Blakeney",
+          "35 pts · 8/9 3PT · 22 min"
+        ],
+        [
+          "Bryant",
+          "16 pts · 12 ast · 4 stl"
+        ]
+      ]
+    },
+    {
+      "type": "list",
+      "kicker": "The table after Round 8",
+      "items": [
+        {
+          "tag": "1 · 7-1",
+          "text": "Panathinaikos · *Alone at the top*"
+        },
+        {
+          "tag": "2 · 6-2",
+          "text": "Valencia · *Up 1*"
+        },
+        {
+          "tag": "3 · 6-2",
+          "text": "Hapoel · *Up 2*"
+        },
+        {
+          "tag": "4 · 6-2",
+          "text": "Fenerbahçe · *Down 2*"
+        },
+        {
+          "tag": "9 · 5-3",
+          "text": "Dubai · *Down 3 after the Paris upset*"
+        }
+      ]
+    }
+  ],
+  "x": {
+    "type": "list",
+    "kicker": "Round 8 · the table",
+    "items": [
+      {
+        "tag": "1 · 7-1",
+        "text": "Panathinaikos · *Alone at the top*"
+      },
+      {
+        "tag": "2-5 · 6-2",
+        "text": "Valencia, Hapoel, Fenerbahçe, Olympiacos"
+      },
+      {
+        "tag": "MVP",
+        "text": "Blakeney & Bryant · *35 PIR each*"
+      }
+    ]
+  }
+}
