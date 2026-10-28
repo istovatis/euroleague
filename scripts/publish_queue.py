@@ -148,6 +148,16 @@ def main():
         due = [e for e in entries if dt.datetime.fromisoformat(e["when"]) <= now and e.get("approved", True)
                and not all(done(e, lang) for lang in channels(e)) and e["story"] not in tried]
         if not due:
+            # --drain also waits for approved posts scheduled within the job's time budget (e.g. today's 18:00 post),
+            # because GitHub's timer often skips the run that would publish them
+            later = sorted(dt.datetime.fromisoformat(e["when"]) for e in entries if e.get("approved", True)
+                           and dt.datetime.fromisoformat(e["when"]) > now and e["story"] not in tried
+                           and not all(done(e, lang) for lang in channels(e)))
+            if args.drain and later and later[0].timestamp() < deadline:
+                wait = (later[0] - now).total_seconds() + 5
+                print(f"Next scheduled post at {later[0]:%H:%M %Z}: waiting {wait / 60:.0f} min", flush=True)
+                time.sleep(wait)
+                continue
             break
         last = last_published()
         if last and now - last < dt.timedelta(minutes=GAP_MINUTES) and not args.dry_run:

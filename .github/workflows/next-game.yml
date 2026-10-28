@@ -1,0 +1,46 @@
+name: Next game
+
+# The day after Olympiacos or Panathinaikos play: a data-only post about their next game (scripts/next_game.py),
+# on the Greek Instagram account and X, at 18:00 Athens, without approval (the owner's decision, 2026-10-28).
+# Several daily runs, because GitHub skips scheduled runs; building and queueing happen once. Each run then starts the
+# publisher, which waits for the 18:00 slot when it is within a few hours.
+on:
+  schedule:
+    - cron: "0 7,10,13 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: next-game
+  cancel-in-progress: false
+
+jobs:
+  next-game:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install headless Chrome
+        run: npx -y playwright@1.49.1 install --only-shell chromium
+      - name: Build and queue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          python3 scripts/next_game.py
+          git add nextgame publish/queue.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Next game post(s) queued"
+            git pull -q --rebase origin main
+            git push -q origin main
+          fi
+          if python3 scripts/publish_queue.py list | grep "nextgame/" | grep -q pending; then
+            gh workflow run publish.yml -f dry_run=false
+          fi
