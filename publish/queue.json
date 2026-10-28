@@ -241,7 +241,7 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false,
+    "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/15"
   }
 ]
