@@ -158,6 +158,12 @@ def main():
                 print(f"Next scheduled post at {later[0]:%H:%M %Z}: waiting {wait / 60:.0f} min", flush=True)
                 time.sleep(wait)
                 continue
+            if args.drain and later and later[0] - now < dt.timedelta(hours=24):
+                # too far for this job: use up its time, then the workflow starts the next one (no rapid loop)
+                wait = max(0, deadline - time.time())
+                print(f"Next scheduled post at {later[0]:%H:%M %Z}, beyond this job: waiting {wait / 60:.0f} min, then handing over",
+                      flush=True)
+                time.sleep(wait)
             break
         last = last_published()
         if last and now - last < dt.timedelta(minutes=GAP_MINUTES) and not args.dry_run:
