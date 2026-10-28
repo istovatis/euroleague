@@ -19,6 +19,7 @@ on:
         required: false
 
 permissions:
+  actions: write
   contents: write
 
 concurrency:
@@ -61,7 +62,19 @@ jobs:
             python3 scripts/publish_queue.py check
             python3 scripts/publish_queue.py run --dry-run
           else
-            python3 scripts/publish_queue.py run --drain
+            python3 scripts/publish_queue.py run --drain || status=$?
+            # Approved posts still scheduled within 24 hours: start the next run now rather than trusting GitHub's
+            # timer (it skips runs). Each run waits up to ~5 hours for scheduled posts, so this chains until they're out.
+            if python3 -c "
+          import datetime as dt, json, sys
+          sys.path.insert(0, 'scripts'); import publish_queue as q
+          now = dt.datetime.now(dt.timezone.utc)
+          soon = [e for e in q.load() if e.get('approved', True) and now < dt.datetime.fromisoformat(e['when']) < now + dt.timedelta(hours=24)
+                  and not all(q.done(e, l) for l in e['langs'] if l != 'x')]
+          sys.exit(0 if soon else 1)"; then
+              gh workflow run publish.yml -f dry_run=false
+            fi
+            exit ${status:-0}
           fi
       - name: Keep the Reel previews
         if: inputs.reel_story != ''
