@@ -63,6 +63,7 @@ Tell each round like a story, the way a commentator would, not like a stats repo
 - Every slide and every caption line is a beat of the story: tension, turn, payoff. Use fragments and strong verbs ("5-0. Unbeaten. At home." / "Leday dropped 17.").
 - Numbers back the story up; they are never the point. No stat-trivia lines like "No player scored 20" or "They shot 48% from three".
 - No explainer kickers or slides: no "Why it matters", "Context", "Key stat", "The numbers".
+- Vivid, never cryptic: every line must make sense to someone who sees only that slide. Name who did it (especially when it's the losing team, since the score bar shows the winner) and what the number counts ("στο 1ο δεκάλεπτο", not "στο πρώτο"); a payoff like "Αργά." / "Too late." needs a line that says what was late. Bad: "9 πόντοι στο πρώτο. 32 στο τελευταίο. Αργά." Good: "Η Φενέρ ξύπνησε στην 4η περίοδο. Ήταν ήδη -14."
 - Lean on drama the data supports: unbeaten runs ending, comebacks, overtime, road wins, rivalries, a coach facing his old club or mentor.
 
 ## Languages
