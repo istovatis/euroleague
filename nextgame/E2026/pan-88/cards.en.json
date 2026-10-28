@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "round_label": "Round 9",
+  "ig": [],
+  "x": {
+    "type": "list",
+    "kicker": "Next up · Panathinaikos",
+    "items": [
+      {
+        "tag": "Opponent",
+        "text": "at Anadolu Efes"
+      },
+      {
+        "tag": "When",
+        "text": "Fri 30 Oct · 19:30 Athens"
+      },
+      {
+        "tag": "Where",
+        "text": "Turkcell Basketball Development Center"
+      },
+      {
+        "tag": "Form",
+        "text": "Panathinaikos 7-1 (1st) · Anadolu Efes 3-4 (13th)"
+      }
+    ]
+  }
+}
