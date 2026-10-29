@@ -240,5 +240,14 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/15"
+  },
+  {
+    "story": "nextgame/E2026/oly-90",
+    "when": "2026-10-29T18:00:00+02:00",
+    "langs": [
+      "el",
+      "x"
+    ],
+    "approved": true
   }
 ]

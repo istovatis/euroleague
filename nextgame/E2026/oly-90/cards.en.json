@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "round_label": "Round 9",
+  "ig": [],
+  "x": {
+    "type": "list",
+    "kicker": "Next up · Olympiacos",
+    "items": [
+      {
+        "tag": "Opponent",
+        "text": "vs Olimpia Milano"
+      },
+      {
+        "tag": "When",
+        "text": "Fri 30 Oct · 21:15 Athens"
+      },
+      {
+        "tag": "Where",
+        "text": "Sunel Arena"
+      },
+      {
+        "tag": "Form",
+        "text": "Olympiacos 6-2 (5th) · Olimpia Milano 1-7 (19th)"
+      }
+    ]
+  }
+}
