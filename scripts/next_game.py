@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Next game of Olympiacos / Panathinaikos: automatic, data-only post the day after each of their games.
+"""Next game of Olympiacos / Panathinaikos: automatic, data-only post two days before each of their games.
 
   python3 scripts/next_game.py                 # build + queue (approved) today's posts, if any (used by CI)
   python3 scripts/next_game.py --team OLY --force --no-queue   # build one now, for a preview
 
-The day after OLY or PAN played, their next game gets a carousel on the Greek Instagram account (@parke.hoops) and an
+DAYS_BEFORE days before OLY or PAN play, that game gets a carousel on the Greek Instagram account (@parke.hoops) and an
 English X post: 1) "Ο επόμενος αγώνας του Ολυμπιακού", 2) the opponent, 3) day, time and arena, 4) the numbers
 (position and record, home/away record, last-5 form, points per game, the last meeting). Everything comes from the
 EuroLeague API, so it goes out without approval (the owner's decision, 2026-10-28), at POST_AT Athens.
 Folder: nextgame/<season>/<team>-<game code>/. If both clubs' next game is the derby, only one post is made.
+Posting close to the game, rather than the day after the last one, keeps the post off the busy round nights (fewer
+posts at once for Instagram's spam filter; the owner's decision, 2026-10-29). In a week with two games, two days
+before the second game is the day of the first, so that post moves to the day after the first game.
 """
 import argparse
 import datetime as dt
@@ -26,6 +29,7 @@ ATHENS = zoneinfo.ZoneInfo("Europe/Athens")
 CLUBS = json.loads((ROOT / "assets" / "clubs.json").read_text())
 TEAMS = {"OLY": "Ολυμπιακού", "PAN": "Παναθηναϊκού"}  # genitive, for the title
 POST_AT = "18:00"
+DAYS_BEFORE = 2
 DAYS_EL = ["Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή"]
 MONTHS_EL = ["Ιανουαρίου", "Φεβρουαρίου", "Μαρτίου", "Απριλίου", "Μαΐου", "Ιουνίου", "Ιουλίου", "Αυγούστου",
              "Σεπτεμβρίου", "Οκτωβρίου", "Νοεμβρίου", "Δεκεμβρίου"]
@@ -160,16 +164,24 @@ Next up for {en(team)}: {'vs' if at_home else 'at'} {en(opp)}.
 
 
 def due_posts(season, now):
-    """(team, next game) for every team that played yesterday (Athens date)."""
+    """(team, next game) for every team whose next game is due a post today (Athens date): DAYS_BEFORE days before
+    it, or the day after the team's previous game if that is later (a week with two games)."""
     games = get(f"/v2/competitions/E/seasons/{season}/games")["data"]
-    yesterday = (now.astimezone(ATHENS) - dt.timedelta(days=1)).date()
+    today = now.astimezone(ATHENS).date()
     out, seen = [], set()
     for team in TEAMS:
         mine = sorted([g for g in games if team in (g["local"]["club"]["code"], g["road"]["club"]["code"])], key=tip)
-        if not any(g["played"] and tip(g).astimezone(ATHENS).date() == yesterday for g in mine):
-            continue
         upcoming = [g for g in mine if not g["played"] and tip(g) > now]
-        if upcoming and upcoming[0]["gameCode"] not in seen:  # the derby gets one post, not two
+        if not upcoming:
+            continue
+        game_day = tip(upcoming[0]).astimezone(ATHENS).date()
+        post_day = game_day - dt.timedelta(days=DAYS_BEFORE)
+        played = [g for g in mine if g["played"]]
+        if played:
+            post_day = max(post_day, tip(played[-1]).astimezone(ATHENS).date() + dt.timedelta(days=1))
+        if post_day != today or post_day >= game_day:
+            continue
+        if upcoming[0]["gameCode"] not in seen:  # the derby gets one post, not two
             seen.add(upcoming[0]["gameCode"])
             out.append((team, upcoming[0]))
     return games, out
@@ -179,7 +191,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--season", default="E2026")
     ap.add_argument("--team", choices=sorted(TEAMS), help="build this team's next game now (preview)")
-    ap.add_argument("--force", action="store_true", help="with --team: ignore 'played yesterday'")
+    ap.add_argument("--force", action="store_true", help="with --team: ignore the posting day")
     ap.add_argument("--no-queue", action="store_true")
     a = ap.parse_args()
     now = dt.datetime.now(dt.timezone.utc)

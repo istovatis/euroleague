@@ -1,6 +1,6 @@
 name: Next game
 
-# The day after Olympiacos or Panathinaikos play: a data-only post about their next game (scripts/next_game.py),
+# Two days before Olympiacos or Panathinaikos play: a data-only post about that game (scripts/next_game.py),
 # on the Greek Instagram account and X, at 18:00 Athens, without approval (the owner's decision, 2026-10-28).
 # Several daily runs, because GitHub skips scheduled runs; building and queueing happen once. Each run then starts the
 # publisher, which waits for the 18:00 slot when it is within a few hours.
