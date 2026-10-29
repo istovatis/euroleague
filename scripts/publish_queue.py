@@ -19,7 +19,11 @@ in publish/queue.json). A draft approved after its time is published on the next
 
 Times can be "now" or "now+N" (N minutes from now), so day posts go out as soon as they are approved. Posts on the
 same account are kept at least GAP_MINUTES apart: each run publishes at most one entry, in queue order, so a batch
-approved together goes out one by one instead of all at once.
+approved together goes out one by one instead of all at once. Failed attempts count toward the gap too.
+
+When Instagram answers with its anti-spam block ("action is blocked", subcode 2207051), that channel is paused for
+BLOCK_HOURS: publish/blocked.json records until when, and runs skip the channel instead of retrying (which can extend
+the block). Its posts stay pending and go out once the pause ends. Delete the channel's line to retry sooner.
 """
 import argparse
 import datetime as dt
@@ -33,6 +37,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 QUEUE = ROOT / "publish" / "queue.json"
 ATHENS = zoneinfo.ZoneInfo("Europe/Athens")
 GAP_MINUTES = 30
+BLOCKS = ROOT / "publish" / "blocked.json"
+BLOCK_HOURS = 24
 
 
 def parse_when(text):
@@ -61,6 +67,32 @@ def save(entries):
 
 def done(entry, lang):
     return (ROOT / entry["story"] / f"published.{lang}.json").exists()
+
+
+def blocks():
+    return json.loads(BLOCKS.read_text()) if BLOCKS.exists() else {}
+
+
+def blocked_until(channel):
+    """When Instagram's anti-spam block on a channel ("en", "reel-el", ...) lifts, or None if it isn't blocked."""
+    until = blocks().get(channel)
+    until = until and dt.datetime.fromisoformat(until)
+    return until if until and until > dt.datetime.now(dt.timezone.utc) else None
+
+
+def block(channel):
+    """Pause a channel for BLOCK_HOURS after Instagram blocked it: retrying a blocked account can extend the block."""
+    import publish_instagram as ig
+    until = dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=BLOCK_HOURS)
+    BLOCKS.write_text(json.dumps({**blocks(), channel: until.isoformat(timespec="minutes")}, indent=2) + "\n")
+    print(f"Instagram blocked [{channel}]: paused until {until:%a %d %b %H:%M} UTC", flush=True)
+    subprocess.run(["git", "-C", str(ROOT), "add", str(BLOCKS)], check=True)
+    subprocess.run(["git", "-C", str(ROOT), "commit", "-q", "-m", f"Instagram blocked {channel}: paused until {until:%d %b %H:%M} UTC"],
+                   check=True)
+    try:
+        ig.push()
+    except subprocess.CalledProcessError:
+        print(f"warning: could not push {BLOCKS}; commit it by hand", file=sys.stderr)
 
 
 def main():
@@ -136,9 +168,14 @@ def main():
     sys.path.insert(0, str(ROOT / "scripts"))
     import publish_x
     import time
-    channels = lambda e: [c for c in e["langs"] if c != "x" or publish_x.configured()]
+    import publish_instagram as ig
+    channels = lambda e: [c for c in e["langs"] if (c != "x" or publish_x.configured()) and not blocked_until(c)]
+    for channel, until in blocks().items():
+        if blocked_until(channel):
+            print(f"[{channel}] paused by an Instagram block until {dt.datetime.fromisoformat(until):%a %d %b %H:%M} UTC")
     failed_any = False
     tried = set()
+    last_try = None  # failed attempts count toward the gap too, so a failing batch isn't fired off in seconds
     deadline = time.time() + 5 * 3600  # --drain: one CI job publishes the whole batch, GAP_MINUTES apart
     while True:
         if args.drain:  # pick up approvals made while this job runs
@@ -165,7 +202,7 @@ def main():
                       flush=True)
                 time.sleep(wait)
             break
-        last = last_published()
+        last = max(filter(None, [last_published(), last_try]), default=None)
         if last and now - last < dt.timedelta(minutes=GAP_MINUTES) and not args.dry_run:
             wait = (last + dt.timedelta(minutes=GAP_MINUTES) - now).total_seconds()
             if not args.drain or time.time() + wait > deadline:
@@ -177,8 +214,9 @@ def main():
         e = due[0]
         tried.add(e["story"])  # a failing entry is tried once per job, so it can't loop
         failed = False
+        last_try = now
         for lang in channels(e):
-            if done(e, lang):
+            if done(e, lang) or blocked_until(lang):  # an earlier channel of this entry may have just been blocked
                 continue
             print(f"== {e['story']} [{lang}] due {e['when']}", flush=True)
             if lang == "x":
@@ -189,7 +227,11 @@ def main():
                 cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang]
             if not args.dry_run:
                 cmd.append("--yes")
-            failed |= subprocess.run(cmd).returncode != 0
+            code = subprocess.run(cmd).returncode
+            if code == ig.BLOCKED_EXIT and not args.dry_run:
+                block(lang)
+            else:
+                failed |= code != 0
         failed_any |= failed
         if not args.drain:
             break

@@ -70,7 +70,7 @@ jobs:
           sys.path.insert(0, 'scripts'); import publish_queue as q
           now = dt.datetime.now(dt.timezone.utc)
           soon = [e for e in q.load() if e.get('approved', True) and now < dt.datetime.fromisoformat(e['when']) < now + dt.timedelta(hours=24)
-                  and not all(q.done(e, l) for l in e['langs'] if l != 'x')]
+                  and not all(q.done(e, l) for l in e['langs'] if l != 'x' and not q.blocked_until(l))]
           sys.exit(0 if soon else 1)"; then
               gh workflow run publish.yml -f dry_run=false
             fi

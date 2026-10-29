@@ -32,6 +32,8 @@ BRAND = json.loads((ROOT / "brand.json").read_text())
 API = "https://graph.instagram.com/v23.0"
 RAW = "https://raw.githubusercontent.com/istovatis/euroleague/main"
 KEYCHAIN_SERVICE = "parquet-hoops-instagram"
+BLOCKED_SUBCODE = 2207051  # Instagram's anti-spam "action is blocked"
+BLOCKED_EXIT = 75  # exit code for it, so publish_queue.py pauses the channel instead of retrying
 
 
 def token_for(lang, handle):
@@ -57,7 +59,12 @@ def call(method, path, token, **params):
             return json.load(r)
     except urllib.error.HTTPError as e:
         body = e.read().decode(errors="replace").replace(token, "<token>")
-        sys.exit(f"Instagram API error on {method} {path}: HTTP {e.code}\n{body}")
+        print(f"Instagram API error on {method} {path}: HTTP {e.code}\n{body}", file=sys.stderr)
+        try:
+            subcode = json.loads(body).get("error", {}).get("error_subcode")
+        except ValueError:
+            subcode = None
+        sys.exit(BLOCKED_EXIT if subcode == BLOCKED_SUBCODE else 1)
 
 
 def caption_of(post_md):
