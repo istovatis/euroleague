@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 9",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["TEL", 94, "PRS", 99],
+      "kicker": "Game changer",
+      "title": "Tied after three.\n*Hifi* had 26.",
+      "subtitle": "Nadir Hifi · Paris"
+    },
+    {
+      "type": "score",
+      "badges": ["TEL", "PRS"],
+      "kicker": "Final · Maccabi home game",
+      "sides": [
+        {"team": "Maccabi", "score": 94, "won": false},
+        {"team": "Paris", "score": 99, "won": true}
+      ],
+      "note": "65-65 after three. Paris won the 4th 34-29.",
+      "lines": [
+        ["Hifi", "26 pts · 30 PIR · 9/10 FT · +16"],
+        ["Johnson", "11 pts · 8 reb · 5 ast"],
+        ["Sorkin (TEL)", "16 pts · 18 PIR"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "On the road again",
+      "title": "Dubai on Tuesday.\nMaccabi on *Thursday*.",
+      "subtitle": "Two road wins in three days · Paris 3-6"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["TEL", "PRS"],
+    "kicker": "Game changer · Nadir Hifi",
+    "sides": [
+      {"team": "Maccabi", "score": 94, "won": false},
+      {"team": "Paris", "score": 99, "won": true}
+    ],
+    "note": "65-65 after three. Paris won the 4th 34-29.",
+    "lines": [
+      ["Hifi", "26 pts · 30 PIR · 9/10 FT"],
+      ["Johnson", "11 pts · 8 reb · 5 ast"]
+    ]
+  }
+}

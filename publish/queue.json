@@ -249,5 +249,29 @@
       "x"
     ],
     "approved": true
+  },
+  {
+    "story": "rounds/E2026/round-09/day-1/01-maledon",
+    "when": "2026-10-30T00:08:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-09/day-1/02-paris",
+    "when": "2026-10-30T00:09:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]

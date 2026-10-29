@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 9",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["MAD", 95, "ULK", 76],
+      "kicker": "MVP of the night",
+      "title": "24 minutes.\n*35 PIR*.",
+      "subtitle": "Théo Maledon · Real Madrid"
+    },
+    {
+      "type": "score",
+      "badges": ["MAD", "ULK"],
+      "kicker": "Final · Madrid",
+      "sides": [
+        {"team": "Real Madrid", "score": 95, "won": true},
+        {"team": "Fenerbahçe", "score": 76, "won": false}
+      ],
+      "note": "Fenerbahçe led 24-22 after one. Then Real ran away: 70-55 after three.",
+      "lines": [
+        ["Maledon", "26 pts · 7 reb · 35 PIR · 11/12 FT"],
+        ["Campazzo", "10 pts · 10 ast · 25 PIR"],
+        ["Clyburn (FEN)", "21 pts · 5/10 from three"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The statement",
+      "title": "#4 came to Madrid.\nLeft by *19*.",
+      "subtitle": "Real Madrid 6-3 · Fenerbahçe 6-3"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["MAD", "ULK"],
+    "kicker": "MVP of the night · Théo Maledon",
+    "sides": [
+      {"team": "Real Madrid", "score": 95, "won": true},
+      {"team": "Fenerbahçe", "score": 76, "won": false}
+    ],
+    "note": "26 points in 24 minutes. 35 PIR.",
+    "lines": [
+      ["Maledon", "26 pts · 7 reb · 11/12 FT"],
+      ["Campazzo", "10 pts · 10 ast"]
+    ]
+  }
+}
