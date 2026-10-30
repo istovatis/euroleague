@@ -1,0 +1,49 @@
+{
+  "lang": "en",
+  "round_label": "Round 9",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["IST", 83, "PAN", 68],
+      "kicker": "Underdog",
+      "title": "*#14* beat *#1*.\nBy 15.",
+      "subtitle": "Anadolu Efes · Istanbul"
+    },
+    {
+      "type": "score",
+      "badges": ["IST", "PAN"],
+      "kicker": "Final · Istanbul",
+      "sides": [
+        {"team": "Anadolu Efes", "score": 83, "won": true},
+        {"team": "Panathinaikos", "score": 68, "won": false}
+      ],
+      "note": "Efes led after every quarter: 21-18, 45-37, 61-51.",
+      "lines": [
+        ["Malcolm", "15 pts · 6 reb · 21 PIR"],
+        ["Fernando", "15 pts · 6/6 from two"],
+        ["Payne", "14 pts · 8 ast"],
+        ["Nunn (PAN)", "17 pts"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The statement",
+      "title": "The leaders came\nto Istanbul.\nScored *68*.",
+      "subtitle": "Panathinaikos 7-2 · Anadolu Efes 4-5"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["IST", "PAN"],
+    "kicker": "Underdog · #14 beat #1",
+    "sides": [
+      {"team": "Anadolu Efes", "score": 83, "won": true},
+      {"team": "Panathinaikos", "score": 68, "won": false}
+    ],
+    "note": "Efes led after every quarter.",
+    "lines": [
+      ["Malcolm", "15 pts · 21 PIR"],
+      ["Payne", "14 pts · 8 ast"]
+    ]
+  }
+}

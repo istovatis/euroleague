@@ -1,0 +1,49 @@
+{
+  "lang": "en",
+  "round_label": "Round 9",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["BAR", 98, "PAM", 94],
+      "kicker": "Game changer",
+      "title": "5 threes.\n*1 miss*.",
+      "subtitle": "Joel Parra · Barça"
+    },
+    {
+      "type": "score",
+      "badges": ["BAR", "PAM"],
+      "kicker": "Final · Barcelona",
+      "sides": [
+        {"team": "Barça", "score": 98, "won": true},
+        {"team": "Valencia", "score": 94, "won": false}
+      ],
+      "note": "69-68 after three. Barça won the 4th quarter 29-26.",
+      "lines": [
+        ["Parra", "19 pts · 5/6 3PT · 24 PIR"],
+        ["Robinson", "22 pts"],
+        ["Punter", "18 pts"],
+        ["Brooks (VAL)", "26 pts · 5/9 3PT"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The fall",
+      "title": "Valencia came in *2nd*.\nLeft *5th*.",
+      "subtitle": "Barça 6-3 · Valencia 6-3"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["BAR", "PAM"],
+    "kicker": "Game changer · Joel Parra",
+    "sides": [
+      {"team": "Barça", "score": 98, "won": true},
+      {"team": "Valencia", "score": 94, "won": false}
+    ],
+    "note": "69-68 after three. 29-26 Barça in the 4th.",
+    "lines": [
+      ["Parra", "19 pts · 5/6 3PT · 24 PIR"],
+      ["Robinson", "22 pts"]
+    ]
+  }
+}

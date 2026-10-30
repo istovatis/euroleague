@@ -275,5 +275,53 @@
     ],
     "approved": true,
     "notified": "auto-approved"
+  },
+  {
+    "story": "rounds/E2026/round-09/day-2/01-efes",
+    "when": "2026-10-31T00:14:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-09/day-2/02-walker",
+    "when": "2026-10-31T00:15:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-09/day-2/03-parra",
+    "when": "2026-10-31T00:16:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-09/highlight",
+    "when": "2026-10-31T12:00:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]

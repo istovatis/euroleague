@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 9",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["VIR", 101, "BES", 103],
+      "kicker": "MVP of the round",
+      "title": "30 points.\n7 threes.\n*36 PIR*.",
+      "subtitle": "Lonnie Walker IV · Beşiktaş"
+    },
+    {
+      "type": "score",
+      "badges": ["VIR", "BES"],
+      "kicker": "Final · Bologna",
+      "sides": [
+        {"team": "Virtus", "score": 101, "won": false},
+        {"team": "Beşiktaş", "score": 103, "won": true}
+      ],
+      "note": "Virtus led 74-70 after three. Beşiktaş won the 4th quarter 33-27.",
+      "lines": [
+        ["Walker IV", "30 pts · 7/11 3PT · 5 ast · 0 TO"],
+        ["Wilbekin", "16 pts · 4/6 3PT"],
+        ["Alston Jr. (VIR)", "19 pts · 4/5 3PT"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The comeback",
+      "title": "Beşiktaş scored *33*\nin the 4th quarter.\nWon by *2*.",
+      "subtitle": "Beşiktaş 4-5 · Virtus 4-5"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["VIR", "BES"],
+    "kicker": "MVP of the round · Lonnie Walker IV",
+    "sides": [
+      {"team": "Virtus", "score": 101, "won": false},
+      {"team": "Beşiktaş", "score": 103, "won": true}
+    ],
+    "note": "Down 74-70 after three. 33-27 in the 4th.",
+    "lines": [
+      ["Walker IV", "30 pts · 7/11 3PT · 36 PIR"],
+      ["Wilbekin", "16 pts · 4/6 3PT"]
+    ]
+  }
+}
