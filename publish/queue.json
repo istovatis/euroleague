@@ -334,7 +334,9 @@
     "langs": [
       "en",
       "el",
-      "x"
+      "x",
+      "reel-en",
+      "reel-el"
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/19"

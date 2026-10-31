@@ -1,6 +1,6 @@
 # Lineup of the week: Round 9
 
-**Post:** Saturday 2026-10-31, 19:00 Athens. Single image, Instagram EN + EL and X. No Reel. Queued as a draft (needs the owner's approval).
+**Post:** Saturday 2026-10-31, 19:00 Athens. Single image, Instagram EN + EL and X, plus a Reel on both accounts (the players land one by one, PG to C). Queued as a draft (needs the owner's approval).
 
 | Slot | Player | Club |
 |---|---|---|

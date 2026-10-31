@@ -3,6 +3,7 @@
 
   python3 scripts/lineup.py pick [--round N]     # the latest fully played round -> lineups/<season>/round-NN/lineup.json
   python3 scripts/lineup.py render <folder>      # cards/en/ig-1.png, cards/el/ig-1.png (1080x1350) and cards/en/x.png
+  python3 scripts/render_reel.py <folder> <lang> # cards/<lang>/reel.mp4: the players land one by one, PG to C (reel_document)
 
 pick: the round's top PIR among guards (2), forwards (2) and centers (1); the API only knows Guard / Forward / Center,
 so the guard with more assists is the PG and the forward with more rebounds the PF. PIR picks them but no number is
@@ -143,7 +144,7 @@ def court(w, h, cx, base_y, scale):
 
 def page(folder, data, lang, fmt):
     C = BRAND["colors"]
-    w, h = (1080, 1350) if fmt == "ig" else (1600, 900)
+    w, h = {"ig": (1080, 1350), "reel": (1080, 1920), "x": (1600, 900)}[fmt]
     players = {p["slot"]: p for p in data["players"]}
     t1, t2 = TITLE[lang]
     if fmt == "ig":   # two rows: the backcourt and wing (SG, PG, SF), then the bigs (PF, C) nearer the basket
@@ -151,13 +152,18 @@ def page(folder, data, lang, fmt):
         spots = {"SG": (200, 330), "PG": (540, 330), "SF": (880, 330), "PF": (360, 805), "C": (720, 805)}
         floor = court(w, h, 540, 1350, 1.0)
         title_css = "left:72px; top:126px; font-size:88px"
+    elif fmt == "reel":  # the same two rows at Reel size, a little larger
+        tw, th = 300, 290
+        spots = {"SG": (195, 520), "PG": (540, 520), "SF": (885, 520), "PF": (365, 1110), "C": (715, 1110)}
+        floor = court(w, h, 540, 1920, 1.15)
+        title_css = "left:72px; top:190px; font-size:108px"
     else:             # one row
         tw, th = 270, 300
         spots = {s: (180 + i * 310, 300) for i, s in enumerate(SLOTS)}
         floor = court(w, h, 800, 960, .75)
         title_css = "left:64px; top:118px; font-size:84px"
     photos = all_photos(folder, data)
-    tiles = "".join(f'<div style="position:absolute;left:{x - tw // 2}px;top:{y}px">{tile(folder, players[s], lang, tw, th, photos)}</div>'
+    tiles = "".join(f'<div class="spot" data-slot="{s}" style="position:absolute;left:{x - tw // 2}px;top:{y}px">{tile(folder, players[s], lang, tw, th, photos)}</div>'
                     for s, (x, y) in spots.items())
     css = f"""
 @font-face {{ font-family: F; font-weight: 500; src: url({FONTS}/FiraSansExtraCondensed-Medium.ttf); }}
@@ -167,7 +173,7 @@ def page(folder, data, lang, fmt):
 html, body {{ width:{w}px; height:{h}px; overflow:hidden; }}
 body {{ font-family:F, sans-serif; color:{C['fg']}; background:{C['bg']}; position:relative; }}
 .shade {{ position:absolute; inset:0; background: radial-gradient(ellipse at 50% 45%, {C['bg']}55 0%, {C['bg']}AA 70%, {C['bg']}EE 100%); }}
-.top {{ position:absolute; left:{72 if fmt == 'ig' else 64}px; right:{72 if fmt == 'ig' else 64}px; top:{60 if fmt == 'ig' else 50}px;
+.top {{ position:absolute; left:{64 if fmt == 'x' else 72}px; right:{64 if fmt == 'x' else 72}px; top:{50 if fmt == 'x' else 60 if fmt == 'ig' else 110}px;
   display:flex; justify-content:space-between; font-weight:700; font-size:26px; letter-spacing:.12em; text-transform:uppercase; color:{C['muted']}; }}
 .top b {{ color:{C['fg']}; font-weight:900; }} .brand {{ display:inline-flex; align-items:center; gap:.4em; }}
 .brand svg {{ width:1.15em; height:1.15em; }}
@@ -189,16 +195,58 @@ body {{ font-family:F, sans-serif; color:{C['fg']}; background:{C['bg']}; positi
 .first {{ margin-top:8px; font-weight:700; font-size:24px; color:{C['muted']}; text-transform:uppercase; letter-spacing:.04em; line-height:1; }}
 .last {{ font-weight:900; font-size:44px; text-transform:uppercase; line-height:1; white-space:nowrap; }}
 .club {{ margin-top:4px; font-weight:700; font-size:20px; color:{C['muted']}; text-transform:uppercase; letter-spacing:.06em; }}
-.foot {{ position:absolute; left:{72 if fmt == 'ig' else 64}px; bottom:{44 if fmt == 'ig' else 36}px; font-weight:500; font-size:22px;
+.foot {{ position:absolute; left:{64 if fmt == 'x' else 72}px; bottom:{36 if fmt == 'x' else 44}px; font-weight:500; font-size:22px;
   letter-spacing:.06em; text-transform:uppercase; color:{C['muted']}; }}
 """
-    body = f"""{parquet(w, h)}{floor}<div class="shade"></div>
+    body = f"""<div class="stage" style="position:absolute;inset:0">{parquet(w, h)}{floor}<div class="shade"></div>
 <div class="top"><span class="brand">{centre_disc(C['accent'])}<b>{html.escape(BRAND['name'][lang])}</b> · {ROUND[lang].format(n=data['round'])}</span></div>
 <div class="title">{html.escape(t1)}<br><em>{html.escape(t2)}</em></div>
-{tiles}
+{tiles}</div>
 <script>for (const el of document.querySelectorAll('.last')) {{ let fs = parseFloat(getComputedStyle(el).fontSize);
   while (el.scrollWidth > el.parentElement.clientWidth + 1 && fs > 20) {{ fs -= 2; el.style.fontSize = fs + 'px'; }} }}</script>"""
     return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><style>{css}</style></head><body>{body}</body></html>', w, h
+
+
+def reel_document(folder, lang):
+    """The Reel (render_reel.py records it): court and title on screen from the first frame, then the players land
+    one by one, PG to C, then the brand outro. Returns (html, seconds)."""
+    import render_reel
+    data = json.loads((folder / "lineup.json").read_text())
+    doc, _, _ = page(folder, data, lang, "reel")
+    first, step, hold = 0.5, 0.9, 2.4   # seconds: before the PG lands, between players, full five on screen
+    total = first + step * len(SLOTS) + hold + render_reel.OUTRO
+    script = """
+const ease = 'cubic-bezier(.2,.8,.2,1)', pop = 'cubic-bezier(.3,1.5,.5,1)';
+function anim(el, frames, delay, dur, easing, fill) {
+  el.animate(frames, {delay, duration: dur, fill: fill || 'both', easing: easing || ease}).pause();
+}
+function setup() {
+  const stage = document.querySelector('.stage'), outro = document.querySelector('.outro');
+  anim(document.querySelector('.title'), [{transform: 'scale(1.05)'}, {transform: 'none'}], 0, 700);
+  %(slots)s.forEach((slot, k) => {
+    const spot = document.querySelector(`.spot[data-slot="${slot}"]`), t = %(first)d + k * %(step)d;
+    // The tile drops onto the court, then the slot tag pops, then the name rises.
+    anim(spot.querySelector('.tile > div'), [{opacity: 0, transform: 'translateY(-120px) scale(1.25)'},
+         {opacity: 1, transform: 'none'}], t, 520, pop);
+    anim(spot.querySelector('.face'), [{boxShadow: '0 0 0 4px %(accent)s, 0 0 60px 18px %(accent)s'},
+         {boxShadow: '0 0 0 4px %(accent)s, 0 14px 30px #000a'}], t + 380, 700);
+    anim(spot.querySelector('.plate b'), [{opacity: 0, transform: 'scale(.4)'}, {opacity: 1, transform: 'none'}], t + 300, 320, pop);
+    for (const [i, el] of [...spot.querySelectorAll('.first, .last, .club')].entries())
+      anim(el, [{opacity: 0, transform: 'translateY(40px)'}, {opacity: 1, transform: 'none'}], t + 380 + i * 90, 380);
+  });
+  const end = %(outro_at)d;
+  anim(stage, [{opacity: 1}, {opacity: 0}], end - 180, 180, 'linear', 'forwards');
+  anim(outro, [{opacity: 0, transform: 'translateY(60px)'}, {opacity: 1, transform: 'none'}], end, 260);
+  const parts = [...outro.children];
+  anim(parts[0], [{opacity: 0, transform: 'scale(.6) rotate(-90deg)'}, {opacity: 1, transform: 'none'}], end + 100, 600);
+  parts.slice(1).forEach((el, k) => anim(el, [{opacity: 0, transform: 'translateY(70px)'}, {opacity: 1, transform: 'none'}],
+                                         end + 350 + k * 120, 420));
+}
+function seek(ms) { document.getAnimations().forEach(a => { a.currentTime = ms; }); }
+""" % dict(slots=json.dumps(SLOTS), first=first * 1000, step=step * 1000, outro_at=(total - render_reel.OUTRO) * 1000,
+           accent=BRAND["colors"]["accent"])
+    extra = f"<style>{render_reel.outro_css()}</style>{render_reel.outro_html(lang)}<script>{script}</script>"
+    return doc.replace("</body>", extra + "</body>"), total
 
 
 def render(folder):

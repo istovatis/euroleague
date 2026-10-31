@@ -43,23 +43,36 @@ def load_photo(folder, name):
     return {"uri": (folder / f"{name}.jpg").as_uri(), "credit": meta["credit"], "focus": meta.get("focus", "50% 20%")}
 
 
-def document(folder, spec):
-    lang, colors = spec["lang"], BRAND["colors"]
-    css = CSS % dict(SIZES["story"], f=FONTS, **colors)
-    css += f"""
-body {{ padding: 0; }}
+def outro_css():
+    colors = BRAND["colors"]
+    return f"""
 .scene {{ position: absolute; inset: 0; padding: {SIZES['story']['pad_y']}px {SIZES['story']['pad']}px;
   display: flex; flex-direction: column; background: {colors['bg']}; overflow: hidden; opacity: 0; }}
-.scene::before {{ content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(circle at 85% 10%, {colors['accent']}22, transparent 45%); }}
-.scene.has-photo::before {{ display: none; }}
-.scene.has-photo .main {{ justify-content: flex-end; padding-bottom: 28px; }}
-.title .ln {{ display: block; }}
 .outro {{ align-items: center; justify-content: center; text-align: center; gap: 36px; }}
 .outro .word {{ font-weight: 900; font-size: 120px; line-height: 1; position: relative; }}
 .outro .tag {{ font-weight: 700; font-size: 44px; letter-spacing: .08em; text-transform: uppercase; color: {colors['muted']}; position: relative; }}
 .outro .handle {{ font-weight: 700; font-size: 40px; color: {colors['accent']}; position: relative; }}
 .outro svg {{ position: relative; }}
+"""
+
+
+def outro_html(lang):
+    """The brand outro scene: logo, name, tagline, handle (animated by each Reel's script)."""
+    return f"""<section class="scene outro">{centre_disc(BRAND['colors']['accent'], 300, 'o')}
+<div class="word">{html.escape(BRAND['name'][lang])}</div><div class="tag">{html.escape(TAGLINE[lang])}</div>
+<div class="handle">{html.escape(BRAND['handle']['ig'][lang])}</div></section>"""
+
+
+def document(folder, spec):
+    lang, colors = spec["lang"], BRAND["colors"]
+    css = CSS % dict(SIZES["story"], f=FONTS, **colors)
+    css += outro_css() + f"""
+body {{ padding: 0; }}
+.scene::before {{ content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 85% 10%, {colors['accent']}22, transparent 45%); }}
+.scene.has-photo::before {{ display: none; }}
+.scene.has-photo .main {{ justify-content: flex-end; padding-bottom: 28px; }}
+.title .ln {{ display: block; }}
 """
     scenes = []
     slides = spec["ig"]
@@ -77,9 +90,7 @@ body {{ padding: 0; }}
 <div class="top"><span class="brand">{centre_disc(colors['accent'])}<b>{html.escape(BRAND['name'][lang])}</b> · {html.escape(spec['round_label'])}</span><span></span></div>
 <div class="main">{card_html(card, lang)}</div>
 <div class="foot"><span></span>{credit}</div></section>""")
-    scenes.append(f"""<section class="scene outro">{centre_disc(colors['accent'], 300, 'o')}
-<div class="word">{html.escape(BRAND['name'][lang])}</div><div class="tag">{html.escape(TAGLINE[lang])}</div>
-<div class="handle">{html.escape(BRAND['handle']['ig'][lang])}</div></section>""")
+    scenes.append(outro_html(lang))
 
     script = """
 const SCENE = %(scene)d, OUTRO = %(outro)d;
@@ -165,14 +176,21 @@ function seek(ms) {
 
 
 def render(story, lang):
+    folder = (ROOT / story).resolve() if not pathlib.Path(story).is_absolute() else pathlib.Path(story)
+    if (folder / "lineup.json").exists():  # Lineup of the week: its own scene (lineup.py), players arriving PG to C
+        import lineup
+        doc, total = lineup.reel_document(folder, lang)
+    else:
+        doc, total = document(folder, json.loads((folder / f"cards.{lang}.json").read_text()))
+    return record(doc, total, folder / "cards" / lang / "reel.mp4")
+
+
+def record(doc, total, out):
+    """Step the page's seek(ms) through `total` seconds at FPS and encode the frames to `out` (silent track)."""
     ensure_tools()
     import imageio_ffmpeg
     from playwright.sync_api import sync_playwright
 
-    folder = (ROOT / story).resolve() if not pathlib.Path(story).is_absolute() else pathlib.Path(story)
-    spec = json.loads((folder / f"cards.{lang}.json").read_text())
-    doc, total = document(folder, spec)
-    out = folder / "cards" / lang / "reel.mp4"
     out.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as f:
         f.write(doc)
