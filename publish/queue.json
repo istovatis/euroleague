@@ -336,6 +336,7 @@
       "el",
       "x"
     ],
-    "approved": false
+    "approved": false,
+    "notified": "https://github.com/istovatis/euroleague/issues/19"
   }
 ]
