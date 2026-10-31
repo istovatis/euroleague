@@ -208,31 +208,57 @@ body {{ font-family:F, sans-serif; color:{C['fg']}; background:{C['bg']}; positi
 
 
 def reel_document(folder, lang):
-    """The Reel (render_reel.py records it): court and title on screen from the first frame, then the players land
-    one by one, PG to C, then the brand outro. Returns (html, seconds)."""
+    """The Reel (render_reel.py records it): court and title on screen from the first frame, then the players slam
+    down one by one, PG to C (shake, flash, shockwave, sparks), then the brand outro. Returns (html, seconds)."""
     import render_reel
     data = json.loads((folder / "lineup.json").read_text())
     doc, _, _ = page(folder, data, lang, "reel")
-    first, step, hold = 0.5, 0.9, 2.4   # seconds: before the PG lands, between players, full five on screen
+    first, step, hold = 0.4, 1.0, 2.4   # seconds: before the PG lands, between players, full five on screen
     total = first + step * len(SLOTS) + hold + render_reel.OUTRO
     script = """
-const ease = 'cubic-bezier(.2,.8,.2,1)', pop = 'cubic-bezier(.3,1.5,.5,1)';
+const ease = 'cubic-bezier(.2,.8,.2,1)', pop = 'cubic-bezier(.3,1.5,.5,1)', fall = 'cubic-bezier(.55,0,1,.45)';
 function anim(el, frames, delay, dur, easing, fill) {
   el.animate(frames, {delay, duration: dur, fill: fill || 'both', easing: easing || ease}).pause();
 }
+function add(parent, css) {
+  const el = document.createElement('div');
+  el.style.cssText = 'position:absolute;pointer-events:none;' + css;
+  parent.appendChild(el);
+  return el;
+}
 function setup() {
   const stage = document.querySelector('.stage'), outro = document.querySelector('.outro');
+  const flash = add(stage, 'inset:0;background:%(accent)s;opacity:0');
   anim(document.querySelector('.title'), [{transform: 'scale(1.05)'}, {transform: 'none'}], 0, 700);
   %(slots)s.forEach((slot, k) => {
     const spot = document.querySelector(`.spot[data-slot="${slot}"]`), t = %(first)d + k * %(step)d;
-    // The tile drops onto the court, then the slot tag pops, then the name rises.
-    anim(spot.querySelector('.tile > div'), [{opacity: 0, transform: 'translateY(-120px) scale(1.25)'},
-         {opacity: 1, transform: 'none'}], t, 520, pop);
-    anim(spot.querySelector('.face'), [{boxShadow: '0 0 0 4px %(accent)s, 0 0 60px 18px %(accent)s'},
-         {boxShadow: '0 0 0 4px %(accent)s, 0 14px 30px #000a'}], t + 380, 700);
-    anim(spot.querySelector('.plate b'), [{opacity: 0, transform: 'scale(.4)'}, {opacity: 1, transform: 'none'}], t + 300, 320, pop);
+    const box = spot.querySelector('.tile > div'), hit = t + 390;  // the moment the tile hits the floor
+    // The tile falls from above the screen, tilted, slams onto the court and settles with a bounce.
+    // Hidden until its turn: before its drop, a tile would otherwise wait in plain view above the screen edge.
+    anim(box, [{opacity: 0}, {opacity: 1}], t, 1, 'linear');
+    anim(box, [{transform: 'translateY(-1300px) scale(1.7) rotate(-12deg)', easing: fall},
+               {offset: .7, transform: 'translateY(0) scale(.9) rotate(0)', easing: ease},
+               {offset: .86, transform: 'scale(1.05)'}, {transform: 'none'}], t, 560, 'linear');
+    // Impact: the screen shakes, a lime flash, a shockwave ring and sparks fly out of the tile.
+    anim(stage, [{transform: 'none'}, {transform: 'translate(0, 16px)'}, {transform: 'translate(-9px, -7px)'},
+                 {transform: 'translate(6px, 4px)'}, {transform: 'none'}], hit, 280, 'linear');
+    anim(flash, [{opacity: 0}, {opacity: .2}, {opacity: 0}], hit, 300, 'linear');
+    const ring = add(box, 'inset:-6px;border:8px solid %(accent)s;border-radius:28px');
+    anim(ring, [{opacity: 0, transform: 'none'}, {opacity: .95, transform: 'none'}, {opacity: 0, transform: 'scale(1.8)'}], hit, 520, ease);
+    for (let i = 0; i < 10; i++) {
+      const a = i / 10 * 2 * Math.PI + .3, d = 230 + (i %% 3) * 60;
+      const spark = add(box, 'left:50%%;top:50%%;width:16px;height:16px;margin:-8px;background:%(accent)s;border-radius:3px');
+      anim(spark, [{opacity: 0, transform: 'none'}, {opacity: 1, transform: 'none', offset: .05},
+                   {opacity: 0, transform: `translate(${Math.cos(a) * d}px, ${Math.sin(a) * d}px) rotate(${180 + i * 40}deg) scale(.4)`}],
+           hit, 560, ease);
+    }
+    anim(spot.querySelector('.face'), [{boxShadow: '0 0 0 4px %(accent)s, 0 0 80px 26px %(accent)s'},
+         {boxShadow: '0 0 0 4px %(accent)s, 0 14px 30px #000a'}], hit, 800, ease, 'forwards');
+    // Then the position tag is stamped on, and the name wipes in.
+    anim(spot.querySelector('.plate b'), [{opacity: 0, transform: 'scale(3) rotate(-14deg)'}, {opacity: 1, transform: 'none'}],
+         hit + 60, 260, pop);
     for (const [i, el] of [...spot.querySelectorAll('.first, .last, .club')].entries())
-      anim(el, [{opacity: 0, transform: 'translateY(40px)'}, {opacity: 1, transform: 'none'}], t + 380 + i * 90, 380);
+      anim(el, [{opacity: 0, clipPath: 'inset(0 100%% 0 0)'}, {opacity: 1, clipPath: 'inset(0 0 0 0)'}], hit + 150 + i * 80, 300);
   });
   const end = %(outro_at)d;
   anim(stage, [{opacity: 1}, {opacity: 0}], end - 180, 180, 'linear', 'forwards');
