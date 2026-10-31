@@ -1,0 +1,81 @@
+{
+  "season": "E2026",
+  "round": 9,
+  "players": [
+    {
+      "code": "013403",
+      "first": "Lonnie",
+      "last": "Walker Iv",
+      "club": "BES",
+      "dorsal": "4",
+      "position": "Guard",
+      "pir": 36.0,
+      "pts": 30.0,
+      "ast": 5.0,
+      "reb": 4.0,
+      "won": true,
+      "game": 89,
+      "slot": "PG"
+    },
+    {
+      "code": "007027",
+      "first": "Theo",
+      "last": "Maledon",
+      "club": "MAD",
+      "dorsal": "12",
+      "position": "Guard",
+      "pir": 35.0,
+      "pts": 26.0,
+      "ast": 2.0,
+      "reb": 7.0,
+      "won": true,
+      "game": 83,
+      "slot": "SG"
+    },
+    {
+      "code": "012201",
+      "first": "Chima",
+      "last": "Moneke",
+      "club": "RED",
+      "dorsal": "95",
+      "position": "Forward",
+      "pir": 29.0,
+      "pts": 15.0,
+      "ast": 5.0,
+      "reb": 5.0,
+      "won": true,
+      "game": 81,
+      "slot": "SF"
+    },
+    {
+      "code": "007464",
+      "first": "Joel",
+      "last": "Parra",
+      "club": "BAR",
+      "dorsal": "44",
+      "position": "Forward",
+      "pir": 24.0,
+      "pts": 19.0,
+      "ast": 1.0,
+      "reb": 5.0,
+      "won": true,
+      "game": 87,
+      "slot": "PF"
+    },
+    {
+      "code": "011284",
+      "first": "Kenneth",
+      "last": "Faried",
+      "club": "BAS",
+      "dorsal": "35",
+      "position": "Center",
+      "pir": 29.0,
+      "pts": 17.0,
+      "ast": 1.0,
+      "reb": 8.0,
+      "won": false,
+      "game": 85,
+      "slot": "C"
+    }
+  ]
+}

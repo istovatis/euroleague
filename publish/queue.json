@@ -327,5 +327,15 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/18"
+  },
+  {
+    "story": "lineups/E2026/round-09",
+    "when": "2026-10-31T19:00:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x"
+    ],
+    "approved": false
   }
 ]
