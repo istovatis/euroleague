@@ -1,0 +1,56 @@
+{
+  "lang": "en",
+  "round_label": "Milan",
+  "ig": [
+    {
+      "type": "hook",
+      "photo": "exterior",
+      "kicker": "Arena of the week",
+      "title": "Milan's home\nis *not in\nMilan*.",
+      "subtitle": "Unipol Forum · Assago",
+      "badges": ["MIL"]
+    },
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "Four tiers.\n*One roar.*",
+      "subtitle": "A EuroLeague night in Assago · December 2013"
+    },
+    {
+      "type": "list",
+      "kicker": "Unipol Forum",
+      "items": [
+        {"tag": "Capacity", "text": "12,657"},
+        {"tag": "Opened", "text": "26 October 1990"},
+        {"tag": "Home of", "text": "Olimpia Milano"},
+        {"tag": "This week", "text": "Milan vs Valencia · Thu 5 Nov"}
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Did you know",
+      "title": "It hosted\nthe *Winter\nOlympics*.",
+      "subtitle": "Figure skating and short track · 2026"
+    }
+  ],
+  "x": [
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "Four tiers.\n*One roar.*",
+      "subtitle": "Unipol Forum · Assago"
+    },
+    {
+      "type": "list",
+      "kicker": "Arena of the week",
+      "items": [
+        {"tag": "Capacity", "text": "12,657"},
+        {"tag": "Opened", "text": "26 October 1990"},
+        {"tag": "Home of", "text": "Olimpia Milano"},
+        {"tag": "This week", "text": "Milan vs Valencia · Thu 5 Nov"}
+      ]
+    }
+  ]
+}

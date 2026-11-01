@@ -1,0 +1,51 @@
+{
+  "arena": "UNIPOL FORUM",
+  "euroleague": {
+    "capacity": 12657,
+    "address": "Via G. Di Vittorio 6, 20090 Assago",
+    "home_teams": {
+      "Armani Olimpia Milan": 19
+    },
+    "upcoming_games": [
+      {
+        "round": 10,
+        "utc": "2026-11-05T19:30:00Z",
+        "home": "Armani Olimpia Milan",
+        "away": "Valencia Basket"
+      },
+      {
+        "round": 11,
+        "utc": "2026-11-12T19:30:00Z",
+        "home": "Armani Olimpia Milan",
+        "away": "Zalgiris Kaunas"
+      },
+      {
+        "round": 12,
+        "utc": "2026-11-17T19:30:00Z",
+        "home": "Armani Olimpia Milan",
+        "away": "Crvena Zvezda Meridianbet Belgrade"
+      }
+    ],
+    "source": "https://api-live.euroleague.net/v2/competitions/E/seasons/E2026/games"
+  },
+  "wikidata": {
+    "qid": "Q604681",
+    "url": "https://www.wikidata.org/wiki/Q604681",
+    "opened (P1619)": [
+      "+1990-10-26T00:00:00Z"
+    ],
+    "inception (P571)": [
+      "+1988-00-00T00:00:00Z"
+    ],
+    "capacity (P1083)": [
+      "+12700",
+      "+15800"
+    ],
+    "architect (P84, item ids)": []
+  },
+  "wikipedia": {
+    "title": "Forum di Milano",
+    "url": "https://en.wikipedia.org/wiki/Forum_di_Milano",
+    "text": "Unipol Forum (formerly the FilaForum, DatchForum and Mediolanum Forum;  known as the Forum di Milano in events where commercial naming rights are prohibited) is an indoor sports arena that is located in Assago, a small town 3 km outside Milan, Italy. The arena has an official seated capacity of 12,800, but can hold 15,800 with standing, and is primarily used for basketball, ice hockey, tennis and live concerts.\nThe venue is the home ground of the EuroLeague and Italian Serie A professional basketball team AX Armani Exchange Milan. In May 2024, the current sponsor, Unipol, took over naming rights in a deal that will run to 2027.\n\n\n== History ==\n\nThe Forum of Assago was built by Giuseppe Cabassi and his son Luca in 1990. It was named in several different way due to different sponsorships during the years: from 1993 to 2006 it was named FilaForum, from 2006 to 2008 DatchForum and then, from 2009 to 2023, MediolanumForum.\nThe venue is located in the Milanofiori complex and covers 40,000 square metres (430,000 sq ft). The area has four tiers of seating, in addition to luxury suites. The Forum received the 1994 European Prize for Architecture for sports venues awarded by the Italian National Olympic Committee and the Council of Europe. It is also one of two facilities in Italy, along with Palazzo dello Sport in Rome, to be part of the European Arenas Association network. \nThe arena has been renvoated three times, with the 2014 Euroleague Final Four seeing the arena's seating capacity increase from 11,500 to 12,700, and then re-signage and floor re-grading in 2017.\n\n\n== Entertainment events ==\n\n\n== Sports ==\n\nThe arena has hosted the 1994 Men's World Ice Hockey Championships, the 2003 IIHF Continental Cup Superfinal of ice hockey (together with Lugano's Pista La Resega), WWE Raw and WWE SmackDown in 2007, and the 2009 World Amateur Boxing Championships.\nSince 2011, the Forum has also been home to La Grande Sfida, an annual tennis exhibition event played every Christmas. The arena also hosted the EuroLeague Final Four in 2014.\nThe forum was the venue for the 2018 World Figure Skating Championships.\nSome matches of the 2018 FIVB Volleyball World Championship were held at the venue. The venue also hosted some group phase matches of the FIBA EuroBasket 2022 which Italy hosted alongside Czech Republic in Prague, Georgia in Tbilisi and Germany in Berlin and Cologne.\nIn July 2024 the 19th World Kendo Championship was held at the forum. In February 2025, the 6th stage of the ISU Short Track World Tour is held at the Forum.\nIt also hosted figure skating and short-track speed skating during the 2026 Winter Olympics.\n\n\n== See also ==\nList of tennis stadiums by capacity\nList of indoor arenas in Italy\n\n\n== References ==\n\n\n== External links ==\n Media related to Forum di Milano (Assago) at Wikimedia Commons\n\nOfficial website"
+  }
+}
