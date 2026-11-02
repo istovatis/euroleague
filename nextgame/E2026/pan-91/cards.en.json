@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "round_label": "Round 10",
+  "ig": [],
+  "x": {
+    "type": "list",
+    "kicker": "Next up · Panathinaikos",
+    "items": [
+      {
+        "tag": "Opponent",
+        "text": "at Real Madrid"
+      },
+      {
+        "tag": "When",
+        "text": "Wed 04 Nov · 21:45 Athens"
+      },
+      {
+        "tag": "Where",
+        "text": "Movistar Arena"
+      },
+      {
+        "tag": "Form",
+        "text": "Panathinaikos 7-2 (1st) · Real Madrid 6-3 (4th)"
+      }
+    ]
+  }
+}
