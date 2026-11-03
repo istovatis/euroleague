@@ -212,6 +212,47 @@ def upload_reel(uid, token, mp4, caption, name):
         gh("release", "delete-asset", REELS_RELEASE, name, "-y", check=False)
 
 
+def live_copy(uid, token, caption, product):
+    """A post already on the account with this caption ("FEED" for carousels and images, "REELS"), or None.
+
+    Instagram can answer media_publish with 403 "action is blocked" although the post went live (seen 28 Oct to 2 Nov
+    2026: every retry made another copy), so every publish checks this first."""
+    media = call("GET", f"{uid}/media", token, fields="id,caption,permalink,timestamp,media_product_type", limit=25)
+    return next((m for m in media.get("data", []) if m.get("media_product_type") == product
+                 and (m.get("caption") or "").strip() == caption.strip()), None)
+
+
+def publish_container(uid, token, container, caption, product):
+    """media_publish, then the media id. On a "blocked" answer, look for the post before believing it."""
+    try:
+        return call("POST", f"{uid}/media_publish", token, creation_id=container)["id"]
+    except SystemExit as e:
+        if e.code != BLOCKED_EXIT:
+            raise
+        time.sleep(15)
+        found = live_copy(uid, token, caption, product)
+        if not found:
+            raise
+        print("Instagram answered 'blocked', but the post is live: recording it", flush=True)
+        return found["id"]
+
+
+def write_record(record, media_id, permalink, handle, published_at=None):
+    record.write_text(json.dumps({"media_id": media_id, "permalink": permalink, "account": handle,
+                                  "published_at": published_at or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())},
+                                 indent=2) + "\n")
+    commit_record(record)
+
+
+def already_live(record, uid, token, caption, product, handle):
+    """True (and recorded) if the post is on the account already, e.g. from a run whose record was never written."""
+    found = live_copy(uid, token, caption, product)
+    if found:
+        write_record(record, found["id"], found["permalink"], handle, found["timestamp"][:19] + "Z")
+        print(f"Already live, recorded: {found['permalink']}")
+    return bool(found)
+
+
 def publish_reel(story, lang, yes):
     record = story / f"published.reel-{lang}.json"
     if record.exists():
@@ -234,12 +275,12 @@ def publish_reel(story, lang, yes):
     if not yes:
         print("Dry run: nothing was posted. Re-run with --yes to publish.")
         return
+    if already_live(record, me["user_id"], token, caption, "REELS", handle):
+        return
     container = upload_reel(me["user_id"], token, mp4, caption, f"{story.name}-{lang}.mp4")
-    media_id = call("POST", f"{me['user_id']}/media_publish", token, creation_id=container)["id"]
+    media_id = publish_container(me["user_id"], token, container, caption, "REELS")
     permalink = call("GET", media_id, token, fields="permalink").get("permalink")
-    record.write_text(json.dumps({"media_id": media_id, "permalink": permalink, "account": handle,
-                                  "published_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")
-    commit_record(record)
+    write_record(record, media_id, permalink, handle)
     print(f"Published: {permalink}")
 
 
@@ -273,8 +314,10 @@ def main():
         print("Dry run: nothing was posted. Re-run with --yes to publish.")
         return
 
-    ensure_public(images)
     uid = me["user_id"]
+    if already_live(record, uid, token, caption, "FEED", handle):
+        return
+    ensure_public(images)
     if len(images) == 1:  # a single-image post (e.g. the lineup of the week)
         container = call("POST", f"{uid}/media", token, image_url=f"{RAW}/{images[0].as_posix()}", caption=caption)["id"]
     else:
@@ -288,11 +331,9 @@ def main():
         if status in ("ERROR", "EXPIRED"):
             sys.exit(f"Carousel container {container} failed: {status}")
         time.sleep(5)
-    media_id = call("POST", f"{uid}/media_publish", token, creation_id=container)["id"]
+    media_id = publish_container(uid, token, container, caption, "FEED")
     permalink = call("GET", media_id, token, fields="permalink").get("permalink")
-    record.write_text(json.dumps({"media_id": media_id, "permalink": permalink, "account": handle,
-                                  "published_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")
-    commit_record(record)
+    write_record(record, media_id, permalink, handle)
     print(f"Published: {permalink}")
 
 

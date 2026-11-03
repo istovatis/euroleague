@@ -24,6 +24,8 @@ approved together goes out one by one instead of all at once. Failed attempts co
 When Instagram answers with its anti-spam block ("action is blocked", subcode 2207051), that channel is paused for
 BLOCK_HOURS: publish/blocked.json records until when, and runs skip the channel instead of retrying (which can extend
 the block). Its posts stay pending and go out once the pause ends. Delete the channel's line to retry sooner.
+Instagram has answered "blocked" for posts that went live, so publish_instagram.py first looks for the post on the
+account, before publishing and after a "blocked" reply, and records it instead of posting a copy.
 """
 import argparse
 import datetime as dt
