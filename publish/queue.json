@@ -245,7 +245,6 @@
     "story": "nextgame/E2026/oly-90",
     "when": "2026-10-29T18:00:00+02:00",
     "langs": [
-      "el",
       "x"
     ],
     "approved": true
@@ -254,8 +253,6 @@
     "story": "rounds/E2026/round-09/day-1/01-maledon",
     "when": "2026-10-30T00:08:00+02:00",
     "langs": [
-      "en",
-      "el",
       "x",
       "reel-en",
       "reel-el"
@@ -267,8 +264,6 @@
     "story": "rounds/E2026/round-09/day-1/02-paris",
     "when": "2026-10-30T00:09:00+02:00",
     "langs": [
-      "en",
-      "el",
       "x",
       "reel-en",
       "reel-el"
@@ -280,8 +275,6 @@
     "story": "rounds/E2026/round-09/day-2/01-efes",
     "when": "2026-10-31T00:14:00+02:00",
     "langs": [
-      "en",
-      "el",
       "x",
       "reel-en",
       "reel-el"
@@ -337,8 +330,6 @@
     "story": "arenas/E2026/unipol-forum",
     "when": "2026-11-01T18:00:00+02:00",
     "langs": [
-      "en",
-      "el",
       "x",
       "reel-en",
       "reel-el"
