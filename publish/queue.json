@@ -354,5 +354,29 @@
       "x"
     ],
     "approved": true
+  },
+  {
+    "story": "rounds/E2026/round-10/day-1/01-nunn",
+    "when": "2026-11-05T00:19:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-10/day-1/02-lessort",
+    "when": "2026-11-05T00:20:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]

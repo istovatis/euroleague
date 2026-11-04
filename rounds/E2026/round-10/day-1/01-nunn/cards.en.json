@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 10",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["MAD", 112, "PAN", 115],
+      "kicker": "Overtime in Madrid",
+      "title": "33 points.\n*Madrid silenced.*",
+      "subtitle": "Kendrick Nunn · Panathinaikos"
+    },
+    {
+      "type": "score",
+      "badges": ["MAD", "PAN"],
+      "kicker": "Final · Madrid · OT",
+      "sides": [
+        {"team": "Real Madrid", "score": 112, "won": false},
+        {"team": "Panathinaikos", "score": 115, "won": true}
+      ],
+      "note": "101-101 after 40 minutes. 14-11 Panathinaikos in OT.",
+      "lines": [
+        ["Nunn", "33 pts in 24 min · 8/8 from two · 8/8 FT"],
+        ["Lessort", "20 pts · 9 reb · 5 ast · 30 PIR"],
+        ["Feliz (MAD)", "27 pts · 6 ast"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The statement",
+      "title": "The leader walked\ninto Madrid.\nWon it in *overtime*.",
+      "subtitle": "Panathinaikos 8-2 · Real Madrid 6-4"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["MAD", "PAN"],
+    "kicker": "Overtime in Madrid · Kendrick Nunn",
+    "sides": [
+      {"team": "Real Madrid", "score": 112, "won": false},
+      {"team": "Panathinaikos", "score": 115, "won": true}
+    ],
+    "note": "101-101 after 40 minutes. 14-11 Panathinaikos in OT.",
+    "lines": [
+      ["Nunn", "33 pts in 24 min · 8/8 FT"],
+      ["Lessort", "20 pts · 9 reb"]
+    ]
+  }
+}

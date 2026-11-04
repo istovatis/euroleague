@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 10",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["MAD", 112, "PAN", 115],
+      "kicker": "The other engine",
+      "title": "Nunn had the points.\n*Lessort had the paint.*",
+      "subtitle": "Mathias Lessort · Panathinaikos"
+    },
+    {
+      "type": "score",
+      "badges": ["MAD", "PAN"],
+      "kicker": "Final · Madrid · OT",
+      "sides": [
+        {"team": "Real Madrid", "score": 112, "won": false},
+        {"team": "Panathinaikos", "score": 115, "won": true}
+      ],
+      "note": "101-101 after 40 minutes. 14-11 Panathinaikos in OT.",
+      "lines": [
+        ["Lessort", "20 pts · 9 reb · 5 ast · 30 PIR"],
+        ["Shooting", "8/10 from two · 4/4 FT · 2 stl"],
+        ["Tavares (MAD)", "13 pts · 6 reb"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Under the rim",
+      "title": "Tavares's house.\nLessort's night:\n*20 points, 9 boards.*",
+      "subtitle": "Panathinaikos 8-2"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["MAD", "PAN"],
+    "kicker": "The other engine · Mathias Lessort",
+    "sides": [
+      {"team": "Real Madrid", "score": 112, "won": false},
+      {"team": "Panathinaikos", "score": 115, "won": true}
+    ],
+    "note": "20 points, 9 rebounds, 5 assists. 30 PIR.",
+    "lines": [
+      ["Shooting", "8/10 from two · 4/4 FT"],
+      ["Tavares (MAD)", "13 pts · 6 reb"]
+    ]
+  }
+}
