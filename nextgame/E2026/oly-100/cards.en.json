@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "round_label": "Round 10",
+  "ig": [],
+  "x": {
+    "type": "list",
+    "kicker": "Next up · Olympiacos",
+    "items": [
+      {
+        "tag": "Opponent",
+        "text": "vs Crvena Zvezda"
+      },
+      {
+        "tag": "When",
+        "text": "Fri 06 Nov · 21:15 Athens"
+      },
+      {
+        "tag": "Where",
+        "text": "Sunel Arena"
+      },
+      {
+        "tag": "Form",
+        "text": "Olympiacos 7-2 (2nd) · Crvena Zvezda 6-3 (3rd)"
+      }
+    ]
+  }
+}

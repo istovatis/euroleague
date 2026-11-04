@@ -345,5 +345,14 @@
       "x"
     ],
     "approved": true
+  },
+  {
+    "story": "nextgame/E2026/oly-100",
+    "when": "2026-11-04T18:00:00+02:00",
+    "langs": [
+      "el",
+      "x"
+    ],
+    "approved": true
   }
 ]
