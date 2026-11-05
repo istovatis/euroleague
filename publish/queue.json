@@ -391,7 +391,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-10/day-2/02-valencia",
@@ -403,7 +404,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-10/day-2/03-brizuela",
@@ -415,6 +417,7 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   }
 ]
