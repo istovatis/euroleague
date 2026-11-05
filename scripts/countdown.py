@@ -8,10 +8,12 @@
 1. pick (GitHub Actions, Sundays): scores the games in the coming week (rivalries, Greek clubs, top-of-the-table
    meetings) and writes the folder: meta.json, prompt.txt (the AI video prompt in the home fans' colours),
    post.en.md / post.el.md and a README. The workflow opens an issue with the prompt and an upload link.
-2. The owner generates the clip (Veo or similar, 9:16, no sound) and uploads it to the folder as clip.mp4.
-   Optional: "clip_start" in meta.json (seconds) picks where the ~4 seconds we use begin (default 0).
+2. The owner generates the clip (Veo or similar, 9:16) and uploads it to the folder as clip.mp4. If the clip has
+   sound, it is kept (faded out into the silent outro); otherwise the post is silent.
+   Optional in meta.json: "clip_start" (seconds) picks where the part we use begins (default 0), and "clip_length"
+   how long it is (default 4.2, at most 8), e.g. so a spoken line isn't cut off.
 3. build (runs on that upload): our text layer ("1 DAY TO GO", the matchup, the time) and the logo outro over the
-   clip, silent: cards/en/x.mp4 for X and cards/<lang>/reel.mp4 for the Reels. It queues the post as a draft for
+   clip: cards/en/x.mp4 for X and cards/<lang>/reel.mp4 for the Reels. It queues the post as a draft for
    12:00 Athens the day before the game. AI video can go wrong, so the owner approves it like any other post.
 """
 import argparse
@@ -118,7 +120,7 @@ def pick(season, now):
     (folder / "README.md").write_text(
         f"# Countdown: {CLUBS[home]['en']} vs {CLUBS[away]['en']}\n\n"
         f"Round {g['round']}, {t:%a %d %b %H:%M} Athens. Goes out {post_at:%a %d %b %H:%M} (the day before), after approval.\n\n"
-        f"1. Generate a clip with `prompt.txt` (9:16 vertical, 6-8 s, no sound).\n"
+        f"1. Generate a clip with `prompt.txt` (9:16 vertical, 6-8 s; sound is kept if the clip has any).\n"
         f"2. Upload it here as **clip.mp4**: {upload}\n"
         f"3. The Countdown workflow builds the X video and both Reels and queues them as a draft; approve as usual.\n")
     print(folder.relative_to(ROOT))
@@ -132,7 +134,7 @@ def write_posts(folder, m):
     en_h, en_a, el_h, el_a = CLUBS[home]["en"], CLUBS[away]["en"], CLUBS[home]["el"], CLUBS[away]["el"]
     (folder / "post.en.md").write_text(f"""# Countdown: {en_h} vs {en_a} (Round {m['round']}, {t:%a %d %b %H:%M} Athens)
 
-AI-generated fan clip (no crests, logos or real people) with our own text layer and outro. Silent.
+AI-generated fan clip (no crests, logos or real people) with our own text layer and outro.
 
 ## X
 1 day. {FANS[home][1]} is already loud.
@@ -216,18 +218,19 @@ def outro(lang, w, h, handle):
 
 
 def probe(ffmpeg, clip):
-    """(width, height, seconds) of the clip, read from ffmpeg's banner."""
+    """(width, height, seconds, has sound) of the clip, read from ffmpeg's banner."""
     import re
     info = subprocess.run([ffmpeg, "-hide_banner", "-i", str(clip)], capture_output=True, text=True).stderr
     w, h = map(int, re.search(r"Video:.*?(\d{3,5})x(\d{3,5})", info).groups())
     hh, mm, ss = re.search(r"Duration: (\d+):(\d+):([\d.]+)", info).groups()
-    return w, h, int(hh) * 3600 + int(mm) * 60 + float(ss)
+    return w, h, int(hh) * 3600 + int(mm) * 60 + float(ss), " Audio:" in info
 
 
-def compose(ffmpeg, clip, size, txt_png, end_png, out, seconds, start=0.0):
-    """Clip (cropped to fill the frame, up to 4.2 s) + text layer rising in + 0.8 s logo outro. No audio."""
+def compose(ffmpeg, clip, size, txt_png, end_png, out, seconds, start=0.0, length=4.2, sound=False):
+    """Clip (cropped to fill the frame, `length` s) + text layer rising in + 0.8 s logo outro. The clip's sound, if
+    any, fades out as the outro comes in; otherwise the video has no audio."""
     w, h = size
-    body = min(seconds - start, 4.2)
+    body = min(seconds - start, length)
     total = body + 0.8
     fill = f"scale={w}:{h}:force_original_aspect_ratio=increase:flags=lanczos,crop={w}:{h}"
     subprocess.run([ffmpeg, "-y", "-loglevel", "error", "-ss", f"{start:.2f}", "-t", f"{body:.2f}", "-i", str(clip),
@@ -237,8 +240,9 @@ def compose(ffmpeg, clip, size, txt_png, end_png, out, seconds, start=0.0):
                     "[1:v]format=rgba,fade=in:st=0.4:d=0.45:alpha=1[txt];"
                     f"[2:v]format=rgba,fade=in:st={body - 0.05:.2f}:d=0.35:alpha=1[end];"
                     "[bg][txt]overlay=x=0:y='min(70,max(0,70*(1-(t-0.4)/0.45)))'[v1];"
-                    f"[v1][end]overlay=0:0,trim=duration={total:.2f},format=yuv420p[v]",
-                    "-map", "[v]", "-an", "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-r", "30",
+                    f"[v1][end]overlay=0:0,trim=duration={total:.2f},format=yuv420p[v]"
+                    + (f";[0:a]afade=t=out:st={max(body - 0.3, 0):.2f}:d=0.3,apad,atrim=duration={total:.2f}[a]" if sound else ""),
+                    "-map", "[v]", *(["-map", "[a]", "-c:a", "aac", "-b:a", "128k"] if sound else ["-an"]), "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-r", "30",
                     "-movflags", "+faststart", str(out)], check=True)
 
 
@@ -254,7 +258,7 @@ def build(folder, queue_it=True):
     clip = folder / "clip.mp4"
     if not clip.exists():
         sys.exit(f"No clip.mp4 in {folder}")
-    cw, ch, seconds = probe(ffmpeg, clip)
+    cw, ch, seconds, sound = probe(ffmpeg, clip)
     tmp = folder / ".build"
     tmp.mkdir(exist_ok=True)
     b.ROOT = folder  # shoot() prints paths relative to ROOT
@@ -267,7 +271,8 @@ def build(folder, queue_it=True):
         txt, end = tmp / f"txt-{lang}-{w}.png", tmp / f"end-{lang}-{w}-{handle.strip('@')}.png"
         b.shoot(*layer(m, lang, w, h), txt, lang)
         b.shoot(*outro(lang, w, h, handle), end, lang)
-        compose(ffmpeg, clip, (w, h), txt, end, out, seconds, float(m.get("clip_start", 0)))
+        compose(ffmpeg, clip, (w, h), txt, end, out, seconds, float(m.get("clip_start", 0)),
+                min(float(m.get("clip_length", 4.2)), 8), sound)
         print(out.relative_to(ROOT))
     for f in tmp.iterdir():
         f.unlink()
