@@ -380,5 +380,41 @@
     ],
     "approved": true,
     "notified": "auto-approved"
+  },
+  {
+    "story": "rounds/E2026/round-10/day-2/01-hifi",
+    "when": "2026-11-05T23:49:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-10/day-2/02-valencia",
+    "when": "2026-11-05T23:50:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-10/day-2/03-brizuela",
+    "when": "2026-11-05T23:51:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]

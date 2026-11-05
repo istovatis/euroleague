@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 10",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["MIL", 73, "PAM", 84],
+      "kicker": "Comeback in Milan",
+      "title": "Down 8 after three.\n*Then 33 in the fourth.*",
+      "subtitle": "Valencia · 33-14 in the 4th quarter"
+    },
+    {
+      "type": "score",
+      "badges": ["MIL", "PAM"],
+      "kicker": "Final · Milan",
+      "sides": [
+        {"team": "Olimpia Milano", "score": 73, "won": false},
+        {"team": "Valencia", "score": 84, "won": true}
+      ],
+      "note": "Milano led 59-51 after three. Valencia won the 4th quarter 33-14.",
+      "lines": [
+        ["Taylor", "17 pts · 5 reb · 4 ast · 24 PIR"],
+        ["Brooks", "16 pts · 4/9 from three"],
+        ["Shorts", "15 pts · 5 ast"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Ten minutes",
+      "title": "Valencia scored 11\nin the 3rd quarter.\n*33 in the 4th.*",
+      "subtitle": "Valencia 7-3 · Olimpia Milano 1-9"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["MIL", "PAM"],
+    "kicker": "Comeback in Milan · Valencia",
+    "sides": [
+      {"team": "Olimpia Milano", "score": 73, "won": false},
+      {"team": "Valencia", "score": 84, "won": true}
+    ],
+    "note": "Milano led 59-51 after three. Valencia won the 4th quarter 33-14.",
+    "lines": [
+      ["Taylor", "17 pts · 24 PIR"],
+      ["Brooks", "16 pts · 4/9 from three"]
+    ]
+  }
+}
