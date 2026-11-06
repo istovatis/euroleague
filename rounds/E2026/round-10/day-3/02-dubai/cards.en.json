@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 10",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["VIR", 75, "DUB", 93],
+      "kicker": "Road rout in Bologna",
+      "title": "Dubai walked into Bologna\n*and took it over.*",
+      "subtitle": "Dubai · Xavi Pascual"
+    },
+    {
+      "type": "score",
+      "badges": ["VIR", "DUB"],
+      "kicker": "Final · Bologna",
+      "sides": [
+        {"team": "Virtus", "score": 75, "won": false},
+        {"team": "Dubai", "score": 93, "won": true}
+      ],
+      "note": "Dubai led 48-34 at half. Then 28 points in the 3rd quarter: 76-53.",
+      "lines": [
+        ["Kabengele", "16 pts · 9 reb · 17 PIR"],
+        ["Wright IV", "16 pts · 3/3 FT"],
+        ["Diarra (VIR)", "19 pts · 7 reb · 29 PIR"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The chasing pack",
+      "title": "Dubai are 7-3.\n*Same record as Olympiacos.*",
+      "subtitle": "Six teams at 7-3 after Round 10"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["VIR", "DUB"],
+    "kicker": "Road rout in Bologna · Dubai",
+    "sides": [
+      {"team": "Virtus", "score": 75, "won": false},
+      {"team": "Dubai", "score": 93, "won": true}
+    ],
+    "note": "Dubai led 48-34 at half. 28 points in the 3rd quarter.",
+    "lines": [
+      ["Kabengele", "16 pts · 9 reb"],
+      ["Wright IV", "16 pts"]
+    ]
+  }
+}

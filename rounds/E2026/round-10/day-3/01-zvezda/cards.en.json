@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 10",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["OLY", 57, "RED", 62],
+      "kicker": "Statement win in Piraeus",
+      "title": "Zvezda built a wall.\n*Olympiacos never got over it.*",
+      "subtitle": "Crvena Zvezda · Ibon Navarro"
+    },
+    {
+      "type": "score",
+      "badges": ["OLY", "RED"],
+      "kicker": "Final · Piraeus",
+      "sides": [
+        {"team": "Olympiacos", "score": 57, "won": false},
+        {"team": "Crvena Zvezda", "score": 62, "won": true}
+      ],
+      "note": "Zvezda led 40-22 at half. Olympiacos won the second half 35-22.",
+      "lines": [
+        ["Nwora", "18 pts · 13 reb · 3 stl · 23 PIR"],
+        ["Chris Jones", "10 pts · 2/3 from three"],
+        ["Vezenkov (OLY)", "27 pts · 6 reb · 28 PIR"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The lone fighter",
+      "title": "Vezenkov dragged Olympiacos back.\n*Nobody came with him.*",
+      "subtitle": "Olympiacos 7-3 · Crvena Zvezda 7-3"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["OLY", "RED"],
+    "kicker": "Statement win in Piraeus · Crvena Zvezda",
+    "sides": [
+      {"team": "Olympiacos", "score": 57, "won": false},
+      {"team": "Crvena Zvezda", "score": 62, "won": true}
+    ],
+    "note": "Zvezda led 40-22 at half. Olympiacos won the second half 35-22.",
+    "lines": [
+      ["Nwora", "18 pts · 13 reb · 23 PIR"],
+      ["Vezenkov (OLY)", "27 pts · 28 PIR"]
+    ]
+  }
+}
