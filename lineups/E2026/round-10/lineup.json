@@ -1,0 +1,81 @@
+{
+  "season": "E2026",
+  "round": 10,
+  "players": [
+    {
+      "code": "012640",
+      "first": "Nadir",
+      "last": "Hifi",
+      "club": "PRS",
+      "dorsal": "2",
+      "position": "Guard",
+      "pir": 39.0,
+      "pts": 28.0,
+      "ast": 9.0,
+      "reb": 6.0,
+      "won": true,
+      "game": 95,
+      "slot": "PG"
+    },
+    {
+      "code": "009846",
+      "first": "Elijah",
+      "last": "Bryant",
+      "club": "HTA",
+      "dorsal": "3",
+      "position": "Guard",
+      "pir": 35.0,
+      "pts": 25.0,
+      "ast": 1.0,
+      "reb": 3.0,
+      "won": false,
+      "game": 93,
+      "slot": "SG"
+    },
+    {
+      "code": "001288",
+      "first": "Vladimir",
+      "last": "Lucic",
+      "club": "MUN",
+      "dorsal": "11",
+      "position": "Forward",
+      "pir": 28.0,
+      "pts": 18.0,
+      "ast": 8.0,
+      "reb": 1.0,
+      "won": true,
+      "game": 94,
+      "slot": "SF"
+    },
+    {
+      "code": "003469",
+      "first": "Sasha",
+      "last": "Vezenkov",
+      "club": "OLY",
+      "dorsal": "14",
+      "position": "Forward",
+      "pir": 28.0,
+      "pts": 27.0,
+      "ast": 1.0,
+      "reb": 6.0,
+      "won": false,
+      "game": 100,
+      "slot": "PF"
+    },
+    {
+      "code": "013278",
+      "first": "Austin",
+      "last": "Wiley",
+      "club": "MUN",
+      "dorsal": "50",
+      "position": "Center",
+      "pir": 32.0,
+      "pts": 22.0,
+      "ast": 2.0,
+      "reb": 9.0,
+      "won": true,
+      "game": 94,
+      "slot": "C"
+    }
+  ]
+}
