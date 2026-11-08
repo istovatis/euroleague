@@ -225,6 +225,8 @@ def main():
                 cmd = [sys.executable, str(ROOT / "scripts" / "publish_x.py"), e["story"]]
             elif lang.startswith("reel-"):
                 cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang[5:], "--reel"]
+                if lang[5:] not in e["langs"]:  # no carousel on that account: the Reel goes on the grid too
+                    cmd.append("--feed")
             else:
                 cmd = [sys.executable, str(ROOT / "scripts" / "publish_instagram.py"), e["story"], lang]
             if not args.dry_run:

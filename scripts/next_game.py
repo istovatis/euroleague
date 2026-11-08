@@ -4,8 +4,8 @@
   python3 scripts/next_game.py                 # build + queue (approved) today's posts, if any (used by CI)
   python3 scripts/next_game.py --team OLY --force --no-queue   # build one now, for a preview
 
-DAYS_BEFORE days before OLY or PAN play, that game gets a carousel on the Greek Instagram account (@parke.hoops) and an
-English X post: 1) "Ο επόμενος αγώνας του Ολυμπιακού", 2) the opponent, 3) day, time and arena, 4) the numbers
+DAYS_BEFORE days before OLY or PAN play, that game gets a Reel on the Greek Instagram account (@parke.hoops; on the grid too,
+since Reels reach further than carousels: the owner's decision, 2026-11-08) and an English X post. The Reel animates: 1) "Ο επόμενος αγώνας του Ολυμπιακού", 2) the opponent, 3) day, time and arena, 4) the numbers
 (position and record, home/away record, last-5 form, points per game, the last meeting). Everything comes from the
 EuroLeague API, so it goes out without approval (the owner's decision, 2026-10-28), at POST_AT Athens.
 Folder: nextgame/<season>/<team>-<game code>/. If both clubs' next game is the derby, only one post is made.
@@ -217,7 +217,7 @@ def main():
         if not a.no_queue:
             queue = [sys.executable, str(ROOT / "scripts" / "publish_queue.py")]
             if folder.relative_to(ROOT).as_posix() not in subprocess.run(queue + ["list"], capture_output=True, text=True).stdout:
-                subprocess.run(queue + ["add", str(folder.relative_to(ROOT)), f"{today} {POST_AT}", "--langs", "el,x"], check=True)
+                subprocess.run(queue + ["add", str(folder.relative_to(ROOT)), f"{today} {POST_AT}", "--langs", "reel-el,x"], check=True)
 
 
 if __name__ == "__main__":

@@ -193,13 +193,14 @@ def host_video(mp4, name):
     return f"https://github.com/istovatis/euroleague/releases/download/{REELS_RELEASE}/{name}"
 
 
-def upload_reel(uid, token, mp4, caption, name):
+def upload_reel(uid, token, mp4, caption, name, feed=False):
     """Create a Reel container from the hosted video; returns its id once Instagram has processed it.
-    Shown in the Reels tab only (share_to_feed=false), so the grid keeps just the carousel."""
+    Shown in the Reels tab only (share_to_feed=false), so the grid keeps just the carousel, unless `feed` (a Reel
+    with no carousel beside it, e.g. the next-game post)."""
     url = host_video(mp4, name)
     try:
         container = call("POST", f"{uid}/media", token, media_type="REELS", video_url=url,
-                         caption=caption, share_to_feed="false")["id"]
+                         caption=caption, share_to_feed="true" if feed else "false")["id"]
         for _ in range(90):  # video processing takes a minute or two
             status = call("GET", container, token, fields="status_code,status")
             if status.get("status_code") == "FINISHED":
@@ -253,7 +254,7 @@ def already_live(record, uid, token, caption, product, handle):
     return bool(found)
 
 
-def publish_reel(story, lang, yes):
+def publish_reel(story, lang, yes, feed=False):
     record = story / f"published.reel-{lang}.json"
     if record.exists():
         sys.exit(f"Already published: {json.loads(record.read_text()).get('permalink')}")
@@ -277,7 +278,7 @@ def publish_reel(story, lang, yes):
         return
     if already_live(record, me["user_id"], token, caption, "REELS", handle):
         return
-    container = upload_reel(me["user_id"], token, mp4, caption, f"{story.name}-{lang}.mp4")
+    container = upload_reel(me["user_id"], token, mp4, caption, f"{story.name}-{lang}.mp4", feed)
     media_id = publish_container(me["user_id"], token, container, caption, "REELS")
     permalink = call("GET", media_id, token, fields="permalink").get("permalink")
     write_record(record, media_id, permalink, handle)
@@ -290,11 +291,12 @@ def main():
     ap.add_argument("lang", choices=sorted(BRAND["handle"]["ig"]))
     ap.add_argument("--yes", action="store_true", help="actually publish (default is a dry run)")
     ap.add_argument("--reel", action="store_true", help="the story's Reel instead of the carousel")
+    ap.add_argument("--feed", action="store_true", help="with --reel: show it on the grid too (no carousel beside it)")
     a = ap.parse_args()
 
     story = (ROOT / a.story).resolve() if not pathlib.Path(a.story).is_absolute() else pathlib.Path(a.story)
     if a.reel:
-        return publish_reel(story, a.lang, a.yes)
+        return publish_reel(story, a.lang, a.yes, a.feed)
     record = story / f"published.{a.lang}.json"
     if record.exists():
         sys.exit(f"Already published: {json.loads(record.read_text()).get('permalink')}")
