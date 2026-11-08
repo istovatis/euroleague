@@ -1,0 +1,56 @@
+{
+  "lang": "en",
+  "round_label": "Athens",
+  "ig": [
+    {
+      "type": "hook",
+      "photo": "exterior",
+      "kicker": "Arena of the week",
+      "title": "The biggest\nroom in\n*Greece*.",
+      "subtitle": "Telekom Center Athens · OAKA",
+      "badges": ["PAN"]
+    },
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "A wall\nof *green*.",
+      "subtitle": "Panathinaikos at home · March 2024"
+    },
+    {
+      "type": "list",
+      "kicker": "Telekom Center Athens",
+      "items": [
+        {"tag": "Capacity", "text": "18,500"},
+        {"tag": "Opened", "text": "1995"},
+        {"tag": "Home of", "text": "Panathinaikos"},
+        {"tag": "This week", "text": "Panathinaikos vs Barça · Fri 13 Nov"}
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Did you know",
+      "title": "*Eurovision*\nwas held\nhere.",
+      "subtitle": "May 2006 · 15,000 seats for each show"
+    }
+  ],
+  "x": [
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "A wall\nof *green*.",
+      "subtitle": "Telekom Center Athens · OAKA"
+    },
+    {
+      "type": "list",
+      "kicker": "Arena of the week",
+      "items": [
+        {"tag": "Capacity", "text": "18,500"},
+        {"tag": "Opened", "text": "1995"},
+        {"tag": "Home of", "text": "Panathinaikos"},
+        {"tag": "This week", "text": "Panathinaikos vs Barça · Fri 13 Nov"}
+      ]
+    }
+  ]
+}

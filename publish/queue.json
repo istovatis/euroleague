@@ -471,5 +471,17 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/27"
+  },
+  {
+    "story": "arenas/E2026/telekom-center-athens",
+    "when": "2026-11-08T18:00:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]
