@@ -484,5 +484,14 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/29"
+  },
+  {
+    "story": "nextgame/E2026/oly-107",
+    "when": "2026-11-10T18:00:00+02:00",
+    "langs": [
+      "reel-el",
+      "x"
+    ],
+    "approved": true
   }
 ]

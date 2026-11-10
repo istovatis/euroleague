@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "round_label": "Round 11",
+  "ig": [],
+  "x": {
+    "type": "list",
+    "kicker": "Next up · Olympiacos",
+    "items": [
+      {
+        "tag": "Opponent",
+        "text": "vs Dubai"
+      },
+      {
+        "tag": "When",
+        "text": "Thu 12 Nov · 21:15 Athens"
+      },
+      {
+        "tag": "Where",
+        "text": "Sunel Arena"
+      },
+      {
+        "tag": "Form",
+        "text": "Olympiacos 7-3 (5th) · Dubai 7-3 (6th)"
+      }
+    ]
+  }
+}
