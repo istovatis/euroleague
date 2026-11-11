@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 11",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["PAR", 80, "BAS", 66],
+      "kicker": "Belgrade",
+      "title": "Partizan shut the door\nin the fourth quarter.\n*Baskonia's nightmare goes on.*",
+      "subtitle": "Partizan · a fourth quarter of pure defense"
+    },
+    {
+      "type": "score",
+      "badges": ["PAR", "BAS"],
+      "kicker": "Final · Belgrade",
+      "sides": [
+        {"team": "Partizan", "score": 80, "won": true},
+        {"team": "Baskonia", "score": 66, "won": false}
+      ],
+      "note": "Partizan led 65-60 after three. They won the 4th quarter 15-6.",
+      "lines": [
+        ["Jekiri", "17 pts · 8/10 from two · 25 PIR"],
+        ["Carlik Jones", "16 pts · 6 ast"],
+        ["Duarte (BAS)", "15 pts · 4/7 from three"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Baskonia's season",
+      "title": "Eleven games.\n*One win.*",
+      "subtitle": "Partizan 6-5 · Baskonia 1-10"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["PAR", "BAS"],
+    "kicker": "Partizan shut the door · Belgrade",
+    "sides": [
+      {"team": "Partizan", "score": 80, "won": true},
+      {"team": "Baskonia", "score": 66, "won": false}
+    ],
+    "note": "65-60 after three. Partizan won the 4th quarter 15-6.",
+    "lines": [
+      ["Jekiri", "17 pts · 8/10 from two · 25 PIR"],
+      ["Carlik Jones", "16 pts · 6 ast"]
+    ]
+  }
+}

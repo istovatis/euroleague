@@ -502,5 +502,29 @@
       "x"
     ],
     "approved": true
+  },
+  {
+    "story": "rounds/E2026/round-11/day-1/01-paris",
+    "when": "2026-11-12T00:18:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-11/day-1/02-partizan",
+    "when": "2026-11-12T00:19:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]

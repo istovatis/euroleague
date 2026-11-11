@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 11",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["PRS", 111, "ULK", 109],
+      "kicker": "Overtime upset in Paris",
+      "title": "Paris took Fenerbahçe\nto overtime.\n*And won it.*",
+      "subtitle": "Paris · a statement win from the whole roster"
+    },
+    {
+      "type": "score",
+      "badges": ["PRS", "ULK"],
+      "kicker": "Final (OT) · Paris",
+      "sides": [
+        {"team": "Paris", "score": 111, "won": true},
+        {"team": "Fenerbahçe", "score": 109, "won": false}
+      ],
+      "note": "72-72 after three. 92-92 after 40'. Paris won overtime 19-17.",
+      "lines": [
+        ["Ntilikina", "22 pts · 4/8 from three · 6/6 FT"],
+        ["Warren", "19 pts · 5 reb"],
+        ["Horton-Tucker (FEN)", "32 pts · 10 reb · 33 PIR"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "No single hero",
+      "title": "Eight Paris players\nscored in double figures.\n*Fenerbahçe couldn't guard them all.*",
+      "subtitle": "Paris 5-6 · Fenerbahçe 7-4"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["PRS", "ULK"],
+    "kicker": "Overtime upset in Paris",
+    "sides": [
+      {"team": "Paris", "score": 111, "won": true},
+      {"team": "Fenerbahçe", "score": 109, "won": false}
+    ],
+    "note": "92-92 after 40'. Paris won overtime 19-17.",
+    "lines": [
+      ["Ntilikina", "22 pts · 6/6 FT"],
+      ["Horton-Tucker (FEN)", "32 pts · 10 reb · 33 PIR"]
+    ]
+  }
+}
