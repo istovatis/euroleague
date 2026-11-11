@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "round_label": "Round 11",
+  "ig": [],
+  "x": {
+    "type": "list",
+    "kicker": "Next up · Panathinaikos",
+    "items": [
+      {
+        "tag": "Opponent",
+        "text": "vs Barça"
+      },
+      {
+        "tag": "When",
+        "text": "Fri 13 Nov · 21:15 Athens"
+      },
+      {
+        "tag": "Where",
+        "text": "Telekom Center Athens"
+      },
+      {
+        "tag": "Form",
+        "text": "Panathinaikos 8-2 (1st) · Barça 7-3 (7th)"
+      }
+    ]
+  }
+}

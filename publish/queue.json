@@ -493,5 +493,14 @@
       "x"
     ],
     "approved": true
+  },
+  {
+    "story": "nextgame/E2026/pan-110",
+    "when": "2026-11-11T18:00:00+02:00",
+    "langs": [
+      "reel-el",
+      "x"
+    ],
+    "approved": true
   }
 ]
