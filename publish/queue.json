@@ -513,7 +513,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-11/day-1/02-partizan",
@@ -525,6 +526,7 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   }
 ]
