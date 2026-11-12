@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 11",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["OLY", 101, "DUB", 72],
+      "kicker": "Top-six clash",
+      "title": "Olympiacos turned a big game\ninto a *rout*.",
+      "subtitle": "Olympiacos · a statement at home"
+    },
+    {
+      "type": "score",
+      "badges": ["OLY", "DUB"],
+      "kicker": "Final · Olympiacos at home",
+      "sides": [
+        {"team": "Olympiacos", "score": 101, "won": true},
+        {"team": "Dubai", "score": 72, "won": false}
+      ],
+      "note": "57-43 at half-time. Then Olympiacos won the 3rd quarter 31-13.",
+      "lines": [
+        ["Fournier", "28 pts · 5/7 from three · 5/6 FT"],
+        ["Vezenkov", "20 pts · 6/6 from two"],
+        ["Bacon (DUB)", "20 pts · 6/9 FT"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Gap opened",
+      "title": "Dubai arrived level with Olympiacos.\n*They left 29 points behind.*",
+      "subtitle": "Olympiacos 8-3 · Dubai 7-4"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["OLY", "DUB"],
+    "kicker": "Top-six clash · Olympiacos at home",
+    "sides": [
+      {"team": "Olympiacos", "score": 101, "won": true},
+      {"team": "Dubai", "score": 72, "won": false}
+    ],
+    "note": "31-13 Olympiacos in the 3rd quarter.",
+    "lines": [
+      ["Fournier", "28 pts · 5/7 from three"],
+      ["Vezenkov", "20 pts · 6/6 from two"]
+    ]
+  }
+}

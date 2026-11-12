@@ -528,5 +528,41 @@
     ],
     "approved": true,
     "notified": "auto-approved"
+  },
+  {
+    "story": "rounds/E2026/round-11/day-2/01-valanciunas",
+    "when": "2026-11-13T00:14:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-11/day-2/02-olympiacos",
+    "when": "2026-11-13T00:15:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-11/day-2/03-maccabi",
+    "when": "2026-11-13T00:16:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]

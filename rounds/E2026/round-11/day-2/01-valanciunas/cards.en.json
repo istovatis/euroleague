@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 11",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["MIL", 83, "ZAL", 86],
+      "kicker": "Road win in Milan",
+      "title": "36 PIR.\n*The big man ruled Milan.*",
+      "subtitle": "Jonas Valančiūnas · Žalgiris"
+    },
+    {
+      "type": "score",
+      "badges": ["MIL", "ZAL"],
+      "kicker": "Final · Milan",
+      "sides": [
+        {"team": "Olimpia Milano", "score": 83, "won": false},
+        {"team": "Žalgiris", "score": 86, "won": true}
+      ],
+      "note": "Žalgiris led 63-52 after three. Milan won the 4th quarter 31-23 and fell 3 short.",
+      "lines": [
+        ["Valančiūnas", "17 pts · 20 reb · 36 PIR in 25 min"],
+        ["Tubelis", "15 pts · 8 reb"],
+        ["Guduric (MIL)", "20 pts · 6/9 from three"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The glass",
+      "title": "Every rebound in Milan\nhad *one owner*.",
+      "subtitle": "Žalgiris 7-4 · Olimpia Milano 1-10"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["MIL", "ZAL"],
+    "kicker": "Road win in Milan · Jonas Valančiūnas",
+    "sides": [
+      {"team": "Olimpia Milano", "score": 83, "won": false},
+      {"team": "Žalgiris", "score": 86, "won": true}
+    ],
+    "note": "63-52 Žalgiris after three. Milan won the 4th 31-23, too late.",
+    "lines": [
+      ["Valančiūnas", "17 pts · 20 reb · 36 PIR"],
+      ["Guduric (MIL)", "20 pts · 6/9 from three"]
+    ]
+  }
+}

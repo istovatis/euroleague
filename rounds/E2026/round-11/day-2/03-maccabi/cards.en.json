@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 11",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["TEL", 80, "HTA", 73],
+      "kicker": "Tel Aviv derby",
+      "title": "Near the bottom of the table.\nStill *kings of the derby*.",
+      "subtitle": "Maccabi Tel Aviv · beat Hapoel"
+    },
+    {
+      "type": "score",
+      "badges": ["TEL", "HTA"],
+      "kicker": "Final · Tel Aviv derby",
+      "sides": [
+        {"team": "Maccabi Tel Aviv", "score": 80, "won": true},
+        {"team": "Hapoel Tel Aviv", "score": 73, "won": false}
+      ],
+      "note": "Maccabi led after every quarter: 25-21, 41-33, 56-52.",
+      "lines": [
+        ["Colson", "14 pts · 3/7 from three"],
+        ["Madar", "10 pts · 7 ast in 12 min"],
+        ["Micic (HTA)", "14 pts · 1/9 from three"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Upset",
+      "title": "Hapoel came in nine places higher.\n*The derby didn't care.*",
+      "subtitle": "Maccabi 3-8 · Hapoel 6-5"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["TEL", "HTA"],
+    "kicker": "Tel Aviv derby",
+    "sides": [
+      {"team": "Maccabi Tel Aviv", "score": 80, "won": true},
+      {"team": "Hapoel Tel Aviv", "score": 73, "won": false}
+    ],
+    "note": "Maccabi led after every quarter.",
+    "lines": [
+      ["Colson", "14 pts · 3/7 from three"],
+      ["Madar", "10 pts · 7 ast in 12 min"]
+    ]
+  }
+}
