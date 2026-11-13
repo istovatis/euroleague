@@ -578,7 +578,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-11/day-3/02-besiktas",
@@ -590,7 +591,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-11/highlight",
@@ -602,6 +604,7 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": false,
+    "notified": "https://github.com/istovatis/euroleague/issues/34"
   }
 ]
