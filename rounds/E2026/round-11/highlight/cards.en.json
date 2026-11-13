@@ -1,0 +1,46 @@
+{
+  "lang": "en",
+  "round_label": "Round 11",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "Round 11",
+      "title": "The leaders fell at home.\n*Now four teams share the top.*",
+      "subtitle": "Barça's comeback in Athens · Valencia take first place"
+    },
+    {
+      "type": "score",
+      "badges": ["ZAL", "ULK"],
+      "kicker": "Player of the round · PIR",
+      "sides": [
+        {"team": "Jonas Valančiūnas", "score": 36, "won": true},
+        {"team": "Talen Horton-Tucker", "score": 33, "won": false}
+      ],
+      "note": "20 rebounds in 25 minutes. Road win in Milan.",
+      "lines": [
+        ["Valančiūnas (ZAL)", "17 pts · 20 reb"],
+        ["Horton-Tucker (FEN)", "32 pts · 10 reb · lost in OT"]
+      ]
+    },
+    {
+      "type": "list",
+      "kicker": "The table after Round 11",
+      "items": [
+        {"tag": "1 · 8-3", "text": "Valencia · *New leader, up 2*"},
+        {"tag": "2 · 8-3", "text": "Panathinaikos · *Down 1, lost at home*"},
+        {"tag": "3 · 8-3", "text": "Olympiacos · *Up 2*"},
+        {"tag": "4 · 8-3", "text": "Barça · *Up 3, won in Athens*"},
+        {"tag": "6 · 7-4", "text": "Crvena Zvezda · *Down 4 from 2nd*"}
+      ]
+    }
+  ],
+  "x": {
+    "type": "list",
+    "kicker": "Round 11 · the table",
+    "items": [
+      {"tag": "1-4 · 8-3", "text": "Valencia, Panathinaikos, Olympiacos, Barça · *All level*"},
+      {"tag": "6 · 7-4", "text": "Crvena Zvezda · *Down 4*"},
+      {"tag": "MVP", "text": "Jonas Valančiūnas · *36 PIR*"}
+    ]
+  }
+}

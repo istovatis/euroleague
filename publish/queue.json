@@ -567,5 +567,41 @@
     ],
     "approved": true,
     "notified": "auto-approved"
+  },
+  {
+    "story": "rounds/E2026/round-11/day-3/01-barca",
+    "when": "2026-11-13T23:57:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-11/day-3/02-besiktas",
+    "when": "2026-11-13T23:58:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-11/highlight",
+    "when": "2026-11-14T12:00:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]

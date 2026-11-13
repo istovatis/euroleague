@@ -1,0 +1,90 @@
+{
+  "lang": "en",
+  "round_label": "Round 11",
+  "ig": [
+    {
+      "type": "hook",
+      "game": [
+        "ASV",
+        91,
+        "BES",
+        95
+      ],
+      "kicker": "Road win in Lyon",
+      "title": "Behind after every quarter.\n*Beşiktaş won the one that counted.*",
+      "subtitle": "Beşiktaş · comeback at ASVEL"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "ASV",
+        "BES"
+      ],
+      "kicker": "Final · Lyon",
+      "sides": [
+        {
+          "team": "ASVEL",
+          "score": 91,
+          "won": false
+        },
+        {
+          "team": "Beşiktaş",
+          "score": 95,
+          "won": true
+        }
+      ],
+      "note": "ASVEL led 52-43 at half-time and 68-65 after three. Beşiktaş won the 4th quarter 30-23.",
+      "lines": [
+        [
+          "Wilbekin",
+          "16 pts · 4 threes"
+        ],
+        [
+          "Omoruyi",
+          "10 pts · 7 reb · 6 ast"
+        ],
+        [
+          "Waters (ASV)",
+          "26 pts · 5 stl · 7/7 FT"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "In vain",
+      "title": "Tremont Waters gave ASVEL everything.\n*Beşiktaş took the win.*",
+      "subtitle": "Beşiktaş 5-6 · ASVEL 4-7"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": [
+      "ASV",
+      "BES"
+    ],
+    "kicker": "Road win in Lyon · Beşiktaş",
+    "sides": [
+      {
+        "team": "ASVEL",
+        "score": 91,
+        "won": false
+      },
+      {
+        "team": "Beşiktaş",
+        "score": 95,
+        "won": true
+      }
+    ],
+    "note": "68-65 ASVEL after three. Beşiktaş won the 4th 30-23.",
+    "lines": [
+      [
+        "Wilbekin",
+        "16 pts · 4 threes"
+      ],
+      [
+        "Waters (ASV)",
+        "26 pts · 5 stl"
+      ]
+    ]
+  }
+}

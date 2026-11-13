@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 11",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["PAN", 74, "BAR", 76],
+      "kicker": "Comeback in Athens",
+      "title": "Buried after three.\n*Barça stole the leaders' house.*",
+      "subtitle": "Justin Robinson · Barça"
+    },
+    {
+      "type": "score",
+      "badges": ["PAN", "BAR"],
+      "kicker": "Final · Athens",
+      "sides": [
+        {"team": "Panathinaikos", "score": 74, "won": false},
+        {"team": "Barça", "score": 76, "won": true}
+      ],
+      "note": "Panathinaikos led 57-43 after three. Barça won the 4th quarter 33-17.",
+      "lines": [
+        ["Robinson", "24 pts · 5/8 from three · 7/8 FT"],
+        ["Martin", "13 pts · 6 reb"],
+        ["Nunn (PAN)", "19 pts · 6 reb"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The top",
+      "title": "Panathinaikos came in alone at the top.\n*Barça left level with them.*",
+      "subtitle": "Panathinaikos 8-3 · Barça 8-3"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["PAN", "BAR"],
+    "kicker": "Comeback in Athens · Justin Robinson",
+    "sides": [
+      {"team": "Panathinaikos", "score": 74, "won": false},
+      {"team": "Barça", "score": 76, "won": true}
+    ],
+    "note": "57-43 Panathinaikos after three. Barça won the 4th 33-17.",
+    "lines": [
+      ["Robinson", "24 pts · 5/8 from three"],
+      ["Nunn (PAN)", "19 pts · 6 reb"]
+    ]
+  }
+}
