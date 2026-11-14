@@ -1,0 +1,81 @@
+{
+  "season": "E2026",
+  "round": 11,
+  "players": [
+    {
+      "code": "015165",
+      "first": "Tremont",
+      "last": "Waters",
+      "club": "ASV",
+      "dorsal": "51",
+      "position": "Guard",
+      "pir": 30.0,
+      "pts": 26.0,
+      "ast": 3.0,
+      "reb": 1.0,
+      "won": false,
+      "game": 108,
+      "slot": "PG"
+    },
+    {
+      "code": "014124",
+      "first": "Talen",
+      "last": "Horton Tucker",
+      "club": "ULK",
+      "dorsal": "8",
+      "position": "Guard",
+      "pir": 33.0,
+      "pts": 32.0,
+      "ast": 2.0,
+      "reb": 10.0,
+      "won": false,
+      "game": 101,
+      "slot": "SG"
+    },
+    {
+      "code": "013380",
+      "first": "Evan",
+      "last": "Fournier",
+      "club": "OLY",
+      "dorsal": "94",
+      "position": "Forward",
+      "pir": 28.0,
+      "pts": 28.0,
+      "ast": 5.0,
+      "reb": 2.0,
+      "won": true,
+      "game": 107,
+      "slot": "SF"
+    },
+    {
+      "code": "003469",
+      "first": "Sasha",
+      "last": "Vezenkov",
+      "club": "OLY",
+      "dorsal": "14",
+      "position": "Forward",
+      "pir": 26.0,
+      "pts": 20.0,
+      "ast": 1.0,
+      "reb": 4.0,
+      "won": true,
+      "game": 107,
+      "slot": "PF"
+    },
+    {
+      "code": "000898",
+      "first": "Jonas",
+      "last": "Valanciunas",
+      "club": "ZAL",
+      "dorsal": "17",
+      "position": "Center",
+      "pir": 36.0,
+      "pts": 17.0,
+      "ast": 2.0,
+      "reb": 20.0,
+      "won": true,
+      "game": 104,
+      "slot": "C"
+    }
+  ]
+}

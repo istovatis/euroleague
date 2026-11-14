@@ -606,5 +606,17 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/34"
+  },
+  {
+    "story": "lineups/E2026/round-11",
+    "when": "2026-11-14T19:00:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]
