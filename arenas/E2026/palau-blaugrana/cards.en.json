@@ -1,0 +1,82 @@
+{
+  "lang": "en",
+  "round_label": "Barcelona",
+  "ig": [
+    {
+      "type": "hook",
+      "photo": "exterior",
+      "kicker": "Arena of the week",
+      "title": "A palace\nin *blue\nand garnet*.",
+      "subtitle": "Palau Blaugrana · Barcelona",
+      "badges": [
+        "BAR"
+      ]
+    },
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "Blue. Garnet.\n*Loud.*",
+      "subtitle": "A EuroLeague night at the Palau · March 2010"
+    },
+    {
+      "type": "list",
+      "kicker": "Palau Blaugrana",
+      "items": [
+        {
+          "tag": "Capacity",
+          "text": "7,585"
+        },
+        {
+          "tag": "Opened",
+          "text": "23 October 1971"
+        },
+        {
+          "tag": "Home of",
+          "text": "FC Barcelona"
+        },
+        {
+          "tag": "This week",
+          "text": "Barça vs Paris · Tue 17 Nov"
+        }
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Did you know",
+      "title": "Olympic *judo*\nwas fought\nunder this roof.",
+      "subtitle": "Barcelona 1992 · judo, taekwondo, roller hockey"
+    }
+  ],
+  "x": [
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Inside",
+      "title": "Blue. Garnet.\n*Loud.*",
+      "subtitle": "Palau Blaugrana · Barcelona"
+    },
+    {
+      "type": "list",
+      "kicker": "Arena of the week",
+      "items": [
+        {
+          "tag": "Capacity",
+          "text": "7,585"
+        },
+        {
+          "tag": "Opened",
+          "text": "23 October 1971"
+        },
+        {
+          "tag": "Home of",
+          "text": "FC Barcelona"
+        },
+        {
+          "tag": "This week",
+          "text": "Barça vs Paris · Tue 17 Nov"
+        }
+      ]
+    }
+  ]
+}

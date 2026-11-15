@@ -1,0 +1,51 @@
+{
+  "lang": "el",
+  "round_label": "Βαρκελώνη",
+  "ig": [
+    {
+      "type": "hook",
+      "photo": "exterior",
+      "kicker": "Γήπεδο της εβδομάδας",
+      "title": "Ένα παλάτι\nστα *μπλε\nκαι γκρενά*.",
+      "subtitle": "Palau Blaugrana · Βαρκελώνη",
+      "badges": [
+        "BAR"
+      ]
+    },
+    {
+      "type": "hook",
+      "photo": "interior",
+      "kicker": "Μέσα",
+      "title": "Μπλε. Γκρενά.\n*Θόρυβος.*",
+      "subtitle": "Βραδιά EuroLeague στο Palau · Μάρτιος 2010"
+    },
+    {
+      "type": "list",
+      "kicker": "Palau Blaugrana",
+      "items": [
+        {
+          "tag": "Χωρητικότητα",
+          "text": "7.585"
+        },
+        {
+          "tag": "Εγκαίνια",
+          "text": "23 Οκτωβρίου 1971"
+        },
+        {
+          "tag": "Έδρα",
+          "text": "Μπαρτσελόνα"
+        },
+        {
+          "tag": "Αυτή την εβδομάδα",
+          "text": "Μπαρτσελόνα - Παρί · Τρ 17/11"
+        }
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Το ήξερες;",
+      "title": "Εδώ έγινε\n*ολυμπιακό\nτζούντο*.",
+      "subtitle": "Ολυμπιακοί Αγώνες · Βαρκελώνη 1992"
+    }
+  ]
+}

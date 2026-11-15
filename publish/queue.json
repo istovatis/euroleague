@@ -619,5 +619,17 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/35"
+  },
+  {
+    "story": "arenas/E2026/palau-blaugrana",
+    "when": "2026-11-15T18:00:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]
