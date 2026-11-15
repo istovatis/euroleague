@@ -632,5 +632,23 @@
     ],
     "approved": false,
     "notified": "https://github.com/istovatis/euroleague/issues/36"
+  },
+  {
+    "story": "nextgame/E2026/oly-113",
+    "when": "2026-11-15T18:00:00+02:00",
+    "langs": [
+      "reel-el",
+      "x"
+    ],
+    "approved": true
+  },
+  {
+    "story": "nextgame/E2026/pan-119",
+    "when": "2026-11-15T18:00:00+02:00",
+    "langs": [
+      "reel-el",
+      "x"
+    ],
+    "approved": true
   }
 ]

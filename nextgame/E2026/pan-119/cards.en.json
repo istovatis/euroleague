@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "round_label": "Round 12",
+  "ig": [],
+  "x": {
+    "type": "list",
+    "kicker": "Next up · Panathinaikos",
+    "items": [
+      {
+        "tag": "Opponent",
+        "text": "at Virtus"
+      },
+      {
+        "tag": "When",
+        "text": "Tue 17 Nov · 22:00 Athens"
+      },
+      {
+        "tag": "Where",
+        "text": "Paladozza"
+      },
+      {
+        "tag": "Form",
+        "text": "Panathinaikos 8-3 (2nd) · Virtus 4-7 (16th)"
+      }
+    ]
+  }
+}

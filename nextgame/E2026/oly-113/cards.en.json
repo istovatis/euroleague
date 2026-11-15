@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "round_label": "Round 12",
+  "ig": [],
+  "x": {
+    "type": "list",
+    "kicker": "Next up · Olympiacos",
+    "items": [
+      {
+        "tag": "Opponent",
+        "text": "at Maccabi Tel Aviv"
+      },
+      {
+        "tag": "When",
+        "text": "Tue 17 Nov · 19:00 Athens"
+      },
+      {
+        "tag": "Where",
+        "text": "Spyros Kyprianou Athletic Center"
+      },
+      {
+        "tag": "Form",
+        "text": "Olympiacos 8-3 (3rd) · Maccabi Tel Aviv 3-8 (17th)"
+      }
+    ]
+  }
+}
