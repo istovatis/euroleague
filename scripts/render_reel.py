@@ -33,9 +33,11 @@ TAGLINE = {"en": "Stories from the floor", "el": "Ιστορίες από το �
 def ensure_tools():
     try:
         import imageio_ffmpeg  # noqa: F401
+        import numpy  # noqa: F401  (mvp.py synthesizes its sound with it)
         import playwright  # noqa: F401
     except ImportError:
-        subprocess.run([sys.executable, "-m", "pip", "install", "-q", "playwright==1.49.1", "imageio-ffmpeg==0.5.1"], check=True)
+        subprocess.run([sys.executable, "-m", "pip", "install", "-q", "playwright==1.49.1", "imageio-ffmpeg==0.5.1",
+                        "numpy==2.0.2"], check=True)
 
 
 def load_photo(folder, name):
@@ -180,13 +182,21 @@ def render(story, lang):
     if (folder / "lineup.json").exists():  # Lineup of the week: its own scene (lineup.py), players arriving PG to C
         import lineup
         doc, total = lineup.reel_document(folder, lang)
+    elif (folder / "mvp.json").exists():  # MVP of the round: its own scene (mvp.py), a mystery box opens on the player
+        import mvp
+        doc, total = mvp.reel_document(folder, lang)
+        ensure_tools()
+        with tempfile.TemporaryDirectory() as tmp:
+            sound = mvp.soundtrack(folder, lang, total, pathlib.Path(tmp) / "sound.wav")
+            return record(doc, total, folder / "cards" / lang / "reel.mp4", sound)
     else:
         doc, total = document(folder, json.loads((folder / f"cards.{lang}.json").read_text()))
     return record(doc, total, folder / "cards" / lang / "reel.mp4")
 
 
-def record(doc, total, out):
-    """Step the page's seek(ms) through `total` seconds at FPS and encode the frames to `out` (silent track)."""
+def record(doc, total, out, sound=None):
+    """Step the page's seek(ms) through `total` seconds at FPS and encode the frames to `out`, with `sound` (a WAV)
+    as its track, or a silent one."""
     ensure_tools()
     import imageio_ffmpeg
     from playwright.sync_api import sync_playwright
@@ -198,9 +208,9 @@ def record(doc, total, out):
     ffmpeg = subprocess.Popen(
         [imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error",
          "-f", "image2pipe", "-framerate", str(FPS), "-i", "-",
-         "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
+         *(["-i", str(sound)] if sound else ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo"]),
          "-shortest", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
-         "-r", str(FPS), "-c:a", "aac", "-b:a", "64k", "-movflags", "+faststart", str(out)],
+         "-r", str(FPS), "-c:a", "aac", "-b:a", "128k" if sound else "64k", "-ac", "2", "-movflags", "+faststart", str(out)],
         stdin=subprocess.PIPE)
     try:
         with sync_playwright() as p:
