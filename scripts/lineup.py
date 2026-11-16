@@ -31,6 +31,7 @@ from round_digest import get
 SLOTS = ["PG", "SG", "SF", "PF", "C"]
 TITLE = {"en": ("Lineup", "of the week"), "el": ("Η πεντάδα", "της αγωνιστικής")}
 ROUND = {"en": "Round {n}", "el": "{n}η αγωνιστική"}
+TEASER = {"en": "Who made the five?", "el": "Ποιοι μπήκαν στην πεντάδα;"}  # the Reel's opening line, over the empty slots
 
 
 def display_name(person):
@@ -208,12 +209,13 @@ body {{ font-family:F, sans-serif; color:{C['fg']}; background:{C['bg']}; positi
 
 
 def reel_document(folder, lang):
-    """The Reel (render_reel.py records it): court and title on screen from the first frame, then the players slam
-    down one by one, PG to C (shake, flash, shockwave, sparks), then the brand outro. Returns (html, seconds)."""
+    """The Reel (render_reel.py records it). The first frame is a teaser: title, "Who made the five?" and five empty
+    slots on the court, each with its position and a "?". Then the players slam into their slots one by one, PG to C
+    (shake, flash, shockwave, sparks), then the brand outro. Returns (html, seconds)."""
     import render_reel
     data = json.loads((folder / "lineup.json").read_text())
     doc, _, _ = page(folder, data, lang, "reel")
-    first, step, hold = 0.4, 1.0, 2.4   # seconds: before the PG lands, between players, full five on screen
+    first, step, hold = 0.9, 1.0, 2.4   # seconds: the teaser before the PG lands, between players, full five on screen
     total = first + step * len(SLOTS) + hold + render_reel.OUTRO
     script = """
 const ease = 'cubic-bezier(.2,.8,.2,1)', pop = 'cubic-bezier(.3,1.5,.5,1)', fall = 'cubic-bezier(.55,0,1,.45)';
@@ -230,9 +232,19 @@ function setup() {
   const stage = document.querySelector('.stage'), outro = document.querySelector('.outro');
   const flash = add(stage, 'inset:0;background:%(accent)s;opacity:0');
   anim(document.querySelector('.title'), [{transform: 'scale(1.05)'}, {transform: 'none'}], 0, 700);
+  const teaser = document.querySelector('.teaser');
+  anim(teaser, [{opacity: 1}, {opacity: 0}], %(last_hit)d, 400, 'linear', 'forwards');  // answered once the C lands
   %(slots)s.forEach((slot, k) => {
     const spot = document.querySelector(`.spot[data-slot="${slot}"]`), t = %(first)d + k * %(step)d;
     const box = spot.querySelector('.tile > div'), hit = t + 390;  // the moment the tile hits the floor
+    // The empty slot: a dashed outline with the position and a "?", breathing until its player crushes it.
+    const empty = add(spot, `left:0;top:0;width:${box.offsetWidth}px;height:${box.offsetHeight}px;border:5px dashed %(accent)s;border-radius:22px;background:#0b0f15aa;display:flex;` +
+                      `flex-direction:column;align-items:center;justify-content:center;gap:4px;font-weight:900`);
+    empty.innerHTML = `<div style="font-size:150px;line-height:.9;color:%(accent)s">?</div>` +
+                      `<div style="font-size:54px;letter-spacing:.08em;color:%(fg)s">${slot}</div>`;
+    spot.prepend(empty);  // under the tile, which lands on top of it
+    empty.firstChild.animate([{opacity: .45}, {opacity: 1}, {opacity: .45}], {duration: 1200, iterations: Infinity, easing: 'ease-in-out'}).pause();
+    anim(empty, [{opacity: 1, transform: 'none'}, {opacity: 0, transform: 'scale(.85)'}], hit - 120, 140, 'linear', 'forwards');
     // The tile falls from above the screen, tilted, slams onto the court and settles with a bounce.
     // Hidden until its turn: before its drop, a tile would otherwise wait in plain view above the screen edge.
     anim(box, [{opacity: 0}, {opacity: 1}], t, 1, 'linear');
@@ -269,8 +281,12 @@ function setup() {
                                          end + 350 + k * 120, 420));
 }
 function seek(ms) { document.getAnimations().forEach(a => { a.currentTime = ms; }); }
-""" % dict(slots=json.dumps(SLOTS), first=first * 1000, step=step * 1000, outro_at=(total - render_reel.OUTRO) * 1000,
+""" % dict(slots=json.dumps(SLOTS), first=first * 1000, last_hit=(first + step * (len(SLOTS) - 1)) * 1000 + 390,
+           fg=BRAND["colors"]["fg"], step=step * 1000, outro_at=(total - render_reel.OUTRO) * 1000,
            accent=BRAND["colors"]["accent"])
+    teaser = (f'<div class="teaser" style="position:absolute;left:72px;top:420px;font-weight:700;font-size:48px;'
+              f'color:{BRAND["colors"]["accent"]}">{html.escape(TEASER[lang])}</div>')
+    doc = doc.replace('<div class="spot"', teaser + '<div class="spot"', 1)
     extra = f"<style>{render_reel.outro_css()}</style>{render_reel.outro_html(lang)}<script>{script}</script>"
     return doc.replace("</body>", extra + "</body>"), total
 
