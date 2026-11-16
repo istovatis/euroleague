@@ -14,6 +14,11 @@ Per post: reach, views, likes, comments, saves, shares (Instagram insights; Reel
 impressions, likes, reposts, replies (X public metrics). Follower counts are stored in <dir>/data/<date>.json, so
 each report shows the change since the previous one. Instagram Stories (final scores) are left out: their insights
 expire after 24 hours. Every number comes from the APIs; the takeaways are simple comparisons of those numbers.
+
+"When it was posted": the average reach of Instagram Reels by weekday and by time of day (Athens), built up over the
+weeks in <dir>/data/posts.json (the first run measures every post so far). Each run re-measures the last TIMING_DAYS days of posts and keeps the latest numbers
+per post; only posts at least MATURE_DAYS old when measured count, so a post from last night doesn't drag a slot down.
+Instagram only: X charges for every read.
 """
 import argparse
 import collections
@@ -24,6 +29,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+import zoneinfo
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -32,6 +38,10 @@ import publish_x  # noqa: E402
 
 IG_METRICS = ["reach", "views", "likes", "comments", "saved", "shares", "follows", "profile_visits"]
 REEL_EXTRA = ["ig_reels_avg_watch_time"]
+TIMING_DAYS, MATURE_DAYS = 14, 3
+ATHENS = zoneinfo.ZoneInfo("Europe/Athens")
+SLOTS = [(0, 6, "00–06"), (6, 12, "06–12"), (12, 15, "12–15"), (15, 18, "15–18"), (18, 21, "18–21"), (21, 24, "21–24")]
+DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
 
 def ig_get(token, path, **params):
@@ -143,6 +153,42 @@ def takeaways(posts):
     return out or ["Not enough posts yet for comparisons: they start once there are at least two of each kind."]
 
 
+def timing(history, now):
+    """Average Reel reach by weekday and by time slot (Athens), from every matured post measured so far."""
+    reels = [h for h in history.values() if h["reel"] and
+             dt.datetime.fromisoformat(h["measured"]) - dt.datetime.fromisoformat(h["when"]) >= dt.timedelta(days=MATURE_DAYS)]
+    lines = ["", "## When it was posted", "",
+             f"Instagram Reels only, both accounts, every post since this table started ({len(reels)} so far); reach as "
+             f"measured at least {MATURE_DAYS} days after posting. Times are Athens. A slot needs a few posts before it means much."]
+    if not reels:
+        return lines + ["", "No matured Reels yet: the table fills in from next week."]
+    local = [(dt.datetime.fromisoformat(h["when"]).astimezone(ATHENS), h) for h in reels]
+    slot = lambda t: next(label for a, b, label in SLOTS if a <= t.hour < b)
+
+    def table(title, keys, key_of):
+        groups = collections.defaultdict(list)
+        for t, h in local:
+            groups[key_of(t)].append(h)
+        out = ["", f"| {title} | Reels | Avg reach | Avg views | Best |", "|---|---:|---:|---:|---|"]
+        for k in keys:
+            g = groups.get(k)
+            if g:
+                best = max(g, key=lambda h: h["reach"])
+                out.append(f"| {k} | {len(g)} | {avg([h['reach'] for h in g]):.0f} | {avg([h['views'] for h in g]):.0f} | "
+                           f"[{best['name']}]({best['url']}) ({best['reach']}) |")
+        return out
+
+    lines += table("Day", DAYS, lambda t: DAYS[t.weekday()])
+    lines += table("Time", [label for _, _, label in SLOTS], slot)
+    cells = collections.defaultdict(list)
+    for t, h in local:
+        cells[(DAYS[t.weekday()], slot(t))].append(h["reach"])
+    top = sorted(((avg(v), k, len(v)) for k, v in cells.items() if len(v) >= 2), reverse=True)[:3]
+    if top:
+        lines += ["", "Best day + time (at least 2 Reels): " + "; ".join(f"**{d} {s}** (avg {r:.0f}, {n} Reels)" for r, (d, s), n in top) + "."]
+    return lines
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=7)
@@ -162,6 +208,20 @@ def main():
     for p in posts:
         p["m"] = ig_insights(tokens[p["lang"]], p["media_id"], p["reel"])
         p["kind"], p["angle"], p["photo"] = kind(p["folder"]), angle(p["folder"], p["lang"]), has_photo(p["folder"], p["lang"])
+
+    # Timing history: this week's posts plus the week before, re-measured now that they've had time to travel.
+    history_file = a.out / "data" / "posts.json"
+    history = json.loads(history_file.read_text()) if history_file.exists() else {}
+    measured = {p["media_id"]: p for p in posts}
+    start = now - dt.timedelta(days=TIMING_DAYS) if history else dt.datetime(2000, 1, 1, tzinfo=dt.timezone.utc)  # first run: everything
+    for p in collect(start)[0]:
+        if p["media_id"] not in measured:
+            p["m"] = ig_insights(tokens[p["lang"]], p["media_id"], p["reel"])
+            measured[p["media_id"]] = p
+    for mid, p in measured.items():
+        history[mid] = {"name": p["folder"].name, "folder": p["folder"].relative_to(ROOT).as_posix(), "url": p["url"],
+                        "lang": p["lang"], "reel": p["reel"], "when": p["when"].isoformat(), "measured": now.isoformat(),
+                        "reach": p["m"].get("reach", 0), "views": p["m"].get("views", 0)}
 
     x_metrics = {}
     if publish_x.configured():
@@ -184,6 +244,8 @@ def main():
         lines.append(f"| {handle} | {n if n is not None else '-'} | {change} |")
 
     lines += ["", "## What worked", ""] + [f"- {t}" for t in takeaways(posts)]
+
+    lines += timing(history, now)
 
     lines += ["", f"## Instagram ({len(posts)} posts)", "",
               "| Post | Account | Format | Kind | Angle | Reach | Views | Likes | Comments | Saves | Shares | Follows |",
@@ -221,6 +283,7 @@ def main():
     (a.out / "weekly" / f"{today}.md").write_text(report)
     (a.out / "latest.md").write_text(report)
     (a.out / "data" / f"{today}.json").write_text(json.dumps({"date": today, "followers": followers}, indent=2) + "\n")
+    history_file.write_text(json.dumps(history, indent=1, ensure_ascii=False) + "\n")
     print(report)
 
 
