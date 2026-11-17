@@ -30,12 +30,12 @@ rounds/E2026/round-07/
 2. If it prints nothing, stop: no changes, no commit.
 3. Otherwise, for each pending day, do steps 3–4 of the per-day run, and for each pending highlight, step 5. Then do steps 6–8. A suggested time already in the past is fine: the owner sets a new time when approving.
 
-## Arena of the week run (Sundays, named in the prompt)
+## Arena of the week run (Mondays, named in the prompt)
 1. `python3 scripts/arena_facts.py --next`. If it prints "All arenas covered", stop: no changes.
 2. `python3 scripts/arena_facts.py --get "<ARENA>"` (add `--wiki "<title>"` if it found the wrong Wikipedia page). Read `facts.json` in full. Wikimedia sites rate-limit the cloud (HTTP 429); the scripts wait and retry on their own, so run them in the foreground and let them finish. Never move work into background tasks and end your turn: the run stops when you do.
 3. Find and download the exterior and interior photos (see "Arena of the week" in `CLAUDE.md`).
 4. Write `post.en.md` (X + Instagram, with `## Sources`) and `post.el.md` (Instagram only), plus `cards.en.json` and `cards.el.json`. Render them, open every PNG and fix any problems, and check the X post is 280 characters or fewer.
-5. Write the folder's `README.md`. Queue the post as a draft for that Sunday at 18:00 Athens: `python3 scripts/publish_queue.py add arenas/E2026/<slug> "YYYY-MM-DD 18:00" --draft`.
+5. Write the folder's `README.md`. Queue the post as a draft for that Monday at 18:00 Athens: `python3 scripts/publish_queue.py add arenas/E2026/<slug> "YYYY-MM-DD 18:00" --draft`.
 6. Commit `arenas/` and `publish/queue.json` to `main` with the message `Arena of the week: <arena> (EN + EL)` and push.
 
 ## Lineup of the week run (Saturdays, named in the prompt)

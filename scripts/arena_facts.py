@@ -2,7 +2,7 @@
 """Arena of the week: the arena list, the next pick, and verifiable facts for a post.
 
   python3 scripts/arena_facts.py --list          # every EuroLeague home arena, home teams, capacity, covered or not
-  python3 scripts/arena_facts.py --next          # suggested arena for this Sunday (uncovered, hosts a game in the next 7 days)
+  python3 scripts/arena_facts.py --next          # suggested arena for this Monday (uncovered, hosts a game in the next 7 days)
   python3 scripts/arena_facts.py --get "PEACE AND FRIENDSHIP STADIUM" [--wiki "Peace and Friendship Stadium"]
 
 --get writes arenas/E2026/<slug>/facts.json (EuroLeague API: official capacity, address, home teams,
