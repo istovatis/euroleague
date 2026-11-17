@@ -40,6 +40,17 @@ jobs:
           git config user.email "parquet-hoops-bot@users.noreply.github.com"
           if [ "${{ inputs.test }}" = "true" ]; then python3 scripts/notify_drafts.py notify --test; exit 0; fi
           python3 scripts/notify_drafts.py notify | tee /tmp/notify.log
+          # Posts queued already approved (the MVP Reels, the Lineup, the next-game posts): start the publisher now rather
+          # than trusting GitHub's 15-minute timer, which often skips runs. A run waits up to ~5 hours for a scheduled post.
+          if python3 -c "
+          import datetime as dt, sys
+          sys.path.insert(0, 'scripts'); import publish_queue as q
+          now = dt.datetime.now(dt.timezone.utc)
+          soon = [e for e in q.load() if e.get('approved', True) and dt.datetime.fromisoformat(e['when']) < now + dt.timedelta(hours=24)
+                  and not all(q.done(e, l) for l in e['langs'] if l != 'x')]
+          sys.exit(0 if soon else 1)"; then
+            gh workflow run publish.yml -f dry_run=false
+          fi
           git add publish/queue.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -q -m "Queue: drafts announced"

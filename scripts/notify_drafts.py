@@ -75,7 +75,7 @@ DAY_POST = re.compile(r"^rounds/[^/]+/round-\d+/day-\d+/")
 def auto_approve():
     """Feature flag AUTO_APPROVE_DAY_POSTS=true (repository variable): game-day stories are approved as soon as they
     are drafted, and the owner gets an FYI email (a closed issue with the previews) instead of an approval request.
-    Highlights, arenas, countdowns and lineups still wait for the owner. Returns the approved stories."""
+    Highlights, arenas and countdowns still wait for the owner (lineups and MVP Reels are queued approved). Returns the approved stories."""
     if os.environ.get("AUTO_APPROVE_DAY_POSTS", "").strip().lower() != "true":
         return []
     entries = q.load()
