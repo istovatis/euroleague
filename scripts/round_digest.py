@@ -21,8 +21,9 @@ API = "https://api-live.euroleague.net"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
-def get(path, tries=5):
-    """GET from the EuroLeague API. It sometimes answers with an empty body or a 5xx: retry with a growing wait."""
+def get(path, tries=6):
+    """GET from the EuroLeague API. It sometimes answers with an empty body or a 5xx, and with 429 to bursts: retry
+    with a growing wait (a long one for 429)."""
     import time
     for attempt in range(tries):
         try:
@@ -32,8 +33,12 @@ def get(path, tries=5):
         except (urllib.error.URLError, json.JSONDecodeError, TimeoutError) as e:
             if attempt == tries - 1:
                 raise
-            print(f"warning: EuroLeague API {path}: {e}; retrying", file=sys.stderr)
-            time.sleep(5 * (attempt + 1))
+            # 429 "too many requests": wait as long as it asks (or a good while), not the short 5xx wait
+            limited = isinstance(e, urllib.error.HTTPError) and e.code == 429
+            wait = int(e.headers.get("Retry-After") or 0) if limited else 0
+            wait = max(wait, 30 * (attempt + 1)) if limited else 5 * (attempt + 1)
+            print(f"warning: EuroLeague API {path}: {e}; retrying in {wait}s", file=sys.stderr)
+            time.sleep(wait)
 
 
 def latest_complete_round(games):
