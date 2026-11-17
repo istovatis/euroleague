@@ -182,12 +182,17 @@ def render(story, lang):
     if (folder / "lineup.json").exists():  # Lineup of the week: its own scene (lineup.py), players arriving PG to C
         import lineup
         doc, total = lineup.reel_document(folder, lang)
-    elif (folder / "mvp.json").exists():  # MVP of the round: its own scene (mvp.py), a mystery box opens on the player
-        import mvp
-        doc, total = mvp.reel_document(folder, lang)
+    elif (folder / "mvp.json").exists() or (folder / "shots.json").exists():
+        # Scenes with their own sound: the MVP of the round (mvp.py, spotlights find the player) and the shot chart
+        # (shotchart.py, every shot of his night)
+        if (folder / "mvp.json").exists():
+            import mvp as scene
+        else:
+            import shotchart as scene
+        doc, total = scene.reel_document(folder, lang)
         ensure_tools()
         with tempfile.TemporaryDirectory() as tmp:
-            sound = mvp.soundtrack(folder, lang, total, pathlib.Path(tmp) / "sound.wav")
+            sound = scene.soundtrack(folder, lang, total, pathlib.Path(tmp) / "sound.wav")
             return record(doc, total, folder / "cards" / lang / "reel.mp4", sound)
     else:
         doc, total = document(folder, json.loads((folder / f"cards.{lang}.json").read_text()))

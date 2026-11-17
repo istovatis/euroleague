@@ -262,54 +262,27 @@ function seek(ms) {
     return doc, total
 
 
-def soundtrack(folder, lang, total, out, rate=44100):
-    """Write the Reel's sound to `out` (WAV), timed to reel_document's animation. Everything is synthesized here."""
-    import wave
+def soundtrack(folder, lang, total, out):
+    """Write the Reel's sound to `out` (WAV), timed to reel_document's animation (effects from sfx.py)."""
     import numpy as np
+    from sfx import RATE, Mix
     p = json.loads((folder / "mvp.json").read_text())
     loc = p.get(lang, {})
     n_stats = len(loc.get("stats") or DEFAULT[lang])
     n_lines = len(loc.get("title", "").split("\n")) if loc.get("title") else 0
-    rng = np.random.default_rng(7)
-    mix = np.zeros(int((total + 1) * rate))
-    t_of = lambda n: np.arange(n) / rate
-
-    def put(sound, at, gain=1.0):
-        i = int(at * rate)
-        sound = sound[:len(mix) - i]
-        mix[i:i + len(sound)] += gain * sound
-
-    def lowpass(x, width):  # a moving average: crude, but enough for noise colour
-        return np.convolve(x, np.ones(width) / width, mode="same")
-
-    def decay(n, tau):
-        return np.exp(-t_of(n) / tau)
-
-    def tone(f0, f1, dur, tau):
-        n = int(dur * rate)
-        f = np.linspace(f0, f1, n)
-        return np.sin(2 * np.pi * np.cumsum(f) / rate) * decay(n, tau)
-
-    def noise(dur):
-        return rng.uniform(-1, 1, int(dur * rate))
-
-    def snare(gain):
-        x = noise(.09)
-        return gain * (x - lowpass(x, 12)) * decay(len(x), .025)
-
-    def knock(gain):
-        return gain * (tone(220, 140, .12, .03) + .4 * lowpass(noise(.12), 3) * decay(int(.12 * rate), .01))
+    m = Mix(total)
+    put, tone, noise, lowpass, knock = m.put, m.tone, m.noise, m.lowpass, m.knock
 
     # 1. The lights search: a drum roll speeding up and a rumble rising, both getting louder.
     shake0, b = .3, BURST
     at = shake0
     while at < b - .05:
         k = (at - shake0) / (b - shake0)
-        put(snare(.15 + .45 * k), at)
+        put(m.snare(.15 + .45 * k), at)
         at += .11 - .07 * k
-    n = int((b - shake0) * rate)
+    n = int((b - shake0) * RATE)
     k = np.linspace(0, 1, n)
-    rumble = np.sin(2 * np.pi * np.cumsum(np.linspace(45, 110, n)) / rate) * k ** 2
+    rumble = np.sin(2 * np.pi * np.cumsum(np.linspace(45, 110, n)) / RATE) * k ** 2
     hiss = (lambda x: x - lowpass(x, 6))(noise(b - shake0)) * k ** 3
     put(.35 * rumble + .12 * hiss, shake0)
     for k in SWEEP_AT[1:]:  # a swish as the beams swing
@@ -324,9 +297,9 @@ def soundtrack(folder, lang, total, out, rate=44100):
     put(.9 * tone(130, 38, .9, .35), b)
     crowd = noise(2.6)
     crowd = lowpass(crowd, 8) - lowpass(crowd, 40)
-    n = len(crowd)
-    put(1.4 * crowd * np.minimum(1, t_of(n) / .35) * np.exp(-np.maximum(0, t_of(n) - .5) / .9), b + .05)
-    put(.6 * lowpass(noise(.4), 5) * decay(int(.4 * rate), .07), b)
+    t = m.t(len(crowd))
+    put(1.4 * crowd * np.minimum(1, t / .35) * np.exp(-np.maximum(0, t - .5) / .9), b + .05)
+    put(.6 * lowpass(noise(.4), 5) * m.decay(int(.4 * RATE), .07), b)
     for i, f in enumerate((1046.5, 1318.5, 1568.0, 2093.0, 2637.0)):
         put(.16 * tone(f, f, 1.2, .35), b + .12 + i * .07)
     # 3. The name is stamped on: three thumps.
@@ -335,8 +308,7 @@ def soundtrack(folder, lang, total, out, rate=44100):
         put(.2 * knock(1), b + .75 + i * .16)
     # 4. The title lines: a soft swoosh each.
     for i in range(n_lines):
-        w = noise(.3)
-        put(.18 * lowpass(w, 3) * np.sin(np.linspace(0, np.pi, len(w))), TITLE_AT + i * .22)
+        m.swoosh(TITLE_AT + i * .22)
     # 5. The numbers: ticks while each counts up (slowing like the counter), then a pop.
     for i in range(n_stats):
         t0 = STATS_AT + i * .45
@@ -346,19 +318,8 @@ def soundtrack(folder, lang, total, out, rate=44100):
         put(.15 * knock(1), t0 + .7)
     # 6. The outro: one warm chord.
     import render_reel
-    end = total - render_reel.OUTRO
-    for f in (261.6, 329.6, 392.0, 523.3):
-        put(.12 * tone(f, f, 1.6, .6), end + .1)
-
-    mix = np.tanh(1.4 * mix)  # a soft limiter
-    mix = mix[:int(total * rate)] / max(1e-9, np.abs(mix).max()) * .89
-    pcm = (mix * 32767).astype("<i2")
-    with wave.open(str(out), "wb") as f:
-        f.setnchannels(1)
-        f.setsampwidth(2)
-        f.setframerate(rate)
-        f.writeframes(pcm.tobytes())
-    return out
+    m.chord(total - render_reel.OUTRO + .1)
+    return m.write(out)
 
 
 def main():
