@@ -1,0 +1,90 @@
+{
+  "lang": "en",
+  "round_label": "Round 12",
+  "ig": [
+    {
+      "type": "hook",
+      "game": [
+        "BAR",
+        86,
+        "PRS",
+        89
+      ],
+      "kicker": "Road win in Barcelona",
+      "title": "Paris walked into the Palau\n*and walked out winners.*",
+      "subtitle": "Paris · another top-four team falls"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "BAR",
+        "PRS"
+      ],
+      "kicker": "Final · Palau Blaugrana",
+      "sides": [
+        {
+          "team": "Barça",
+          "score": 86,
+          "won": false
+        },
+        {
+          "team": "Paris",
+          "score": 89,
+          "won": true
+        }
+      ],
+      "note": "69-68 Barça after three. Paris won the 4th 21-17.",
+      "lines": [
+        [
+          "Hifi",
+          "25 pts · 8 ast · 5/12 3PT · 29 PIR"
+        ],
+        [
+          "Dokossi",
+          "11 pts · 5/6 from two"
+        ],
+        [
+          "Balcerowski (BAR)",
+          "17 pts · 6/6 from two · 28 PIR"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Paris are coming",
+      "title": "Last week, Fenerbahçe.\n*Tonight, Barça.*",
+      "subtitle": "Paris 6-6 · Barça 8-4"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": [
+      "BAR",
+      "PRS"
+    ],
+    "kicker": "Road win in Barcelona",
+    "sides": [
+      {
+        "team": "Barça",
+        "score": 86,
+        "won": false
+      },
+      {
+        "team": "Paris",
+        "score": 89,
+        "won": true
+      }
+    ],
+    "note": "69-68 Barça after three. Paris won the 4th 21-17.",
+    "lines": [
+      [
+        "Hifi",
+        "25 pts · 8 ast · 29 PIR"
+      ],
+      [
+        "Balcerowski (BAR)",
+        "17 pts · 6/6 from two"
+      ]
+    ]
+  }
+}

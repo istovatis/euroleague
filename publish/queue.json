@@ -650,5 +650,41 @@
       "x"
     ],
     "approved": true
+  },
+  {
+    "story": "rounds/E2026/round-12/day-1/01-vezenkov",
+    "when": "2026-11-18T00:44:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-12/day-1/02-paris",
+    "when": "2026-11-18T00:45:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-12/day-1/03-virtus",
+    "when": "2026-11-18T00:46:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]

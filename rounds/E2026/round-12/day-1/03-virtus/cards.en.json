@@ -1,0 +1,90 @@
+{
+  "lang": "en",
+  "round_label": "Round 12",
+  "ig": [
+    {
+      "type": "hook",
+      "game": [
+        "VIR",
+        84,
+        "PAN",
+        79
+      ],
+      "kicker": "Upset in Bologna",
+      "title": "Panathinaikos came as contenders.\n*Virtus sent them home beaten.*",
+      "subtitle": "Virtus · a statement win at the Paladozza"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "VIR",
+        "PAN"
+      ],
+      "kicker": "Final · Paladozza, Bologna",
+      "sides": [
+        {
+          "team": "Virtus",
+          "score": 84,
+          "won": true
+        },
+        {
+          "team": "Panathinaikos",
+          "score": 79,
+          "won": false
+        }
+      ],
+      "note": "Panathinaikos led 43-40 at half-time. Virtus won the 3rd quarter 20-13.",
+      "lines": [
+        [
+          "Diarra",
+          "15 pts · 9 reb · 23 PIR"
+        ],
+        [
+          "Diouf",
+          "15 pts · 9/11 FT · 20 PIR"
+        ],
+        [
+          "Nunn (PAN)",
+          "18 pts · 8 reb"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Where it turned",
+      "title": "Panathinaikos lost the 3rd quarter.\n*Virtus never let them back in.*",
+      "subtitle": "Virtus 5-7 · Panathinaikos 8-4"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": [
+      "VIR",
+      "PAN"
+    ],
+    "kicker": "Upset in Bologna",
+    "sides": [
+      {
+        "team": "Virtus",
+        "score": 84,
+        "won": true
+      },
+      {
+        "team": "Panathinaikos",
+        "score": 79,
+        "won": false
+      }
+    ],
+    "note": "Virtus won the 3rd quarter 20-13.",
+    "lines": [
+      [
+        "Diarra",
+        "15 pts · 9 reb · 23 PIR"
+      ],
+      [
+        "Diouf",
+        "15 pts · 9/11 FT"
+      ]
+    ]
+  }
+}

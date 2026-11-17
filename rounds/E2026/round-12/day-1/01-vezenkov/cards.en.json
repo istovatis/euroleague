@@ -1,0 +1,90 @@
+{
+  "lang": "en",
+  "round_label": "Round 12",
+  "ig": [
+    {
+      "type": "hook",
+      "game": [
+        "TEL",
+        95,
+        "OLY",
+        97
+      ],
+      "kicker": "A 41 PIR night",
+      "title": "Vezenkov carried\nOlympiacos\n*through overtime.*",
+      "subtitle": "Sasha Vezenkov · Olympiacos"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "TEL",
+        "OLY"
+      ],
+      "kicker": "Final (OT) · Maccabi – Olympiacos",
+      "sides": [
+        {
+          "team": "Maccabi",
+          "score": 95,
+          "won": false
+        },
+        {
+          "team": "Olympiacos",
+          "score": 97,
+          "won": true
+        }
+      ],
+      "note": "Olympiacos led 61-54 after three. 82-82 after 40'. Olympiacos won overtime 15-13.",
+      "lines": [
+        [
+          "Vezenkov",
+          "37 pts · 9 reb · 6/10 3PT · 41 PIR"
+        ],
+        [
+          "Fournier",
+          "16 pts · 5/9 from three"
+        ],
+        [
+          "Wallace (MTA)",
+          "18 pts · 4/10 from three"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "When it got tight",
+      "title": "Olympiacos let a big lead slip.\n*Vezenkov wouldn't let\nthe game go.*",
+      "subtitle": "Olympiacos 9-3 · Maccabi 3-9"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": [
+      "TEL",
+      "OLY"
+    ],
+    "kicker": "Vezenkov · 41 PIR",
+    "sides": [
+      {
+        "team": "Maccabi",
+        "score": 95,
+        "won": false
+      },
+      {
+        "team": "Olympiacos",
+        "score": 97,
+        "won": true
+      }
+    ],
+    "note": "82-82 after 40'. Olympiacos won overtime 15-13.",
+    "lines": [
+      [
+        "Vezenkov",
+        "37 pts · 9 reb · 6/10 3PT"
+      ],
+      [
+        "Fournier",
+        "16 pts"
+      ]
+    ]
+  }
+}
