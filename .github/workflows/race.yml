@@ -1,0 +1,40 @@
+name: Season leaders race (data)
+
+# Monday 05:00 Athens: the season leaders race's data for the latest finished round (scripts/race.py pick ->
+# races/<season>/round-NN/race.json, about 50 EuroLeague API calls, a second apart). Monday early is when nothing else
+# of ours calls the API (next-game from 09:00, the arena routine 09:07, final scores only on game days), so a rate
+# limit here can't hold up another post; on a day with a game it does nothing. The Monday arena routine then writes the
+# words (Greek names, title, captions) and queues the Reel for 20:00 without approval (ROUTINE.md). Two runs, because
+# GitHub sometimes skips scheduled runs; the second finds the data there and stops.
+on:
+  schedule:
+    - cron: "0 3,4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: race
+  cancel-in-progress: false
+
+jobs:
+  race:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build the race data
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          python3 scripts/race.py pick
+          git add races 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Season leaders race data"
+            git pull -q --rebase origin main
+            git push -q origin main
+          fi

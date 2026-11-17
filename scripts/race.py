@@ -4,7 +4,7 @@ WINDOW rounds (all of them while the season has fewer). The top 8 grow and overt
 ticks along, then the leader lights up and a line says what the race shows; then the brand outro. With sound
 (sfx.py): a tick per round, a whoosh when the order changes.
 
-  python3 scripts/race.py pick [--stat pts] [--season E2026]           # after the latest round -> races/<season>/round-NN/
+  python3 scripts/race.py pick [--stat pts] [--season E2026]           # Monday 05:00 (race.yml): latest round -> races/<season>/round-NN/
   python3 scripts/race.py get <folder> [--upto N] [--window 6]         # any folder; --upto replays an earlier round
   python3 scripts/render_reel.py <folder> <lang>                        # cards/<lang>/reel.mp4
 
@@ -33,6 +33,7 @@ N, TOP, SLOT, BAR = 8, 500, 118, 96       # bars shown; first bar's y; px per pl
 X0, MAXW = 184, 700                        # bar start, the leader's bar length
 INTRO, STEP, HOLD = .7, .85, 2.6           # seconds: the window's first round on screen; per round; the end held
 WINDOW = 6                                 # rounds shown: the latest six (the owner's choice, 2026-11-17)
+PAUSE = 1.0                                # seconds between box-score calls (~50 a race: about a minute)
 
 
 def race_data(folder, season, stat, upto=None, window=WINDOW):
@@ -64,7 +65,7 @@ def race_data(folder, season, stat, upto=None, window=WINDOW):
         out = collections.Counter()
         for g in by_round[r]:
             box = get(f"/v2/competitions/E/seasons/{season}/games/{g['gameCode']}/stats")
-            time.sleep(.2)  # the API answers 429 to bursts
+            time.sleep(PAUSE)  # the API answers 429 to bursts: stay well under it
             for side in ("local", "road"):
                 for p in box[side]["players"]:
                     out[p["player"]["person"]["code"]] += p["stats"][key]
@@ -252,8 +253,16 @@ def soundtrack(folder, lang, total, out):
 
 
 def pick(season, stat):
-    """The race after the latest fully played round, in races/<season>/round-NN/ (once per round)."""
+    """The race after the latest fully played round, in races/<season>/round-NN/ (once per round). Runs on Monday
+    mornings (.github/workflows/race.yml), when no one else of ours calls the API; on a day with a game it does nothing,
+    so its calls never compete with the game-night posts."""
+    import datetime as dt
+    import zoneinfo
     games = get(f"/v2/competitions/E/seasons/{season}/games")["data"]
+    today = dt.datetime.now(zoneinfo.ZoneInfo("Europe/Athens")).date().isoformat()
+    if any(str(g.get("date", "")).startswith(today) for g in games):
+        print(f"A game is scheduled today ({today}): no race this week")
+        return None
     by_round = collections.defaultdict(list)
     for g in games:
         by_round[g["round"]].append(g["played"])
