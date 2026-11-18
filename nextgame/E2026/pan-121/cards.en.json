@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "round_label": "Round 13",
+  "ig": [],
+  "x": {
+    "type": "list",
+    "kicker": "Next up · Panathinaikos",
+    "items": [
+      {
+        "tag": "Opponent",
+        "text": "at Žalgiris"
+      },
+      {
+        "tag": "When",
+        "text": "Thu 19 Nov · 20:00 Athens"
+      },
+      {
+        "tag": "Where",
+        "text": "Zalgirio Arena"
+      },
+      {
+        "tag": "Form",
+        "text": "Panathinaikos 8-4 (4th) · Žalgiris 8-4 (5th)"
+      }
+    ]
+  }
+}

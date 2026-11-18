@@ -689,5 +689,23 @@
     ],
     "approved": true,
     "notified": "auto-approved"
+  },
+  {
+    "story": "nextgame/E2026/oly-130",
+    "when": "2026-11-18T18:00:00+02:00",
+    "langs": [
+      "reel-el",
+      "x"
+    ],
+    "approved": true
+  },
+  {
+    "story": "nextgame/E2026/pan-121",
+    "when": "2026-11-18T18:00:00+02:00",
+    "langs": [
+      "reel-el",
+      "x"
+    ],
+    "approved": true
   }
 ]
