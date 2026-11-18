@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 12",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["BES", 83, "MAD", 79],
+      "kicker": "Real Madrid beaten in Istanbul",
+      "title": "Beşiktaş took down Real Madrid.\n*Then held on.*",
+      "subtitle": "Beşiktaş · ahead after every quarter"
+    },
+    {
+      "type": "score",
+      "badges": ["BES", "MAD"],
+      "kicker": "Final · Beşiktaş – Real Madrid",
+      "sides": [
+        {"team": "Beşiktaş", "score": 83, "won": true},
+        {"team": "Real Madrid", "score": 79, "won": false}
+      ],
+      "note": "Beşiktaş led 45-37 at half-time and 64-54 after three. Real won the 4th quarter 25-19.",
+      "lines": [
+        ["Jeffries", "20 pts · 4/8 from three"],
+        ["Wilbekin", "15 pts · 5 ast"],
+        ["Maledon (MAD)", "22 pts · 14/15 FT"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The late charge",
+      "title": "Real Madrid came charging in the fourth.\n*Beşiktaş didn't blink.*",
+      "subtitle": "Beşiktaş 6-6 · Real Madrid 7-5"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["BES", "MAD"],
+    "kicker": "Beşiktaş beat Real Madrid",
+    "sides": [
+      {"team": "Beşiktaş", "score": 83, "won": true},
+      {"team": "Real Madrid", "score": 79, "won": false}
+    ],
+    "note": "64-54 Beşiktaş after three. Real won the 4th 25-19.",
+    "lines": [
+      ["Jeffries", "20 pts · 4/8 from three"],
+      ["Maledon (MAD)", "22 pts · 14/15 FT"]
+    ]
+  }
+}
