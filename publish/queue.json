@@ -718,7 +718,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-12/highlight",
@@ -730,6 +731,7 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": false,
+    "notified": "https://github.com/istovatis/euroleague/issues/41"
   }
 ]
