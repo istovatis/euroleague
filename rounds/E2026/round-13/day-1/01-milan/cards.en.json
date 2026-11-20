@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 13",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["MIL", 78, "ULK", 70],
+      "kicker": "Shock in Milan",
+      "title": "The team at the bottom\n*took down a contender.*",
+      "subtitle": "Moses Wright · the night's best player"
+    },
+    {
+      "type": "score",
+      "badges": ["MIL", "ULK"],
+      "kicker": "Final · Unipol Forum, Milan",
+      "sides": [
+        {"team": "Milan", "score": 78, "won": true},
+        {"team": "Fenerbahce", "score": 70, "won": false}
+      ],
+      "note": "Fenerbahce led 61-55 after three. Milan won the 4th quarter 23-9.",
+      "lines": [
+        ["Wright", "22 pts · 11 reb · 8/9 FT · 36 PIR"],
+        ["Bolmaro", "19 pts · 5 ast"],
+        ["Horton Tucker (FEN)", "17 pts"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The fourth quarter",
+      "title": "Fenerbahce went cold.\n*Wright took over.*",
+      "subtitle": "Milan 3-10 · Fenerbahce 8-5"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["MIL", "ULK"],
+    "kicker": "Wright · 36 PIR",
+    "sides": [
+      {"team": "Milan", "score": 78, "won": true},
+      {"team": "Fenerbahce", "score": 70, "won": false}
+    ],
+    "note": "Fenerbahce led 61-55 after three. Milan won the 4th 23-9.",
+    "lines": [
+      ["Wright", "22 pts · 11 reb · 36 PIR"],
+      ["Bolmaro", "19 pts"]
+    ]
+  }
+}

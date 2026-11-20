@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 13",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["ZAL", 72, "PAN", 87],
+      "kicker": "Statement in Kaunas",
+      "title": "Panathinaikos walked into Kaunas\n*and shut it down.*",
+      "subtitle": "Panathinaikos · road win"
+    },
+    {
+      "type": "score",
+      "badges": ["ZAL", "PAN"],
+      "kicker": "Final · Zalgirio Arena, Kaunas",
+      "sides": [
+        {"team": "Zalgiris", "score": 72, "won": false},
+        {"team": "Panathinaikos", "score": 87, "won": true}
+      ],
+      "note": "59-55 Panathinaikos after three. Then 28-17 in the 4th quarter.",
+      "lines": [
+        ["Nunn", "21 pts · 4/8 3PT"],
+        ["Hayes-Davis", "20 pts · 6 reb"],
+        ["Tubelis (ZAL)", "17 pts"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The fourth quarter",
+      "title": "Zalgiris hung on for three quarters.\n*The fourth broke them.*",
+      "subtitle": "Panathinaikos 9-4 · Zalgiris 8-5"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["ZAL", "PAN"],
+    "kicker": "Road win in Kaunas",
+    "sides": [
+      {"team": "Zalgiris", "score": 72, "won": false},
+      {"team": "Panathinaikos", "score": 87, "won": true}
+    ],
+    "note": "59-55 after three. Panathinaikos won the 4th 28-17.",
+    "lines": [
+      ["Nunn", "21 pts · 4/8 3PT"],
+      ["Hayes-Davis", "20 pts"]
+    ]
+  }
+}

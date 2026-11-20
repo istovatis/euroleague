@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 13",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["PRS", 97, "HTA", 96],
+      "kicker": "Survived",
+      "title": "Paris held on\n*by a fingertip.*",
+      "subtitle": "Paris · home win"
+    },
+    {
+      "type": "score",
+      "badges": ["PRS", "HTA"],
+      "kicker": "Final · Adidas Arena, Paris",
+      "sides": [
+        {"team": "Paris", "score": 97, "won": true},
+        {"team": "Hapoel", "score": 96, "won": false}
+      ],
+      "note": "Paris won the 3rd quarter 32-27 to lead 80-72. Hapoel won the 4th 24-17.",
+      "lines": [
+        ["Hifi", "18 pts · 5 ast"],
+        ["Rhoden", "16 pts"],
+        ["Blakeney (HTA)", "28 pts · 4/7 3PT"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The fourth quarter",
+      "title": "Blakeney kept Hapoel coming.\n*Paris didn't blink.*",
+      "subtitle": "Paris 7-6 · Hapoel 7-6"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["PRS", "HTA"],
+    "kicker": "Won by one",
+    "sides": [
+      {"team": "Paris", "score": 97, "won": true},
+      {"team": "Hapoel", "score": 96, "won": false}
+    ],
+    "note": "Paris led 80-72 after three. Hapoel won the 4th 24-17.",
+    "lines": [
+      ["Hifi", "18 pts · 5 ast"],
+      ["Blakeney (HTA)", "28 pts"]
+    ]
+  }
+}

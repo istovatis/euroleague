@@ -733,5 +733,41 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/41"
+  },
+  {
+    "story": "rounds/E2026/round-13/day-1/01-milan",
+    "when": "2026-11-20T08:05:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-13/day-1/02-panathinaikos",
+    "when": "2026-11-20T08:06:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-13/day-1/03-paris",
+    "when": "2026-11-20T08:07:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]
