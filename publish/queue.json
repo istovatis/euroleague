@@ -744,7 +744,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-13/day-1/02-panathinaikos",
@@ -756,7 +757,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-13/day-1/03-paris",
@@ -768,6 +770,7 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   }
 ]
