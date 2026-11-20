@@ -1,0 +1,47 @@
+{
+  "lang": "en",
+  "round_label": "Round 13",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "Round 13",
+      "title": "Valencia and Olympiacos didn't blink.\n*The chasers closed in.*",
+      "subtitle": "Panathinaikos and Dubai one win behind"
+    },
+    {
+      "type": "score",
+      "badges": ["MIL", "MUN"],
+      "kicker": "Player of the round · PIR",
+      "sides": [
+        {"team": "Moses Wright", "score": 36, "won": true},
+        {"team": "Duane Washington Jr.", "score": 33, "won": false}
+      ],
+      "note": "22 points, 11 rebounds. Milan beat Fenerbahçe.",
+      "lines": [
+        ["Wright (MIL)", "22 pts · 11 reb · 8/9 FT"],
+        ["Washington Jr. (MUN)", "23 pts · 4/8 from three"]
+      ]
+    },
+    {
+      "type": "list",
+      "kicker": "The table after Round 13",
+      "items": [
+        {"tag": "1 · 10-3", "text": "Valencia · *Still on top*"},
+        {"tag": "2 · 10-3", "text": "Olympiacos · *Level, beat Real Madrid*"},
+        {"tag": "3 · 9-4", "text": "Panathinaikos · *Up 1, won in Kaunas*"},
+        {"tag": "4 · 9-4", "text": "Dubai · *Up 3, won at Maccabi*"},
+        {"tag": "8 · 8-5", "text": "Zalgiris · *Down 3*"}
+      ]
+    }
+  ],
+  "x": {
+    "type": "list",
+    "kicker": "Round 13 · the table",
+    "items": [
+      {"tag": "1-2 · 10-3", "text": "Valencia, Olympiacos · *Side by side*"},
+      {"tag": "3-4 · 9-4", "text": "Panathinaikos, Dubai · *Closing in*"},
+      {"tag": "5 · 8-5", "text": "Fenerbahçe · *Down 2, lost in Milan*"},
+      {"tag": "MVP", "text": "Moses Wright · *36 PIR*"}
+    ]
+  }
+}

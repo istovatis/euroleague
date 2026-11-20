@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 13",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["OLY", 92, "MAD", 76],
+      "kicker": "Real Madrid overpowered",
+      "title": "Tyrique Jones ran\n*Real Madrid off the floor.*",
+      "subtitle": "Olympiacos · still level at the top"
+    },
+    {
+      "type": "score",
+      "badges": ["OLY", "MAD"],
+      "kicker": "Final · Sunel Arena, Athens",
+      "sides": [
+        {"team": "Olympiacos", "score": 92, "won": true},
+        {"team": "Real Madrid", "score": 76, "won": false}
+      ],
+      "note": "50-33 at half. 73-52 after three.",
+      "lines": [
+        ["Jones", "22 pts · 8 reb · 9/10 2PT · 30 PIR"],
+        ["Fournier", "17 pts · 5 ast"],
+        ["Maledon (MAD)", "17 pts · 7 ast"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The race at the top",
+      "title": "Valencia won. Olympiacos answered.\n*Still side by side.*",
+      "subtitle": "Olympiacos 10-3 · Real Madrid 7-6"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["OLY", "MAD"],
+    "kicker": "Tyrique Jones · 30 PIR",
+    "sides": [
+      {"team": "Olympiacos", "score": 92, "won": true},
+      {"team": "Real Madrid", "score": 76, "won": false}
+    ],
+    "note": "73-52 after three. Olympiacos 10-3, level with Valencia.",
+    "lines": [
+      ["Jones", "22 pts · 9/10 2PT · 30 PIR"],
+      ["Fournier", "17 pts · 5 ast"]
+    ]
+  }
+}

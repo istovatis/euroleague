@@ -1,0 +1,48 @@
+{
+  "lang": "en",
+  "round_label": "Round 13",
+  "ig": [
+    {
+      "type": "hook",
+      "game": ["BAR", 100, "RED", 103],
+      "kicker": "Overtime at the Palau",
+      "title": "Barça fell at home again.\n*Crvena Zvezda finished it in overtime.*",
+      "subtitle": "Tyson Carter · the night's top scorer"
+    },
+    {
+      "type": "score",
+      "badges": ["BAR", "RED"],
+      "kicker": "Final (OT) · Palau Blaugrana, Barcelona",
+      "sides": [
+        {"team": "Barça", "score": 100, "won": false},
+        {"team": "Crvena Zvezda", "score": 103, "won": true}
+      ],
+      "note": "85-85 after 40 minutes. Crvena Zvezda won overtime 18-15.",
+      "lines": [
+        ["Carter", "31 pts · 7/10 3PT · 8/9 FT"],
+        ["Butler", "16 pts · 7/7 FT"],
+        ["Brizuela (BAR)", "22 pts · 31 PIR"]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Tyson Carter",
+      "title": "Barça had an answer for everyone.\n*Except Tyson Carter.*",
+      "subtitle": "Crvena Zvezda up to 6th · Barça 7th"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": ["BAR", "RED"],
+    "kicker": "Road win in overtime",
+    "sides": [
+      {"team": "Barça", "score": 100, "won": false},
+      {"team": "Crvena Zvezda", "score": 103, "won": true}
+    ],
+    "note": "85-85 after 40 minutes. Crvena Zvezda won OT 18-15.",
+    "lines": [
+      ["Carter", "31 pts · 7/10 3PT"],
+      ["Butler", "16 pts · 7/7 FT"]
+    ]
+  }
+}
