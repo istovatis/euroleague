@@ -1,0 +1,74 @@
+{
+  "season": "E2026",
+  "round": 13,
+  "code": "012878",
+  "first": "Moses",
+  "last": "Wright",
+  "club": "MIL",
+  "dorsal": "5",
+  "game": 123,
+  "opponent": "ULK",
+  "won": true,
+  "score": "MIL 78-70 ULK",
+  "line": {
+    "pir": 36.0,
+    "pts": 22.0,
+    "reb": 11.0,
+    "oreb": 2.0,
+    "ast": 2.0,
+    "stl": 1.0,
+    "blk": 0.0,
+    "tov": 1.0,
+    "min": 28.8,
+    "fg2": "7/10",
+    "fg3": "0/1",
+    "ft": "8/9",
+    "plus_minus": 8.0
+  },
+  "en": {
+    "first": "Moses",
+    "last": "Wright",
+    "title": "Milan were sinking.\nFenerbahce were flying.\n*He brought them\nback to earth*",
+    "stats": [
+      [
+        "36",
+        "PIR"
+      ],
+      [
+        "22",
+        "points"
+      ],
+      [
+        "11",
+        "rebounds"
+      ],
+      [
+        "8/9",
+        "free throws"
+      ]
+    ]
+  },
+  "el": {
+    "first": "Μόουζες",
+    "last": "Ράιτ",
+    "title": "Η Αρμάνι βούλιαζε.\nΗ Φενέρ πετούσε.\n*Εκείνος την\nπροσγείωσε*",
+    "stats": [
+      [
+        "36",
+        "PIR"
+      ],
+      [
+        "22",
+        "πόντοι"
+      ],
+      [
+        "11",
+        "ριμπάουντ"
+      ],
+      [
+        "8/9",
+        "βολές"
+      ]
+    ]
+  }
+}

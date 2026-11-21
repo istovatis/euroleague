@@ -823,5 +823,15 @@
       "reel-el"
     ],
     "approved": true
+  },
+  {
+    "story": "mvps/E2026/round-13",
+    "when": "2026-11-22T12:00:00+02:00",
+    "langs": [
+      "reel-en",
+      "reel-el",
+      "x"
+    ],
+    "approved": true
   }
 ]
