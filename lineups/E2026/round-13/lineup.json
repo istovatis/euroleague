@@ -1,0 +1,81 @@
+{
+  "season": "E2026",
+  "round": 13,
+  "players": [
+    {
+      "code": "009992",
+      "first": "Dario",
+      "last": "Brizuela",
+      "club": "BAR",
+      "dorsal": "8",
+      "position": "Guard",
+      "pir": 31.0,
+      "pts": 22.0,
+      "ast": 4.0,
+      "reb": 5.0,
+      "won": false,
+      "game": 128,
+      "slot": "PG"
+    },
+    {
+      "code": "013370",
+      "first": "Duane",
+      "last": "Washington",
+      "club": "MUN",
+      "dorsal": "4",
+      "position": "Guard",
+      "pir": 33.0,
+      "pts": 23.0,
+      "ast": 2.0,
+      "reb": 7.0,
+      "won": true,
+      "game": 124,
+      "slot": "SG"
+    },
+    {
+      "code": "008962",
+      "first": "Nigel",
+      "last": "Hayes-Davis",
+      "club": "PAN",
+      "dorsal": "11",
+      "position": "Forward",
+      "pir": 22.0,
+      "pts": 20.0,
+      "ast": 1.0,
+      "reb": 6.0,
+      "won": true,
+      "game": 121,
+      "slot": "SF"
+    },
+    {
+      "code": "007464",
+      "first": "Joel",
+      "last": "Parra",
+      "club": "BAR",
+      "dorsal": "44",
+      "position": "Forward",
+      "pir": 24.0,
+      "pts": 20.0,
+      "ast": 1.0,
+      "reb": 7.0,
+      "won": false,
+      "game": 128,
+      "slot": "PF"
+    },
+    {
+      "code": "012878",
+      "first": "Moses",
+      "last": "Wright",
+      "club": "MIL",
+      "dorsal": "5",
+      "position": "Center",
+      "pir": 36.0,
+      "pts": 22.0,
+      "ast": 2.0,
+      "reb": 11.0,
+      "won": true,
+      "game": 123,
+      "slot": "C"
+    }
+  ]
+}
