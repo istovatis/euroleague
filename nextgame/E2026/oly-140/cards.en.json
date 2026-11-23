@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "round_label": "Round 14",
+  "ig": [],
+  "x": {
+    "type": "list",
+    "kicker": "Next up · Olympiacos",
+    "items": [
+      {
+        "tag": "Opponent",
+        "text": "vs Hapoel Tel Aviv"
+      },
+      {
+        "tag": "When",
+        "text": "Wed 25 Nov · 21:15 Athens"
+      },
+      {
+        "tag": "Where",
+        "text": "Sunel Arena"
+      },
+      {
+        "tag": "Form",
+        "text": "Olympiacos 10-3 (2nd) · Hapoel Tel Aviv 7-6 (10th)"
+      }
+    ]
+  }
+}
