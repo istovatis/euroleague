@@ -2,7 +2,7 @@
 """Shot chart Reel: every shot of one player's night, in game order, on a half court. Makes land as lime bursts with
 "+2" / "+3", misses as a faint cross, free throws bump the points counter; the game clock runs along. Then a line on
 what the chart shows and his shooting numbers; then the brand outro. With sound (sfx.py): a swish for every make, a
-rim clank for every miss, an arena murmur that swells at the end. Used for the MVP of the round, Sunday evening.
+rim clank for every miss, an arena murmur that swells at the end. Used for the MVP of the round, Sunday 18:00.
 
   python3 scripts/shotchart.py mvp mvps/E2026/round-NN                                     # the MVP's night -> <mvp folder>/shots/
   python3 scripts/shotchart.py get <folder> --game 101 --player 014124 [--season E2026]   # any player -> <folder>/shots.json

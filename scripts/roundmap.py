@@ -3,7 +3,7 @@
 2026-11-23), on both Instagram accounts (grid too) and X. Every game of the round in tip-off order: a flight arc from
 the away team's city to the venue, the home crest and city lighting up there, a fixture card (day and time in Athens,
 both crests, arena and city); when the next flight takes off, the venue keeps both clubs' crests side by side. Then
-"From <westernmost city> to <easternmost city>." and the brand outro. The Greek weekly (the owner's decision, 2026-11-23): Sunday 15:00
+"From <westernmost city> to <easternmost city>." and the brand outro. The Greek weekly (the owner's decision, 2026-11-23): Sunday 13:00
 Athens, without approval, on the Greek account only, the same map with just Olympiacos' and Panathinaikos' games from
 Monday to Sunday (both rounds of a double week), "Οι «αιώνιοι» στον χάρτη". With our own synthesized sound (sfx.py). All of
 it is data: .github/workflows/roundmap.yml runs `pick`, which writes map.json, the captions and the queue entry; the
@@ -35,7 +35,7 @@ GREEK = ("OLY", "PAN")
 WEEK_KICKER = "Η εβδομάδα τους"
 WEEK_HEAD = "Οι «αιώνιοι»\nστον χάρτη"
 POST_AT = "10:00"                       # Athens, Saturday
-WEEK_AT = "15:00"                       # Athens, Sunday: the Greek weekly
+WEEK_AT = "13:00"                       # Athens, Sunday: the Greek weekly
 KICKER = {"en": "Next round", "el": "Επόμενη αγωνιστική"}
 HEAD = {"en": "Round {n}\non the map", "el": "Η {n}η αγωνιστική\nστον χάρτη"}
 DAYS = {"en": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], "el": ["Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή"]}

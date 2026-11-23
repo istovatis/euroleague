@@ -29,6 +29,7 @@ ATHENS = zoneinfo.ZoneInfo("Europe/Athens")
 CLUBS = json.loads((ROOT / "assets" / "clubs.json").read_text())
 TEAMS = {"OLY": "Ολυμπιακού", "PAN": "Παναθηναϊκού"}  # genitive, for the title
 POST_AT = "18:00"
+SUNDAY_AT = "16:00"  # Sunday posts go out two hours earlier (the owner's decision, 2026-11-23)
 DAYS_BEFORE = 2
 DAYS_EL = ["Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή"]
 MONTHS_EL = ["Ιανουαρίου", "Φεβρουαρίου", "Μαρτίου", "Απριλίου", "Μαΐου", "Ιουνίου", "Ιουλίου", "Αυγούστου",
@@ -217,7 +218,7 @@ def main():
         if not a.no_queue:
             queue = [sys.executable, str(ROOT / "scripts" / "publish_queue.py")]
             if folder.relative_to(ROOT).as_posix() not in subprocess.run(queue + ["list"], capture_output=True, text=True).stdout:
-                subprocess.run(queue + ["add", str(folder.relative_to(ROOT)), f"{today} {POST_AT}", "--langs", "reel-el,x"], check=True)
+                subprocess.run(queue + ["add", str(folder.relative_to(ROOT)), f"{today} {SUNDAY_AT if now.astimezone(ATHENS).weekday() == 6 else POST_AT}", "--langs", "reel-el,x"], check=True)
 
 
 if __name__ == "__main__":
