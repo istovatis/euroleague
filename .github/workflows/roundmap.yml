@@ -1,0 +1,45 @@
+name: Next round on the map
+
+# Monday 06:30 Athens: if a round starts in the next 7 days, scripts/roundmap.py pick writes maps/<season>/round-NN/
+# (map.json, captions; one EuroLeague API call) and queues the Reel, approved, for Monday 09:00 Athens on both
+# Instagram accounts (grid too) and X, without approval (the owner's decision, 2026-11-23). The Reel is rendered at
+# publish time. Two runs, because GitHub sometimes skips scheduled runs; the second finds the folder there. Each run
+# then starts the publisher, which waits for the 09:00 slot.
+on:
+  schedule:
+    - cron: "30 4,5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: roundmap
+  cancel-in-progress: false
+
+jobs:
+  roundmap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build and queue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          python3 scripts/roundmap.py pick
+          git add maps publish/queue.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Next round on the map queued"
+            git pull -q --rebase origin main
+            git push -q origin main
+          fi
+          if python3 scripts/publish_queue.py list | grep "maps/" | grep -q pending; then
+            gh workflow run publish.yml -f dry_run=false
+          fi

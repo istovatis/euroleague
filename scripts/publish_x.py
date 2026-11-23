@@ -179,9 +179,10 @@ def main():
     text = post_text(story / "post.en.md")
     images = sorted((story / "cards" / "en").glob("x*.png"), key=lambda f: f.stem)  # x.png, x-2.png, ...
     video = story / "cards" / "en" / "x.mp4"  # a video post (e.g. a countdown) instead of images
-    if (story / "mvp.json").exists():  # MVP of the round: the English Reel, with its sound (rendered here if needed)
+    scene = next((story / f for f in ("mvp.json", "map.json") if (story / f).exists()), None)
+    if scene:  # MVP of the round, next round on the map: the English Reel, with its sound (rendered here if needed)
         video = story / "cards" / "en" / "reel.mp4"
-        if not video.exists() or video.stat().st_mtime < (story / "mvp.json").stat().st_mtime:
+        if not video.exists() or video.stat().st_mtime < scene.stat().st_mtime:
             sys.path.insert(0, str(ROOT / "scripts"))
             import render_reel
             render_reel.render(str(story), "en")

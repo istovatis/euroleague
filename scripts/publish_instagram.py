@@ -266,7 +266,7 @@ def publish_reel(story, lang, yes, feed=False):
     caption = caption_of(story / f"post.{lang}.md")
     mp4 = story / "cards" / lang / "reel.mp4"
     spec = story / f"cards.{lang}.json"  # no spec: a finished video (e.g. a countdown), used as it is
-    for scene in ("lineup.json", "mvp.json", "shots.json", "race.json"):  # scenes render_reel.py builds from data
+    for scene in ("lineup.json", "mvp.json", "shots.json", "race.json", "map.json"):  # scenes render_reel.py builds from data
         if not spec.exists() and (story / scene).exists():
             spec = story / scene
     if spec.exists() and (not mp4.exists() or mp4.stat().st_mtime < spec.stat().st_mtime):
