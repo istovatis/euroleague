@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Next round on the map: a Reel every Monday 09:00 Athens before a round, without approval (the owner's decision,
+"""Next round on the map: a Reel every Saturday 10:00 Athens before a round, without approval (the owner's decisions,
 2026-11-23), on both Instagram accounts (grid too) and X. Every game of the round in tip-off order: a flight arc from
 the away team's city to the venue, the home crest and city lighting up there, a fixture card (day and time in Athens,
 both crests, arena and city); when the next flight takes off, the venue keeps both clubs' crests side by side. Then
@@ -9,7 +9,7 @@ Monday to Sunday (both rounds of a double week), "Οι «αιώνιοι» στο
 it is data: .github/workflows/roundmap.yml runs `pick`, which writes map.json, the captions and the queue entry; the
 Reel is rendered at publish time (render_reel.py).
 
-  python3 scripts/roundmap.py pick [--season E2026]                       # Monday (roundmap.yml): the round starting this week
+  python3 scripts/roundmap.py pick [--season E2026]                       # Saturday (roundmap.yml): the next round
   python3 scripts/roundmap.py get <folder> [--round N] [--season E2026]   # any round, into any folder (a preview)
   python3 scripts/roundmap.py greek [--season E2026]                      # Sunday (roundmap.yml): the Greek weekly
   python3 scripts/render_reel.py <folder> <lang>                          # cards/<lang>/reel.mp4
@@ -34,7 +34,7 @@ ATHENS = zoneinfo.ZoneInfo("Europe/Athens")
 GREEK = ("OLY", "PAN")
 WEEK_KICKER = "Η εβδομάδα τους"
 WEEK_HEAD = "Οι «αιώνιοι»\nστον χάρτη"
-POST_AT = "09:00"                       # Athens, Monday
+POST_AT = "10:00"                       # Athens, Saturday
 WEEK_AT = "15:00"                       # Athens, Sunday: the Greek weekly
 KICKER = {"en": "Next round", "el": "Επόμενη αγωνιστική"}
 HEAD = {"en": "Round {n}\non the map", "el": "Η {n}η αγωνιστική\nστον χάρτη"}
@@ -213,7 +213,7 @@ Which trip would you make? 👇
 
 
 def pick(season):
-    """Monday: the round whose first game is in the next 7 days -> maps/<season>/round-NN/, queued (approved) for
+    """Saturday: the round whose first game is in the next 7 days -> maps/<season>/round-NN/, queued (approved) for
     today at POST_AT with both Reels and X."""
     import subprocess
     import sys
