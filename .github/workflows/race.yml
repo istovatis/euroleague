@@ -1,14 +1,15 @@
 name: Season leaders race (data)
 
-# Monday 05:00 Athens: the season leaders race's data for the latest finished round (scripts/race.py pick ->
-# races/<season>/round-NN/race.json, about 50 EuroLeague API calls, a second apart). Monday early is when nothing else
-# of ours calls the API (next-game from 09:00, the arena routine 09:07, final scores only on game days), so a rate
-# limit here can't hold up another post; on a day with a game it does nothing. The Monday arena routine then writes the
-# words (Greek names, title, captions) and queues the Reel for 20:00 without approval (ROUTINE.md). Two runs, because
+# Saturday 05:00 Athens: the season leaders race's data for the latest finished round (scripts/race.py pick ->
+# races/<season>/round-NN/race.json, about 50 EuroLeague API calls, a second apart). Saturday early is when nothing else
+# of ours calls the API (the round map from 07:30, the Saturday routine 08:07, next-game from 09:00, final scores only
+# on game days), so a rate limit here can't hold up another post; on a day with a game it does nothing. The Saturday
+# routine then writes the words (Greek names, title, captions) and queues the Reel for 15:00 without approval
+# (ROUTINE.md; the owner's decision, 2026-11-23). Two runs, because
 # GitHub sometimes skips scheduled runs; the second finds the data there and stops.
 on:
   schedule:
-    - cron: "0 3,4 * * 1"
+    - cron: "0 3,4 * * 6"
   workflow_dispatch:
 
 permissions:

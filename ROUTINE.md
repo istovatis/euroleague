@@ -31,20 +31,12 @@ rounds/E2026/round-07/
 3. Otherwise, for each pending day, do steps 3–4 of the per-day run, and for each pending highlight, step 5. Then do steps 6–8. A suggested time already in the past is fine: the owner sets a new time when approving.
 
 ## Arena of the week run (Mondays, named in the prompt)
-1. `python3 scripts/arena_facts.py --next`. If it prints "All arenas covered", skip to "Season leaders race" below.
+1. `python3 scripts/arena_facts.py --next`. If it prints "All arenas covered", stop: no changes.
 2. `python3 scripts/arena_facts.py --get "<ARENA>"` (add `--wiki "<title>"` if it found the wrong Wikipedia page). Read `facts.json` in full. Wikimedia sites rate-limit the cloud (HTTP 429); the scripts wait and retry on their own, so run them in the foreground and let them finish. Never move work into background tasks and end your turn: the run stops when you do.
 3. Find and download the exterior and interior photos (see "Arena of the week" in `CLAUDE.md`).
 4. Write `post.en.md` (X + Instagram, with `## Sources`) and `post.el.md` (Instagram only), plus `cards.en.json` and `cards.el.json`. Render them, open every PNG and fix any problems, and check the X post is 280 characters or fewer.
 5. Write the folder's `README.md`. Queue the post as a draft for that Monday at 18:00 Athens: `python3 scripts/publish_queue.py add arenas/E2026/<slug> "YYYY-MM-DD 18:00" --draft`.
-6. Commit `arenas/` and `publish/queue.json` to `main` with the message `Arena of the week: <arena> (EN + EL)` and push. Then do the race below.
-
-### Season leaders race (same Monday run, after the arena)
-The data was built at 05:00 by `.github/workflows/race.yml` (`races/E2026/round-NN/race.json`: season points totals over the latest 6 rounds, all of them early in the season). **Never run `race.py pick` or `get` here**: its ~50 API calls belong to that early slot, so they can't hold up other posts. Take the newest `races/E2026/round-*/` folder that has `race.json` but no `README.md`; if there is none (no new round, or the job didn't run), skip this part.
-1. Add to `race.json`: `"el"`: `"names"`, the Greek spelling of every player's surname by code (as in the Greek posts: Βεζένκοφ, Σορτς), and `"title"`; `"en"`: `"title"`. The title says what the race shows in words, no numbers, 2 short lines with the payoff in `*accent*`: a runaway leader, a new leader, a tight pack, a climber (e.g. `"Ο Βεζένκοφ\n*τρέχει μόνος του*"` / `"Vezenkov is\n*running away with it*"`). Read the values first; on a tie at the top, say so.
-2. Render both (`python3 scripts/render_reel.py races/E2026/round-NN el`, then `en`) and look at a frame near the end: names fit their bars, the title fits under them.
-3. `post.en.md` and `post.el.md` (`## Instagram caption` only): a hook about the race, 2–3 lines (numbers from `race.json`), a question ("Who catches him?"), 8–12 hashtags. A short `README.md`.
-4. Queue it **approved** (no `--draft`; the owner's decision, 2026-11-17) for that Monday at 20:00 Athens, Reels only: `python3 scripts/publish_queue.py add races/E2026/round-NN "YYYY-MM-DD 20:00" --langs reel-en,reel-el`.
-5. Commit `races/` and `publish/queue.json` to `main` with the message `Season leaders race: round N (EN + EL)` and push.
+6. Commit `arenas/` and `publish/queue.json` to `main` with the message `Arena of the week: <arena> (EN + EL)` and push.
 
 ## Lineup of the week run (Saturdays, named in the prompt)
 1. `python3 scripts/lineup.py pick` picks the latest fully played round's five (PG, SG, SF, PF, C by PIR) into `lineups/E2026/round-NN/lineup.json`. If it prints "Already picked" and that folder has a `README.md`, skip to "MVP of the round" below. If the round isn't fully played, stop.
@@ -56,7 +48,7 @@ The data was built at 05:00 by `.github/workflows/race.yml` (`races/E2026/round-
 
 ### MVP of the round (same Saturday run, after the lineup)
 A Reel on both accounts, Sunday 12:00 Athens, **published without approval** (the owner's decision, 2026-11-16): spotlights search a dark arena, lock onto the player, then a line on why he was the MVP and his four best numbers (`scripts/mvp.py`; rendered at publish time, with our own synthesized sound).
-1. `python3 scripts/mvp.py pick` writes the round's top PIR player and his full line into `mvps/E2026/round-NN/mvp.json`. If it prints "Already picked" and that folder has a `README.md`, stop: no changes.
+1. `python3 scripts/mvp.py pick` writes the round's top PIR player and his full line into `mvps/E2026/round-NN/mvp.json`. If it prints "Already picked" and that folder has a `README.md`, skip to "Season leaders race" below.
 2. Photo: if the lineup folder has `photo-<his code>.jpg`, copy it and its JSON into the MVP folder. Otherwise search as in step 2 above (current club's jersey only) and save it with `--get mvps/E2026/round-NN "File:…" --name photo-<code>`; set `"focus"` so the face sits in the upper half of the square. Without one, the card shows our vest drawing on its own.
 3. Add to `mvp.json`, for `"en"` and `"el"`: `"first"`/`"last"` (Greek spelling for el, as in the round's Greek posts), `"title"` and `"stats"`.
    - `"title"`: why he was the MVP, in the voice of `CLAUDE.md` (it interprets, it doesn't count: no numbers), 2–4 short lines split with `\n`, the payoff in `*accent*`. Example: `"Βασίλεψε κάτω\nαπό τα καλάθια\n*και έφερε διπλό\nαπό το Μιλάνο*"` / `"He owned\nthe glass\n*and stole a win\nin Milan*"`.
@@ -68,5 +60,13 @@ A Reel on both accounts, Sunday 12:00 Athens, **published without approval** (th
    - Add to `shots.json`, for `"en"` and `"el"`: `"title"`, what the chart shows, in the voice of `CLAUDE.md` (no numbers; 2–4 short lines with `\n`, the payoff in `*accent*`; e.g. `"Ασταμάτητος\nστη ρακέτα.\n*Η Φενέρ λύγισε\nστην παράταση.*"` / `"Unstoppable\nin the paint.\n*Fenerbahce still\nfell in overtime.*"`), and `"stats"`: 3 `[value, label]` pairs from `"line"`, e.g. `["12/14", "δίποντα"], ["1/5", "τρίποντα"], ["5/7", "βολές"]`. Look at where the dots are (paint, mid-range, threes) before writing the line.
    - Render both and look at a frame near the end, as in step 4. Write `shots/post.en.md` and `shots/post.el.md` (`## Instagram caption` only, same rules as step 5, a different hook: his night shot by shot). Queue it: `python3 scripts/publish_queue.py add mvps/E2026/round-NN/shots "YYYY-MM-DD 20:00" --langs reel-en,reel-el`.
    - If `shotchart.py` finds no shots (he scored only from the line, or the live API is down), skip the shot chart and say so in `README.md`.
-8. Commit `mvps/` and `publish/queue.json` to `main` with the message `MVP of the round: round N (EN + EL)` and push.
+8. Commit `mvps/` and `publish/queue.json` to `main` with the message `MVP of the round: round N (EN + EL)` and push. Then do the race below.
+
+### Season leaders race (same Saturday run, after the MVP)
+The data was built at 05:00 that Saturday by `.github/workflows/race.yml` (`races/E2026/round-NN/race.json`: season points totals over the latest 6 rounds, all of them early in the season). **Never run `race.py pick` or `get` here**: its ~50 API calls belong to that early slot, so they can't hold up other posts. Take the newest `races/E2026/round-*/` folder that has `race.json` but no `README.md`; if there is none (no new round, or the job didn't run), skip this part.
+1. Add to `race.json`: `"el"`: `"names"`, the Greek spelling of every player's surname by code (as in the Greek posts: Βεζένκοφ, Σορτς), and `"title"`; `"en"`: `"title"`. The title says what the race shows in words, no numbers, 2 short lines with the payoff in `*accent*`: a runaway leader, a new leader, a tight pack, a climber (e.g. `"Ο Βεζένκοφ\n*τρέχει μόνος του*"` / `"Vezenkov is\n*running away with it*"`). Read the values first; on a tie at the top, say so.
+2. Render both (`python3 scripts/render_reel.py races/E2026/round-NN el`, then `en`) and look at a frame near the end: names fit their bars, the title fits under them.
+3. `post.en.md` and `post.el.md` (`## Instagram caption` only): a hook about the race, 2–3 lines (numbers from `race.json`), a question ("Who catches him?"), 8–12 hashtags. A short `README.md`.
+4. Queue it **approved** (no `--draft`; the owner's decision, 2026-11-17) for that Saturday at 15:00 Athens (the owner's decision, 2026-11-23), Reels only: `python3 scripts/publish_queue.py add races/E2026/round-NN "YYYY-MM-DD 15:00" --langs reel-en,reel-el`.
+5. Commit `races/` and `publish/queue.json` to `main` with the message `Season leaders race: round N (EN + EL)` and push.
 

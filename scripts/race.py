@@ -4,7 +4,7 @@ WINDOW rounds (all of them while the season has fewer). The top 8 grow and overt
 ticks along, then the leader lights up and a line says what the race shows; then the brand outro. With sound
 (sfx.py): a tick per round, a whoosh when the order changes.
 
-  python3 scripts/race.py pick [--stat pts] [--season E2026]           # Monday 05:00 (race.yml): latest round -> races/<season>/round-NN/
+  python3 scripts/race.py pick [--stat pts] [--season E2026]           # Saturday 05:00 (race.yml): latest round -> races/<season>/round-NN/
   python3 scripts/race.py get <folder> [--upto N] [--window 6]         # any folder; --upto replays an earlier round
   python3 scripts/render_reel.py <folder> <lang>                        # cards/<lang>/reel.mp4
 
@@ -253,7 +253,7 @@ def soundtrack(folder, lang, total, out):
 
 
 def pick(season, stat):
-    """The race after the latest fully played round, in races/<season>/round-NN/ (once per round). Runs on Monday
+    """The race after the latest fully played round, in races/<season>/round-NN/ (once per round). Runs on Saturday
     mornings (.github/workflows/race.yml), when no one else of ours calls the API; on a day with a game it does nothing,
     so its calls never compete with the game-night posts."""
     import datetime as dt
