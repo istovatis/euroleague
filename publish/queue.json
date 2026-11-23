@@ -855,5 +855,14 @@
     ],
     "approved": true,
     "notified": "https://github.com/istovatis/euroleague/issues/46"
+  },
+  {
+    "story": "races/E2026/round-13",
+    "when": "2026-11-23T18:29:00+02:00",
+    "langs": [
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": true
   }
 ]
