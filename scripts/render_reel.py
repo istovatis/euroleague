@@ -93,9 +93,12 @@ body {{ padding: 0; }}
 <div class="main">{card_html(card, lang)}</div>
 <div class="foot"><span></span>{credit}</div></section>""")
     scenes.append(outro_html(lang))
+    # Each slide's time on screen: SCENE, or the card's own "reel_seconds" (e.g. a short first slide), then the outro.
+    durs = [round(card.get("reel_seconds", SCENE) * 1000) for card in slides] + [round(OUTRO * 1000)]
+    starts = [sum(durs[:i]) for i in range(len(durs))]
 
     script = """
-const SCENE = %(scene)d, OUTRO = %(outro)d;
+const STARTS = %(starts)s, DURS = %(durs)s;
 const ease = 'cubic-bezier(.2,.8,.2,1)';
 const counters = [];
 function anim(el, frames, delay, dur, easing, fill) {
@@ -121,7 +124,7 @@ function setup() {
   const scenes = [...document.querySelectorAll('.scene')];
   scenes.forEach((sc, i) => {
     const last = i === scenes.length - 1;
-    const s = i * SCENE, d = last ? OUTRO : SCENE;
+    const s = STARTS[i], d = DURS[i];
     // Scene in (a quick rise) and out (a quick fade), except the first in and the last out.
     anim(sc, i ? [{opacity: 0, transform: 'translateY(60px)'}, {opacity: 1, transform: 'none'}] : [{opacity: 1}, {opacity: 1}],
          s, i ? 260 : 1);
@@ -170,8 +173,8 @@ function seek(ms) {
     c.el.textContent = c.comma ? v.toLocaleString('en-US') : String(v);
   }
 }
-""" % dict(scene=SCENE * 1000, outro=OUTRO * 1000)
-    total = len(slides) * SCENE + OUTRO
+""" % dict(starts=json.dumps(starts), durs=json.dumps(durs))
+    total = sum(durs) / 1000
     doc = f"""<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><style>{css}</style></head>
 <body>{''.join(scenes)}<script>{script}</script></body></html>"""
     return doc, total

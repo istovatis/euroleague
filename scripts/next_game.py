@@ -114,7 +114,8 @@ def build(season, team, g, table, folder, games):
 
     spec_el = {"lang": "el", "round_label": f"{g['round']}η αγωνιστική", "ig": [
         {"type": "hook", "badges": [team], "kicker": "Επόμενος αγώνας",
-         "title": f"Ο επόμενος\nαγώνας του\n*{TEAMS[team]}*", "subtitle": f"{g['round']}η αγωνιστική EuroLeague"},
+         "title": f"Ο επόμενος\nαγώνας του\n*{TEAMS[team]}*", "subtitle": f"{g['round']}η αγωνιστική EuroLeague",
+         "reel_seconds": 1.5},  # a short opener in the Reel (the owner's decision, 2026-11-23)
         {"type": "hook", "badges": [opp], "kicker": "Αντίπαλος",
          "title": f"*{el(opp)}*", "subtitle": "Στο σπίτι μας" if at_home else "Εκτός έδρας"},
         {"type": "list", "kicker": "Πότε και πού", "items": [
