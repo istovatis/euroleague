@@ -1,0 +1,48 @@
+{
+  "arena": "COCA-COLA ARENA",
+  "euroleague": {
+    "capacity": 13221,
+    "address": "Al Wasl - سٹی واک - Dubai - United Arab Emirates",
+    "home_teams": {
+      "Dubai Basketball": 19
+    },
+    "upcoming_games": [
+      {
+        "round": 14,
+        "utc": "2026-11-25T16:00:00Z",
+        "home": "Dubai Basketball",
+        "away": "Partizan Mozzart Bet Belgrade"
+      },
+      {
+        "round": 16,
+        "utc": "2026-12-11T16:00:00Z",
+        "home": "Dubai Basketball",
+        "away": "Besiktas Fuzul Istanbul"
+      },
+      {
+        "round": 19,
+        "utc": "2026-12-23T16:00:00Z",
+        "home": "Dubai Basketball",
+        "away": "Panathinaikos AKTOR Athens"
+      }
+    ],
+    "source": "https://api-live.euroleague.net/v2/competitions/E/seasons/E2026/games"
+  },
+  "wikidata": {
+    "qid": "Q63859108",
+    "url": "https://www.wikidata.org/wiki/Q63859108",
+    "opened (P1619)": [],
+    "inception (P571)": [
+      "+2019-06-06T00:00:00Z"
+    ],
+    "capacity (P1083)": [
+      "+17000"
+    ],
+    "architect (P84, item ids)": []
+  },
+  "wikipedia": {
+    "title": "Coca-Cola Arena",
+    "url": "https://en.wikipedia.org/wiki/Coca-Cola_Arena",
+    "text": "Coca-Cola Arena is a multi-purpose arena located in the City Walk area in Dubai, United Arab Emirates. The venue was opened on June 6, 2019. It has a capacity of 17,000.\nOwned by Dubai Holdings Entertainment and managed by Legends Global, the arena hosts events that include concerts, sport, family entertainment and ceremonies.\n\n\n== Construction ==\nThe roof structure can support 190 metric tonnes. It includes 17 elevators, 26 escalators, four sports changing rooms, eight artist dressing rooms and 35 concession stands. The arena has 28 or more wheelchair accessible seats depending on the event.\n\n\n=== Façade lighting ===\nThe front of the Coca-Cola Arena has a façade lighting system made up of 4,600 LEDs.\n\n\n== Location ==\nCoca-Cola Arena is located in City Walk, an urban leisure destination in central Dubai. Close to Financial Centre Road and Sheikh Zayed Road.\n\n\n== Events hosted ==\n\nCoca-Cola Arena has been a stage for concerts by Simple Minds, Bastille, Demi Lovato, Hans Zimmer, Lewis Capaldi, Jason Derulo, 50 Cent, Martin Garrix, Maroon 5, Bini, Tiësto, Kygo, SB19 and many other singers.\nApart from that it hosted several comedy shows, featuring famous comedians such as Kevin Hart, Michael McIntyre and Trevor Noah.\nIn November 2022, the arena hosted the exhibition boxing match between Floyd Mayweather Jr. and Deji. Mayweather won via 6th round TKO.\nIn 2024, the arena hosted Euroleague Basketball Next Generation Tournament, which was won by the youth team of Ratiopharm Ulm. \nIn 2025, it hosted the final phase of the 2025 Basketball Champions League Asia. PFL Champions Series: Nurmagomedov vs. Hughes and PFL Champions Series: Nurmagomedov vs. Hughes 2 where held in 2025. The arena also hold the San Miguel vs. Barangay Ginebra basketball match as part of the celebrations for PBA's golden season, which was held on October 26, 2025.\nIn 2026, two mma events where held at the arena. PFL Dubai: Nurmagomedov vs. Davis  and PFL Dubai: Nemkov vs. Bilostenniy. In December 2026, Jake Paul vs Cedric Doumbe in a boxing match will be held at the arena.\n\n\n== References ==\n\n\n== External links ==\n\nOfficial website"
+  }
+}

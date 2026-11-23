@@ -1,0 +1,67 @@
+{
+  "lang": "en",
+  "round_label": "Dubai",
+  "ig": [
+    {
+      "type": "hook",
+      "kicker": "Arena of the week",
+      "title": "Built for\nthe stage.\n*Now it's a\nhome court.*",
+      "subtitle": "Coca-Cola Arena · Dubai",
+      "badges": [
+        "DUB"
+      ]
+    },
+    {
+      "type": "list",
+      "kicker": "Coca-Cola Arena",
+      "items": [
+        {
+          "tag": "Capacity",
+          "text": "13,221"
+        },
+        {
+          "tag": "Opened",
+          "text": "6 June 2019"
+        },
+        {
+          "tag": "Home of",
+          "text": "Dubai Basketball"
+        },
+        {
+          "tag": "This week",
+          "text": "Dubai vs Partizan · Wed 25 Nov"
+        }
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "Did you know",
+      "title": "A Philippine\nleague game,\n*in Dubai*.",
+      "subtitle": "San Miguel vs Barangay Ginebra · 26 Oct 2025 · the PBA's golden season"
+    }
+  ],
+  "x": [
+    {
+      "type": "list",
+      "kicker": "Arena of the week",
+      "items": [
+        {
+          "tag": "Capacity",
+          "text": "13,221"
+        },
+        {
+          "tag": "Opened",
+          "text": "6 June 2019"
+        },
+        {
+          "tag": "Home of",
+          "text": "Dubai Basketball"
+        },
+        {
+          "tag": "This week",
+          "text": "Dubai vs Partizan · Wed 25 Nov"
+        }
+      ]
+    }
+  ]
+}
