@@ -1,13 +1,16 @@
-name: Next round on the map
+name: Map Reels (next round; Olympiacos & Panathinaikos weekly)
 
 # Monday 06:30 Athens: if a round starts in the next 7 days, scripts/roundmap.py pick writes maps/<season>/round-NN/
 # (map.json, captions; one EuroLeague API call) and queues the Reel, approved, for Monday 09:00 Athens on both
 # Instagram accounts (grid too) and X, without approval (the owner's decision, 2026-11-23). The Reel is rendered at
 # publish time. Two runs, because GitHub sometimes skips scheduled runs; the second finds the folder there. Each run
 # then starts the publisher, which waits for the 09:00 slot.
+# Sunday 12:30 Athens: the Greek weekly (scripts/roundmap.py greek): Olympiacos' and Panathinaikos' games from Monday to
+# Sunday, queued approved for Sunday 15:00 on the Greek account only (the owner's decision, 2026-11-23).
 on:
   schedule:
     - cron: "30 4,5 * * 1"
+    - cron: "30 10,11 * * 0"
   workflow_dispatch:
 
 permissions:
@@ -33,10 +36,10 @@ jobs:
         run: |
           git config user.name "parquet-hoops-bot"
           git config user.email "parquet-hoops-bot@users.noreply.github.com"
-          python3 scripts/roundmap.py pick
+          if [ "$(TZ=Europe/Athens date +%u)" = 7 ]; then python3 scripts/roundmap.py greek; else python3 scripts/roundmap.py pick; fi
           git add maps publish/queue.json 2>/dev/null || true
           if ! git diff --cached --quiet; then
-            git commit -q -m "Next round on the map queued"
+            git commit -q -m "Map Reel queued"
             git pull -q --rebase origin main
             git push -q origin main
           fi

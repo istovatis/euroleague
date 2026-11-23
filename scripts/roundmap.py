@@ -3,12 +3,15 @@
 2026-11-23), on both Instagram accounts (grid too) and X. Every game of the round in tip-off order: a flight arc from
 the away team's city to the venue, the home crest and city lighting up there, a fixture card (day and time in Athens,
 both crests, arena and city); when the next flight takes off, the venue keeps both clubs' crests side by side. Then
-"From <westernmost city> to <easternmost city>." and the brand outro. With our own synthesized sound (sfx.py). All of
+"From <westernmost city> to <easternmost city>." and the brand outro. The Greek weekly (the owner's decision, 2026-11-23): Sunday 15:00
+Athens, without approval, on the Greek account only, the same map with just Olympiacos' and Panathinaikos' games from
+Monday to Sunday (both rounds of a double week), "Οι «αιώνιοι» στον χάρτη". With our own synthesized sound (sfx.py). All of
 it is data: .github/workflows/roundmap.yml runs `pick`, which writes map.json, the captions and the queue entry; the
 Reel is rendered at publish time (render_reel.py).
 
   python3 scripts/roundmap.py pick [--season E2026]                       # Monday (roundmap.yml): the round starting this week
   python3 scripts/roundmap.py get <folder> [--round N] [--season E2026]   # any round, into any folder (a preview)
+  python3 scripts/roundmap.py greek [--season E2026]                      # Sunday (roundmap.yml): the Greek weekly
   python3 scripts/render_reel.py <folder> <lang>                          # cards/<lang>/reel.mp4
 """
 import argparse
@@ -28,7 +31,11 @@ from render_cards import BRAND, CLUBS, FONTS, ROOT
 from round_digest import get
 
 ATHENS = zoneinfo.ZoneInfo("Europe/Athens")
+GREEK = ("OLY", "PAN")
+WEEK_KICKER = "Η εβδομάδα τους"
+WEEK_HEAD = "Οι «αιώνιοι»\nστον χάρτη"
 POST_AT = "09:00"                       # Athens, Monday
+WEEK_AT = "15:00"                       # Athens, Sunday: the Greek weekly
 KICKER = {"en": "Next round", "el": "Επόμενη αγωνιστική"}
 HEAD = {"en": "Round {n}\non the map", "el": "Η {n}η αγωνιστική\nστον χάρτη"}
 DAYS = {"en": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], "el": ["Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή"]}
@@ -106,31 +113,50 @@ def arena_name(v):
     return " ".join(ACRONYMS.get(w, w) for w in v.title().split())
 
 
-def get_round(folder, season, rnd=None, games=None):
-    """The round's games in tip-off order (each with where the away team flies from: its usual home venue) and the
-    end line per language; writes map.json and returns it."""
-    games = games or get(f"/v2/competitions/E/seasons/{season}/games")["data"]
-    if rnd is None:
-        rnd = min(g["round"] for g in games if not g["played"])
+def build(folder, season, chosen, games, **extra):
+    """`chosen` games in tip-off order (each with where the away team flies from: its usual home venue) and the end
+    line per language; writes map.json (plus `extra`, e.g. round, or the Greek weekly's kicker and head) and returns it."""
     homes = collections.defaultdict(collections.Counter)  # each club's usual venue: where its flights start
     for g in games:
         homes[g["local"]["club"]["code"]][g["venue"]["name"]] += 1
     out = []
-    for g in sorted((g for g in games if g["round"] == rnd), key=lambda g: g["utcDate"]):
+    for g in sorted(chosen, key=lambda g: g["utcDate"]):
         h, a = g["local"]["club"]["code"], g["road"]["club"]["code"]
-        out.append({"game": g["gameCode"], "utc": g["utcDate"], "home": h, "away": a, "venue": g["venue"]["name"],
-                    "from": homes[a].most_common(1)[0][0]})
+        out.append({"game": g["gameCode"], "round": g["round"], "utc": g["utcDate"], "home": h, "away": a,
+                    "venue": g["venue"]["name"], "from": homes[a].most_common(1)[0][0]})
     missing = sorted({v for x in out for v in (x["venue"], x["from"]) if v not in VENUES})
     if missing:
         raise SystemExit(f"Add these venues to VENUES in roundmap.py: {', '.join(missing)}")
-    cities = sorted({VENUES[x["venue"]] for x in out}, key=lambda v: v[3])  # west to east
-    west, east = cities[0], cities[-1]
-    d = {"season": season, "round": rnd, "games": out,
-         "en": {"title": f"From {west[0]}\n*to {east[0]}.*"},
-         "el": {"title": f"Από {CITY_EL_ACC[west[0]]}\n*ως {CITY_EL_ACC[east[0]]}.*"}}
+    cities = sorted({VENUES[x["venue"]][:1] + VENUES[x["venue"]][3:] for x in out}, key=lambda v: v[1])  # west to east
+    west, east = cities[0][0], cities[-1][0]
+    if west == east:  # every game in one city
+        at = {"τη": "στη", "την": "στην", "το": "στο", "τον": "στον"}
+        art, _, name = CITY_EL_ACC[west].partition(" ")
+        title = {"en": f"All of it\n*in {west}.*", "el": f"Όλα κρίνονται\n*{at[art]} {name}.*"}
+    else:
+        title = {"en": f"From {west}\n*to {east}.*", "el": f"Από {CITY_EL_ACC[west]}\n*ως {CITY_EL_ACC[east]}.*"}
+    d = {"season": season, **extra, "games": out, "en": {"title": title["en"]}, "el": {"title": title["el"]}}
     folder.mkdir(parents=True, exist_ok=True)
     (folder / "map.json").write_text(json.dumps(d, indent=1, ensure_ascii=False) + "\n")
     return d
+
+
+def get_round(folder, season, rnd=None, games=None):
+    """Every game of a round (the next one by default)."""
+    games = games or get(f"/v2/competitions/E/seasons/{season}/games")["data"]
+    if rnd is None:
+        rnd = min(g["round"] for g in games if not g["played"])
+    return build(folder, season, [g for g in games if g["round"] == rnd], games, round=rnd)
+
+
+def get_week(folder, season, start, games=None, teams=GREEK):
+    """The Greek weekly: every game of Olympiacos and Panathinaikos in the 7 days from `start` (an Athens date), both
+    rounds of a double week included."""
+    games = games or get(f"/v2/competitions/E/seasons/{season}/games")["data"]
+    lo = dt.datetime.combine(start, dt.time(), ATHENS)
+    chosen = [g for g in games if lo <= dt.datetime.fromisoformat(g["utcDate"].replace("Z", "+00:00")) < lo + dt.timedelta(days=7)
+              and {g["local"]["club"]["code"], g["road"]["club"]["code"]} & set(teams)]
+    return build(folder, season, chosen, games, kicker={"el": WEEK_KICKER}, head={"el": WEEK_HEAD})
 
 
 def tip(x):
@@ -287,14 +313,15 @@ svg.map {{ position:absolute; left:0; top:0; width:1080px; height:1920px; }}
 .line {{ left:72px; right:72px; top:1330px; font-weight:900; font-size:92px; line-height:1; text-transform:uppercase; }}
 .line .ln {{ display:block; }}
 """
-    head = "".join(f'<span class="ln">{html.escape(l)}</span>' for l in HEAD[lang].format(n=d["round"]).split("\n"))
+    head = d.get("head", {}).get(lang) or HEAD[lang].format(n=d["round"])
+    head = "".join(f'<span class="ln">{html.escape(l)}</span>' for l in head.split("\n"))
     title = loc.get("title", "")
     lines = "".join(f'<span class="ln">{l}</span>' for l in rich(title).split("<br>")) if title else ""
     body = f"""<div class="stage abs" style="inset:0">{parquet(1080, 1920)}<div class="shade"></div>
 <svg class="map"><g class="lands"></g><g class="arcs"></g><g class="dots"></g></svg>
 {''.join(pins)}
 <div class="top abs"><span class="brand">{centre_disc(C['accent'])}<b>{html.escape(BRAND['name'][lang])}</b></span></div>
-<div class="kicker abs"><span>{html.escape(KICKER[lang])}</span></div>
+<div class="kicker abs"><span>{html.escape(d.get("kicker", {}).get(lang) or KICKER[lang])}</span></div>
 <div class="head abs">{head}</div>
 {''.join(cards)}<div class="line abs">{lines}</div></div>"""
     script = """
@@ -308,8 +335,11 @@ const NS = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag);
   for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
 const world = %(world)s;
-const pts = {type: 'MultiPoint', coordinates: G.flatMap(g => [g.to, g.from])};
-const proj = d3.geoMercator().fitExtent([[70, 500], [1010, 1220]], pts);
+// A few games close together (the Greek weekly) would zoom in too far: keep at least ~16 x 10 degrees in view.
+const lons = G.flatMap(g => [g.to[0], g.from[0]]), lats = G.flatMap(g => [g.to[1], g.from[1]]);
+const cx0 = (Math.min(...lons) + Math.max(...lons)) / 2, cy0 = (Math.min(...lats) + Math.max(...lats)) / 2;
+const pts = {type: 'MultiPoint', coordinates: G.flatMap(g => [g.to, g.from]).concat([[cx0 - 8, cy0 - 5], [cx0 + 8, cy0 + 5]])};
+const proj = d3.geoMercator().fitExtent([[150, 540], [930, 1200]], pts);
 const path = d3.geoPath(proj);
 let arcs = [];
 function setup() {
@@ -407,15 +437,57 @@ def soundtrack(folder, lang, total, out):
     return m.write(out)
 
 
+def pick_week(season):
+    """Sunday: Olympiacos' and Panathinaikos' games from tomorrow (Monday) to next Sunday -> maps/<season>/greek-<monday>/,
+    with the Greek caption, queued (approved) for today at WEEK_AT as a Reel on the Greek account only (grid too)."""
+    import subprocess
+    import sys
+    now = dt.datetime.now(dt.timezone.utc)
+    start = now.astimezone(ATHENS).date() + dt.timedelta(days=1)
+    folder = ROOT / "maps" / season / f"greek-{start}"
+    if (folder / "map.json").exists():
+        print(f"Already picked: {folder.relative_to(ROOT)}")
+    else:
+        games = get(f"/v2/competitions/E/seasons/{season}/games")["data"]
+        lo = dt.datetime.combine(start, dt.time(), ATHENS)
+        if not any(lo <= dt.datetime.fromisoformat(g["utcDate"].replace("Z", "+00:00")) < lo + dt.timedelta(days=7)
+                   and {g["local"]["club"]["code"], g["road"]["club"]["code"]} & set(GREEK) for g in games):
+            print("Olympiacos and Panathinaikos don't play next week")
+            return
+        d = get_week(folder, season, start, games)
+        lines = "\n".join(f"{when(x['utc'], 'el')} · {CLUBS[x['home']]['el']} - {CLUBS[x['away']]['el']}" for x in d["games"])
+        (folder / "post.el.md").write_text(f"""# Οι «αιώνιοι» στον χάρτη: η εβδομάδα από {start.day}/{start.month}
+
+## Instagram caption
+Η εβδομάδα του Ολυμπιακού και του Παναθηναϊκού. 🗺️
+
+{lines}
+
+{d['el']['title'].replace('*', '').replace(chr(10), ' ')}
+
+Ποιο ματς περιμένεις περισσότερο; 👇
+
+#EuroLeague #Ολυμπιακός #Παναθηναϊκός #Olympiacos #Panathinaikos #μπάσκετ #basketball #ParquetHoops
+""")
+        print(folder.relative_to(ROOT))
+    queue = [sys.executable, str(ROOT / "scripts" / "publish_queue.py")]
+    if folder.relative_to(ROOT).as_posix() not in subprocess.run(queue + ["list"], capture_output=True, text=True).stdout:
+        today = now.astimezone(ATHENS).strftime("%Y-%m-%d")
+        subprocess.run(queue + ["add", str(folder.relative_to(ROOT)), f"{today} {WEEK_AT}", "--langs", "reel-el"], check=True)
+
+
 def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("pick"); p.add_argument("--season", default="E2026")
+    w = sub.add_parser("greek"); w.add_argument("--season", default="E2026")
     g = sub.add_parser("get"); g.add_argument("folder", type=pathlib.Path); g.add_argument("--round", type=int)
     g.add_argument("--season", default="E2026")
     a = ap.parse_args()
     if a.cmd == "pick":
         pick(a.season)
+    elif a.cmd == "greek":
+        pick_week(a.season)
     else:
         posts(a.folder, get_round(a.folder, a.season, a.round))
         print(a.folder / "map.json")
