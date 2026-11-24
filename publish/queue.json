@@ -884,7 +884,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-14/day-1/02-fenerbahce",
@@ -896,7 +897,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-14/day-1/03-milan",
@@ -908,6 +910,7 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   }
 ]
