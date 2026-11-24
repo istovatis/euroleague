@@ -1,0 +1,90 @@
+{
+  "lang": "en",
+  "round_label": "Round 14",
+  "ig": [
+    {
+      "type": "hook",
+      "game": [
+        "PAM",
+        83,
+        "PAN",
+        86
+      ],
+      "kicker": "Road win at the top",
+      "title": "Panathinaikos walked into the leaders' house\n*and took it.*",
+      "subtitle": "Panathinaikos · level with Valencia"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "PAM",
+        "PAN"
+      ],
+      "kicker": "Final · Roig Arena, Valencia",
+      "sides": [
+        {
+          "team": "Valencia",
+          "score": 83,
+          "won": false
+        },
+        {
+          "team": "Panathinaikos",
+          "score": 86,
+          "won": true
+        }
+      ],
+      "note": "Panathinaikos led 64-59 after three. Valencia won the 4th 24-22, three points short.",
+      "lines": [
+        [
+          "Grant",
+          "14 pts · 6/7 FT"
+        ],
+        [
+          "Rogkavopoulos",
+          "10 pts · 2/3 3PT · 15 PIR"
+        ],
+        [
+          "Shorts (VAL)",
+          "15 pts · 7 ast"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The fourth quarter",
+      "title": "Valencia came at them all quarter.\n*Panathinaikos never let go.*",
+      "subtitle": "Panathinaikos 10-4 · Valencia 10-4"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": [
+      "PAM",
+      "PAN"
+    ],
+    "kicker": "Road win at the leaders",
+    "sides": [
+      {
+        "team": "Valencia",
+        "score": 83,
+        "won": false
+      },
+      {
+        "team": "Panathinaikos",
+        "score": 86,
+        "won": true
+      }
+    ],
+    "note": "Panathinaikos led 64-59 after three. Both now 10-4.",
+    "lines": [
+      [
+        "Grant",
+        "14 pts · 6/7 FT"
+      ],
+      [
+        "Nunn",
+        "13 pts"
+      ]
+    ]
+  }
+}

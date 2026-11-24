@@ -873,5 +873,41 @@
       "reel-el"
     ],
     "approved": true
+  },
+  {
+    "story": "rounds/E2026/round-14/day-1/01-panathinaikos",
+    "when": "2026-11-25T00:29:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-14/day-1/02-fenerbahce",
+    "when": "2026-11-25T00:30:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-14/day-1/03-milan",
+    "when": "2026-11-25T00:31:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]
