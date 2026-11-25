@@ -923,7 +923,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-14/day-2/02-partizan",
@@ -935,7 +936,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-14/day-2/03-baskonia",
@@ -947,7 +949,8 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": true,
+    "notified": "auto-approved"
   },
   {
     "story": "rounds/E2026/round-14/highlight",
@@ -959,6 +962,7 @@
       "reel-en",
       "reel-el"
     ],
-    "approved": false
+    "approved": false,
+    "notified": "https://github.com/istovatis/euroleague/issues/50"
   }
 ]
