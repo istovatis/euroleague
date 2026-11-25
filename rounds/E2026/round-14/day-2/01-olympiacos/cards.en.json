@@ -1,0 +1,90 @@
+{
+  "lang": "en",
+  "round_label": "Round 14",
+  "ig": [
+    {
+      "type": "hook",
+      "game": [
+        "OLY",
+        104,
+        "HTA",
+        79
+      ],
+      "kicker": "Alone at the top",
+      "title": "Cory Joseph caught fire.\n*Olympiacos took first place alone.*",
+      "subtitle": "Cory Joseph · Olympiacos"
+    },
+    {
+      "type": "score",
+      "badges": [
+        "OLY",
+        "HTA"
+      ],
+      "kicker": "Final · Sunel Arena, Athens",
+      "sides": [
+        {
+          "team": "Olympiacos",
+          "score": 104,
+          "won": true
+        },
+        {
+          "team": "Hapoel",
+          "score": 79,
+          "won": false
+        }
+      ],
+      "note": "Olympiacos led 72-66 after three. Then won the 4th 32-13.",
+      "lines": [
+        [
+          "Joseph",
+          "27 pts · 5/6 3PT · 31 PIR"
+        ],
+        [
+          "Fournier",
+          "23 pts · 11 ast"
+        ],
+        [
+          "Vezenkov",
+          "21 pts · 6/7 2PT"
+        ]
+      ]
+    },
+    {
+      "type": "hook",
+      "kicker": "The fourth quarter",
+      "title": "Hapoel hung around for three quarters.\n*Then Olympiacos ran them off the floor.*",
+      "subtitle": "Olympiacos 11-3 · first, on their own"
+    }
+  ],
+  "x": {
+    "type": "score",
+    "badges": [
+      "OLY",
+      "HTA"
+    ],
+    "kicker": "Alone at the top",
+    "sides": [
+      {
+        "team": "Olympiacos",
+        "score": 104,
+        "won": true
+      },
+      {
+        "team": "Hapoel",
+        "score": 79,
+        "won": false
+      }
+    ],
+    "note": "72-66 after three. 32-13 in the 4th. Olympiacos 11-3, first alone.",
+    "lines": [
+      [
+        "Joseph",
+        "27 pts · 5/6 3PT · 31 PIR"
+      ],
+      [
+        "Fournier",
+        "23 pts · 11 ast"
+      ]
+    ]
+  }
+}

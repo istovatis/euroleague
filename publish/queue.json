@@ -912,5 +912,53 @@
     ],
     "approved": true,
     "notified": "auto-approved"
+  },
+  {
+    "story": "rounds/E2026/round-14/day-2/01-olympiacos",
+    "when": "2026-11-26T00:09:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-14/day-2/02-partizan",
+    "when": "2026-11-26T00:10:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-14/day-2/03-baskonia",
+    "when": "2026-11-26T00:11:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
+  },
+  {
+    "story": "rounds/E2026/round-14/highlight",
+    "when": "2026-11-26T12:00:00+02:00",
+    "langs": [
+      "en",
+      "el",
+      "x",
+      "reel-en",
+      "reel-el"
+    ],
+    "approved": false
   }
 ]
