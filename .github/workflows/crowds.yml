@@ -2,7 +2,7 @@ name: Biggest crowds
 
 # Saturday 15:30 Athens: the latest fully played round's crowds (scripts/crowds.py pick: one EuroLeague API call), once
 # every crowd is confirmed -> crowds/<season>/round-NN/ with captions, queued approved for Saturday 17:00 Athens as Reels
-# on both Instagram accounts, without approval (the owner's decision, 2026-11-27). The Reel is rendered at publish
+# on both Instagram accounts and the English video on X, without approval (the owner's decision, 2026-11-27). The Reel is rendered at publish
 # time. Two runs, because GitHub sometimes skips scheduled runs; the second finds the folder there (or retries if a
 # crowd wasn't confirmed yet). Each run then starts the publisher, which waits for the 17:00 slot.
 on:

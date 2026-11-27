@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Biggest crowds of the round, a Reel on both Instagram accounts (grid too) every Saturday at 17:00 Athens after a
+"""Biggest crowds of the round, a Reel on both Instagram accounts (grid too) and X every Saturday at 17:00 Athens after a
 finished round, without approval (the owner's decision, 2026-11-27): every game's crowd, and its share of the arena's capacity, both from the
 EuroLeague API's games list (one call). The Reel ranks the round's games by crowd (the owner's choice, 2026-11-27),
 revealed from the smallest up to the biggest: each row's bar fills in the home club's colours to its crowd's share of
@@ -75,6 +75,13 @@ def posts(folder, d):
                                  f"{a['crowd']:,}".replace(",", sep) + f" ({round(a['crowd'] / a['capacity'] * 100)}%)")
     n = d["round"]
     (folder / "post.en.md").write_text(f"""# Round {n}: biggest crowds
+
+## X
+Round {n}'s biggest crowds 🏟️
+
+{chr(10).join(f"{k}. {line(a, 'en', ',')}" for k, a in enumerate(top, 1))}
+
+#EuroLeague {club_tag(top[0]['home'])}
 
 ## Instagram caption
 Round {n}'s biggest crowds. 🏟️
@@ -245,7 +252,7 @@ def soundtrack(folder, lang, total, out):
 
 def pick(season):
     """Saturday: the latest fully played round, once every game's crowd is confirmed -> crowds/<season>/round-NN/ with
-    captions, queued (approved) for today at POST_AT on both Instagram accounts as Reels."""
+    captions, queued (approved) for today at POST_AT on both Instagram accounts as Reels, and the English video on X."""
     import collections
     import datetime as dt
     import subprocess
@@ -273,7 +280,7 @@ def pick(season):
     queue = [sys.executable, str(ROOT / "scripts" / "publish_queue.py")]
     if folder.relative_to(ROOT).as_posix() not in subprocess.run(queue + ["list"], capture_output=True, text=True).stdout:
         today = dt.datetime.now(zoneinfo.ZoneInfo("Europe/Athens")).strftime("%Y-%m-%d")
-        subprocess.run(queue + ["add", str(folder.relative_to(ROOT)), f"{today} {POST_AT}", "--langs", "reel-en,reel-el"],
+        subprocess.run(queue + ["add", str(folder.relative_to(ROOT)), f"{today} {POST_AT}", "--langs", "reel-en,reel-el,x"],
                        check=True)
 
 
