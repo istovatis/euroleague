@@ -31,6 +31,7 @@ rounds/E2026/round-07/
 3. Otherwise, for each pending day, do steps 3–4 of the per-day run, and for each pending highlight, step 5. Then do steps 6–8. A suggested time already in the past is fine: the owner sets a new time when approving.
 
 ## Arena of the week run (Mondays, named in the prompt)
+**First, the specialists' Greek names (a few minutes; their first Reel goes out at 10:00).** `.github/workflows/specialists.yml` built `specialists/E2026/round-NN/{three,two,ft,all}/specialists.json` at 06:00. **Never run `specialists.py pick` or `get` here.** In the newest `round-*` folder, for each of the four that has no `"el"` yet: add `"el": {"names": {"<player code>": "<Greek surname>"}}` (as in the Greek posts: Βεζένκοφ, Μαλεντόν), run `python3 scripts/specialists.py captions specialists/E2026/round-NN/<kind>`, then commit `specialists/` with the message `The specialists: Greek names, round N` and push. If the folder is missing, skip this. Then the arena:
 1. `python3 scripts/arena_facts.py --next`. If it prints "All arenas covered", stop: no changes.
 2. `python3 scripts/arena_facts.py --get "<ARENA>"` (add `--wiki "<title>"` if it found the wrong Wikipedia page). Read `facts.json` in full. Wikimedia sites rate-limit the cloud (HTTP 429); the scripts wait and retry on their own, so run them in the foreground and let them finish. Never move work into background tasks and end your turn: the run stops when you do.
 3. Find and download the exterior and interior photos (see "Arena of the week" in `CLAUDE.md`).

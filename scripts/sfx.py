@@ -1,4 +1,4 @@
-"""Our own sound effects for the Reels that have sound (mvp.py, shotchart.py, race.py, roundmap.py, crowds.py): everything is synthesized here, so no
+"""Our own sound effects for the Reels that have sound (mvp.py, shotchart.py, race.py, roundmap.py, crowds.py, specialists.py): everything is synthesized here, so no
 music or clips from elsewhere. Mix(total) is a mono track; put() places a sound at a time in seconds; write() limits,
 normalizes and saves it as a WAV for render_reel.record()."""
 import wave

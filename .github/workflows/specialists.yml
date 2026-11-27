@@ -1,0 +1,47 @@
+name: The specialists
+
+# Monday 06:00 Athens: caches the shots of every newly played game (shots/<season>/<game>.json, ~10 EuroLeague live-API
+# calls a round, a second apart), then picks the season's four specialists (scripts/specialists.py pick: the sniper,
+# the paint, the line, the all-rounder; anyone featured in the last 4 weeks left out) into
+# specialists/<season>/round-NN/<kind>/, and queues four Reels, approved, for Monday 10:00, 12:00, 14:00 and 16:00
+# Athens on both Instagram accounts, without approval (the owner's decision, 2026-11-27). The Monday routine adds the
+# Greek surnames before 10:00 when it can (ROUTINE.md); without them the Greek Reel shows the Latin ones. Two runs,
+# because GitHub sometimes skips scheduled runs; the second finds the folders there.
+on:
+  schedule:
+    - cron: "0 4,5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: specialists
+  cancel-in-progress: false
+
+jobs:
+  specialists:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Cache shots, pick and queue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          python3 scripts/specialists.py pick
+          git add shots specialists publish/queue.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -q -m "The specialists queued"
+            git pull -q --rebase origin main
+            git push -q origin main
+          fi
+          if python3 scripts/publish_queue.py list | grep "specialists/" | grep -q pending; then
+            gh workflow run publish.yml -f dry_run=false
+          fi

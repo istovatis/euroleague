@@ -185,10 +185,10 @@ def render(story, lang):
     if (folder / "lineup.json").exists():  # Lineup of the week: its own scene (lineup.py), players arriving PG to C
         import lineup
         doc, total = lineup.reel_document(folder, lang)
-    elif any((folder / f).exists() for f in ("mvp.json", "shots.json", "race.json", "map.json", "crowds.json")):
+    elif any((folder / f).exists() for f in ("mvp.json", "shots.json", "race.json", "map.json", "crowds.json", "specialists.json")):
         # Scenes with their own sound: the MVP of the round (mvp.py, spotlights find the player), the shot chart
         # (shotchart.py, every shot of his night), the season leaders race (race.py) and the next round on the map
-        # (roundmap.py) and the round's biggest crowds (crowds.py)
+        # (roundmap.py), the round's biggest crowds (crowds.py) and the season's specialists (specialists.py)
         if (folder / "mvp.json").exists():
             import mvp as scene
         elif (folder / "shots.json").exists():
@@ -197,6 +197,8 @@ def render(story, lang):
             import race as scene
         elif (folder / "crowds.json").exists():
             import crowds as scene
+        elif (folder / "specialists.json").exists():
+            import specialists as scene
         else:
             import roundmap as scene
         doc, total = scene.reel_document(folder, lang)
