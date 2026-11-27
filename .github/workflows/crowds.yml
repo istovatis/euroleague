@@ -1,0 +1,45 @@
+name: Biggest crowds
+
+# Saturday 15:30 Athens: the latest fully played round's crowds (scripts/crowds.py pick: one EuroLeague API call), once
+# every crowd is confirmed -> crowds/<season>/round-NN/ with captions, queued approved for Saturday 17:00 Athens as Reels
+# on both Instagram accounts, without approval (the owner's decision, 2026-11-27). The Reel is rendered at publish
+# time. Two runs, because GitHub sometimes skips scheduled runs; the second finds the folder there (or retries if a
+# crowd wasn't confirmed yet). Each run then starts the publisher, which waits for the 17:00 slot.
+on:
+  schedule:
+    - cron: "30 13,14 * * 6"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: crowds
+  cancel-in-progress: false
+
+jobs:
+  crowds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build and queue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          python3 scripts/crowds.py pick
+          git add crowds publish/queue.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Biggest crowds queued"
+            git pull -q --rebase origin main
+            git push -q origin main
+          fi
+          if python3 scripts/publish_queue.py list | grep "crowds/" | grep -q pending; then
+            gh workflow run publish.yml -f dry_run=false
+          fi
