@@ -38,6 +38,8 @@ POST_AT = "10:00"                       # Athens, Saturday
 WEEK_AT = "13:00"                       # Athens, Sunday: the Greek weekly
 KICKER = {"en": "Next round", "el": "Επόμενη αγωνιστική"}
 HEAD = {"en": "Round {n}\non the map", "el": "Η {n}η αγωνιστική\nστον χάρτη"}
+GAMES = {"en": "games", "el": "αγώνες"}
+FRAME = [[-10, 24], [58, 58]]  # lon/lat corners the round map always shows: Spain to Dubai, Kaunas to the Gulf
 DAYS = {"en": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], "el": ["Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή"]}
 MONTHS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 INTRO, STEP, HOLD = 1.6, 1.5, 2.8      # seconds: before the first flight; per game; the end held
@@ -164,12 +166,18 @@ def tip(x):
 
 
 def days(d, lang):
-    """The round's game days: "Tue 24 & Wed 25 Nov" / "Τρίτη 24/11 και Τετάρτη 25/11"."""
+    """The game days: "Tue 24 & Wed 25 Nov" / "Τρίτη 24/11 και Τετάρτη 25/11"; three or more as a range
+    ("Tue 15 – Fri 18 Dec" / "Τρίτη 15/12 – Παρασκευή 18/12") so it stays on one line."""
     ds = sorted({tip(x).date() for x in d["games"]})
+    if len(ds) > 2:
+        ds = [ds[0], ds[-1]]
+        join = {"en": " – ", "el": " – "}
+    else:
+        join = {"en": " & ", "el": " και "}
     if lang == "el":
-        return " και ".join(f"{DAYS['el'][t.weekday()]} {t.day}/{t.month}" for t in ds)
-    parts = [f"{DAYS['en'][t.weekday()]} {t.day}" for t in ds]
-    return " & ".join(parts) + f" {MONTHS_EN[ds[-1].month - 1]}"
+        return join["el"].join(f"{DAYS['el'][t.weekday()]} {t.day}/{t.month}" for t in ds)
+    parts = [f"{DAYS['en'][t.weekday()]} {t.day}" + (f" {MONTHS_EN[t.month - 1]}" if t.month != ds[-1].month else "") for t in ds]
+    return join["en"].join(parts) + f" {MONTHS_EN[ds[-1].month - 1]}"
 
 
 def posts(folder, d):
@@ -291,6 +299,9 @@ em {{ font-style:normal; color:{C['accent']}; }}
   letter-spacing:.06em; text-transform:uppercase; padding:4px 16px; }}
 .head {{ left:72px; top:240px; font-weight:900; font-size:104px; line-height:.95; text-transform:uppercase; }}
 .head .ln {{ display:block; }}
+.sum {{ left:72px; top:452px; font-weight:700; font-size:40px; color:{C['muted']}; text-transform:uppercase; letter-spacing:.03em; }}
+.sum b {{ color:{C['accent']}; font-weight:900; }}
+.wait {{ fill:{C['accent']}; }}
 svg.map {{ position:absolute; left:0; top:0; width:1080px; height:1920px; }}
 .land {{ fill:#26303c; stroke:#3a4757; stroke-width:1.2; }}
 .arc {{ fill:none; stroke-width:5; stroke-linecap:round; }}
@@ -318,11 +329,16 @@ svg.map {{ position:absolute; left:0; top:0; width:1080px; height:1920px; }}
     title = loc.get("title", "")
     lines = "".join(f'<span class="ln">{l}</span>' for l in rich(title).split("<br>")) if title else ""
     body = f"""<div class="stage abs" style="inset:0">{parquet(1080, 1920)}<div class="shade"></div>
-<svg class="map"><g class="lands"></g><g class="arcs"></g><g class="dots"></g></svg>
+<svg class="map"><defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".29" stop-color="#fff" stop-opacity="0"/>
+<stop offset=".33" stop-color="#fff"/><stop offset=".655" stop-color="#fff"/>
+<stop offset=".69" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<mask id="band"><rect width="1080" height="1920" fill="url(#fade)"/></mask></defs><g class="lands" mask="url(#band)"></g><g class="arcs"></g><g class="dots"></g></svg>
 {''.join(pins)}
 <div class="top abs"><span class="brand">{centre_disc(C['accent'])}<b>{html.escape(BRAND['name'][lang])}</b></span></div>
 <div class="kicker abs"><span>{html.escape(d.get("kicker", {}).get(lang) or KICKER[lang])}</span></div>
 <div class="head abs">{head}</div>
+<div class="sum abs"><b>{len(d["games"])}</b> {GAMES[lang]} · {html.escape(days(d, lang))}</div>
 {''.join(cards)}<div class="line abs">{lines}</div></div>"""
     script = """
 const G = %(games)s, INTRO = %(intro)d, STEP = %(step)d, FLY = %(fly)d, END = %(end)d;
@@ -335,11 +351,14 @@ const NS = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag);
   for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
 const world = %(world)s;
-// A few games close together (the Greek weekly) would zoom in too far: keep at least ~16 x 10 degrees in view.
+// The round map always frames Europe to Dubai (the same view every week, no Africa); the Greek weekly frames its own
+// games, but a few close together would zoom in too far: keep at least ~16 x 10 degrees in view.
+const FIXED = %(fixed)s;
 const lons = G.flatMap(g => [g.to[0], g.from[0]]), lats = G.flatMap(g => [g.to[1], g.from[1]]);
 const cx0 = (Math.min(...lons) + Math.max(...lons)) / 2, cy0 = (Math.min(...lats) + Math.max(...lats)) / 2;
 const pts = {type: 'MultiPoint', coordinates: G.flatMap(g => [g.to, g.from]).concat([[cx0 - 8, cy0 - 5], [cx0 + 8, cy0 + 5]])};
-const proj = d3.geoMercator().fitExtent([[150, 540], [930, 1200]], pts);
+const proj = FIXED ? d3.geoMercator().fitExtent([[40, 560], [1040, 1230]], {type: 'MultiPoint', coordinates: FIXED})
+                   : d3.geoMercator().fitExtent([[150, 560], [930, 1200]], pts);
 const path = d3.geoPath(proj);
 let arcs = [];
 function setup() {
@@ -356,6 +375,9 @@ function setup() {
     const plane = svg('circle', {class: 'plane', r: 9}, $('.arcs'));
     const ring = svg('circle', {class: 'ring', cx: x2, cy: y2, r: 12}, $('.dots'));
     const dot = svg('circle', {class: 'dot', cx: x2, cy: y2, r: 11}, $('.dots'));
+    // From the first frame, every venue of the round waits as a dim dot; it lights up when its flight lands.
+    const wait = svg('circle', {class: 'wait', cx: x2, cy: y2, r: 9, opacity: .5}, $('.dots'));
+    anim(wait, [{opacity: .5}, {opacity: 0}], INTRO + k * STEP + FLY, 150, 'linear', 'forwards');
     arcs.push({p, L, plane, start: INTRO + k * STEP});
     const t0 = INTRO + k * STEP, land = t0 + FLY;
     anim(dot, [{opacity: 0}, {opacity: 1}], land, 120);
@@ -381,8 +403,7 @@ function setup() {
     if (ox > 0 && oy > 0) { const s = (p.y < q.y || p.y === q.y && p.x < q.x) ? -1 : 1; p.y += s * oy / 2; }
   }
   spots.forEach((p, k) => { p.x = Math.max(24, Math.min(1080 - 24 - PW, p.x)); pairs[k].style.left = p.x + 'px'; pairs[k].style.top = p.y + 'px'; });
-  $$('.head .ln').forEach((el, i) => anim(el, [{opacity: 0, transform: 'translateY(50px)'}, {opacity: 1, transform: 'none'}], 150 + i * 200, 420));
-  anim($('.kicker'), [{opacity: 0}, {opacity: 1}], 0, 300);
+  // The first frame is complete (title, summary, every venue waiting): most viewers decide within a second.
   $$('.line .ln').forEach((el, i) => anim(el, [{opacity: 0, transform: 'translateY(50px)'}, {opacity: 1, transform: 'none'}], END + 600 + i * 220, 420));
   const end = %(outro_at)d, outro = $('.outro');
   anim($('.stage'), [{opacity: 1}, {opacity: 0}], end - 180, 180, 'linear', 'forwards');
@@ -408,7 +429,7 @@ function seek(ms) {
   });
 }
 """ % dict(games=json.dumps(games), intro=INTRO * 1000, step=STEP * 1000, fly=FLY * 1000, end=end * 1000,
-           world=lib("countries-50m.json"), pair=PAIR, accent=C["accent"], outro_at=(total - render_reel.OUTRO) * 1000)
+           world=lib("countries-50m.json"), pair=PAIR, fixed=json.dumps(None if "head" in d else FRAME), accent=C["accent"], outro_at=(total - render_reel.OUTRO) * 1000)
     doc = (f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><style>{css}{render_reel.outro_css()}</style>'
            f'<script>{lib("d3.js")}</script><script>{lib("topojson.js")}</script></head>'
            f'<body>{body}{render_reel.outro_html(lang)}<script>{script}</script></body></html>')
