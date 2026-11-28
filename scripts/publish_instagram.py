@@ -103,10 +103,22 @@ def jpegs_for(story, lang):
     return out
 
 
+PUSH_RETRIES, PUSH_WAIT = 5, 30  # a failed pull/push is retried 5 times, 30 s apart (the owner's decision, 2026-11-28)
+
+
 def push():
-    """Push main, rebasing first: drafting routines may have pushed in the meantime."""
-    subprocess.run(["git", "-C", str(ROOT), "pull", "-q", "--rebase", "--autostash", "origin", "main"], check=True)
-    subprocess.run(["git", "-C", str(ROOT), "push", "-q", "origin", "main"], check=True)
+    """Push main, rebasing first: drafting routines may have pushed in the meantime. A brief GitHub outage (e.g. the
+    runner can't reach github.com) is retried PUSH_RETRIES times, PUSH_WAIT seconds apart, before giving up."""
+    for attempt in range(PUSH_RETRIES + 1):
+        try:
+            subprocess.run(["git", "-C", str(ROOT), "pull", "-q", "--rebase", "--autostash", "origin", "main"], check=True)
+            subprocess.run(["git", "-C", str(ROOT), "push", "-q", "origin", "main"], check=True)
+            return
+        except subprocess.CalledProcessError:
+            if attempt == PUSH_RETRIES:
+                raise
+            print(f"git pull/push failed; retry {attempt + 1}/{PUSH_RETRIES} in {PUSH_WAIT} s", file=sys.stderr, flush=True)
+            time.sleep(PUSH_WAIT)
 
 
 def commit_record(record):
