@@ -39,6 +39,8 @@ LINE = {"three": {"en": "*{p3}%* of his points\nfrom three", "el": "Το *{p3}%*
 PARTS = {"en": ["Twos", "Threes", "Free throws"], "el": ["Δίποντα", "Τρίποντα", "Βολές"]}
 KICKER = {"en": "Season so far · Round {n}", "el": "Η σεζόν ως την {n}η"}
 HEAD = {"en": "The\nspecialists", "el": "Οι\nειδικοί"}
+FACTS = {"en": ("points", "shots", "games"), "el": ("πόντοι", "σουτ", "αγώνες")}
+EYEBROW = {"en": "The specialists of the season", "el": "Οι ειδικοί της σεζόν"}
 S = .6                          # px per cm
 BASELINE, MID = 470, 540        # the baseline's y on screen, the basket's x
 POST_AT = {"three": "10:00", "two": "12:00", "ft": "14:00", "all": "16:00"}  # Athens, Monday: one Reel every 2 hours
@@ -57,7 +59,7 @@ def season_rows(season):
             continue
         s2, s3, sf = 2 * p["twoPointersMade"] / pts, 3 * p["threePointersMade"] / pts, p["freeThrowsMade"] / pts
         rows.append({"code": p["player"]["code"], "name": p["player"]["name"], "club": p["player"]["team"]["code"],
-                     "pts": pts, "split": [s2, s3, sf],
+                     "pts": pts, "games": p["gamesPlayed"], "split": [s2, s3, sf],
                      "fg2": f"{p['twoPointersMade']:.0f}/{p['twoPointersAttempted']:.0f}",
                      "fg3": f"{p['threePointersMade']:.0f}/{p['threePointersAttempted']:.0f}",
                      "ft": f"{p['freeThrowsMade']:.0f}/{p['freeThrowsAttempted']:.0f}"})
@@ -276,10 +278,15 @@ def reel_document(folder, lang):
                 "ft": p["ft"] + (" FT" if lang == "en" else " βολές"),
                 "all": f"{p['pts']:.0f} " + ("points" if lang == "en" else "πόντοι")}[p["kind"]]
         title = "".join(f'<span class="ln">{l}</span>' for l in rich(LINE[p["kind"]][lang].format(**pc)).split("<br>"))
+        # The first frame (the preview) already says who and how much: his season's points, shots and games, and his
+        # shots as faint ghost dots, so his hot zones show before they light up.
+        facts = " · ".join(x for x in (f"{p['pts']:.0f} {FACTS[lang][0]}", f"{len(p['shots'])} {FACTS[lang][1]}",
+                                       f"{p['games']:.0f} {FACTS[lang][2]}" if p.get("games") else "") if x)
         scenes.append(f"""<section class="spec abs" style="inset:0">{court(i, p['kind'] == 'ft')}
 <div class="kicker abs"><span>{html.escape(LABEL[p['kind']][lang])}</span></div>
-<div class="who abs">{mark(p['club'], 96)}<div><small>{html.escape(p['first'])}</small><b>{html.escape(last)}</b></div></div>
-<div class="dots abs" style="inset:0">{dots}</div>
+<div class="who abs">{mark(p['club'], 96)}<div><small>{html.escape(p['first'])}</small><b>{html.escape(last)}</b>
+<span class="facts">{html.escape(facts)}</span></div></div>
+<div class="ghost abs" style="inset:0">{dots}</div><div class="dots abs" style="inset:0">{dots}</div>
 <div class="say abs">{title}</div>
 <div class="bar abs">{bar}</div><div class="keys abs">{keys}</div><div class="foot abs">{html.escape(foot)}</div></section>""")
     css = f"""
@@ -311,6 +318,11 @@ em {{ font-style:normal; color:{C['accent']}; }}
 .dots i.m {{ width:56px; height:56px; background:radial-gradient(circle, {C['accent']}cc 0 18%, {C['accent']}33 40%, transparent 70%);
   mix-blend-mode:screen; }}
 .dots i.o {{ width:14px; height:14px; background:#ffffff40; }}
+.ghost i {{ position:absolute; border-radius:50%; transform:translate(-50%, -50%); }}
+.ghost i.m {{ width:16px; height:16px; background:{C['accent']}; opacity:.3; }}
+.ghost i.o {{ width:10px; height:10px; background:#ffffff26; }}
+.who .facts {{ display:block; margin-top:8px; font-weight:700; font-size:30px; color:{C['muted']}; text-transform:uppercase; letter-spacing:.04em; }}
+.top .eyebrow {{ color:{C['muted']}; }}
 .say {{ left:72px; right:72px; top:1350px; font-weight:900; font-size:76px; line-height:1; text-transform:uppercase; }}
 .say .ln {{ display:block; }}
 .bar {{ left:72px; right:72px; top:1540px; height:84px; display:flex; border-radius:12px; overflow:hidden; gap:4px; }}
@@ -323,7 +335,7 @@ em {{ font-style:normal; color:{C['accent']}; }}
     intro_html = "" if not intro(d) else (f'<div class="intro abs"><div class="k"><span>{html.escape(KICKER[lang].format(n=d["round"]))}</span></div>'
              f'<h1>{"".join(f"<span class=ln>{html.escape(l)}</span>" for l in HEAD[lang].split(chr(10)))}</h1></div>')
     body = f"""<div class="stage abs" style="inset:0">{parquet(1080, 1920)}<div class="shade"></div>
-<div class="top abs"><span class="brand">{centre_disc(C['accent'])}<b>{html.escape(BRAND['name'][lang])}</b></span></div>
+<div class="top abs"><span class="brand">{centre_disc(C['accent'])}<b>{html.escape(BRAND['name'][lang])}</b></span><span class="eyebrow"> · {html.escape(EYEBROW[lang])}</span></div>
 {intro_html}{''.join(scenes)}</div>"""
     script = """
 const INTRO = %(intro)d, SCENE = %(scene)d;
