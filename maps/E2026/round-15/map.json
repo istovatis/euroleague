@@ -1,0 +1,102 @@
+{
+ "season": "E2026",
+ "round": 15,
+ "games": [
+  {
+   "game": 142,
+   "round": 15,
+   "utc": "2026-12-03T17:30:00Z",
+   "home": "IST",
+   "away": "PAM",
+   "venue": "TURKCELL BASKETBALL DEVELOPMENT CENTER",
+   "from": "ROIG ARENA"
+  },
+  {
+   "game": 144,
+   "round": 15,
+   "utc": "2026-12-03T17:45:00Z",
+   "home": "ULK",
+   "away": "RED",
+   "venue": "ULKER SPORTS AND EVENT HALL",
+   "from": "BELGRADE ARENA"
+  },
+  {
+   "game": 141,
+   "round": 15,
+   "utc": "2026-12-03T18:45:00Z",
+   "home": "HTA",
+   "away": "MIL",
+   "venue": "ARENA BOTEVGRAD",
+   "from": "UNIPOL FORUM"
+  },
+  {
+   "game": 143,
+   "round": 15,
+   "utc": "2026-12-03T19:00:00Z",
+   "home": "MUN",
+   "away": "PRS",
+   "venue": "SAP GARDEN",
+   "from": "ADIDAS ARENA"
+  },
+  {
+   "game": 145,
+   "round": 15,
+   "utc": "2026-12-03T19:45:00Z",
+   "home": "MAD",
+   "away": "BAR",
+   "venue": "MOVISTAR ARENA",
+   "from": "PALAU BLAUGRANA"
+  },
+  {
+   "game": 149,
+   "round": 15,
+   "utc": "2026-12-03T20:00:00Z",
+   "home": "VIR",
+   "away": "PAR",
+   "venue": "PALADOZZA",
+   "from": "BELGRADE ARENA"
+  },
+  {
+   "game": 148,
+   "round": 15,
+   "utc": "2026-12-03T20:00:00Z",
+   "home": "BAS",
+   "away": "TEL",
+   "venue": "BUESA ARENA",
+   "from": "SPYROS KYPRIANOU ATHLETIC CENTER"
+  },
+  {
+   "game": 146,
+   "round": 15,
+   "utc": "2026-12-04T17:00:00Z",
+   "home": "BES",
+   "away": "PAN",
+   "venue": "TURKCELL BASKETBALL DEVELOPMENT CENTER",
+   "from": "TELEKOM CENTER ATHENS"
+  },
+  {
+   "game": 147,
+   "round": 15,
+   "utc": "2026-12-04T18:00:00Z",
+   "home": "ZAL",
+   "away": "DUB",
+   "venue": "ZALGIRIO ARENA",
+   "from": "COCA-COLA ARENA"
+  },
+  {
+   "game": 150,
+   "round": 15,
+   "utc": "2026-12-04T19:15:00Z",
+   "home": "OLY",
+   "away": "ASV",
+   "venue": "SUNEL ARENA",
+   "from": "LDLC ARENA"
+  }
+ ],
+ "en": {
+  "title": "From Madrid\n*to Istanbul.*"
+ },
+ "el": {
+  "title": "Από τη Μαδρίτη\n*ως την Κωνσταντινούπολη.*"
+ }
+}

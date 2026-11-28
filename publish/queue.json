@@ -978,6 +978,16 @@
     "approved": true
   },
   {
+    "story": "maps/E2026/round-15",
+    "when": "2026-11-28T14:00:00+02:00",
+    "langs": [
+      "reel-en",
+      "reel-el",
+      "x"
+    ],
+    "approved": true
+  },
+  {
     "story": "races/E2026/round-14",
     "when": "2026-11-28T15:00:00+02:00",
     "langs": [
