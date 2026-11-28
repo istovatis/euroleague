@@ -1,0 +1,224 @@
+{
+ "season": "E2026",
+ "stat": "pts",
+ "rounds": [
+  9,
+  10,
+  11,
+  12,
+  13,
+  14
+ ],
+ "players": [
+  {
+   "code": "003469",
+   "first": "Sasha",
+   "last": "Vezenkov",
+   "club": "OLY",
+   "values": [
+    164,
+    191,
+    211,
+    248,
+    262,
+    283
+   ]
+  },
+  {
+   "code": "012608",
+   "first": "Tj",
+   "last": "Shorts",
+   "club": "PAM",
+   "values": [
+    154,
+    169,
+    183,
+    195,
+    215,
+    230
+   ]
+  },
+  {
+   "code": "011286",
+   "first": "Dwayne",
+   "last": "Bacon",
+   "club": "DUB",
+   "values": [
+    150,
+    163,
+    183,
+    196,
+    214,
+    227
+   ]
+  },
+  {
+   "code": "012640",
+   "first": "Nadir",
+   "last": "Hifi",
+   "club": "PRS",
+   "values": [
+    127,
+    155,
+    166,
+    191,
+    209,
+    224
+   ]
+  },
+  {
+   "code": "011987",
+   "first": "Carsen",
+   "last": "Edwards",
+   "club": "ZAL",
+   "values": [
+    142,
+    153,
+    167,
+    199,
+    214,
+    223
+   ]
+  },
+  {
+   "code": "013369",
+   "first": "Carlik",
+   "last": "Jones",
+   "club": "PAR",
+   "values": [
+    129,
+    136,
+    152,
+    173,
+    194,
+    215
+   ]
+  },
+  {
+   "code": "014008",
+   "first": "Justin",
+   "last": "Robinson",
+   "club": "BAR",
+   "values": [
+    117,
+    137,
+    161,
+    176,
+    197,
+    209
+   ]
+  },
+  {
+   "code": "013384",
+   "first": "Armoni",
+   "last": "Brooks",
+   "club": "PAM",
+   "values": [
+    133,
+    149,
+    163,
+    178,
+    190,
+    204
+   ]
+  },
+  {
+   "code": "007027",
+   "first": "Theo",
+   "last": "Maledon",
+   "club": "MAD",
+   "values": [
+    147,
+    147,
+    147,
+    169,
+    186,
+    201
+   ]
+  },
+  {
+   "code": "009846",
+   "first": "Elijah",
+   "last": "Bryant",
+   "club": "HTA",
+   "values": [
+    123,
+    148,
+    160,
+    175,
+    191,
+    200
+   ]
+  },
+  {
+   "code": "013402",
+   "first": "Antonio",
+   "last": "Blakeney",
+   "club": "HTA",
+   "values": [
+    135,
+    142,
+    145,
+    153,
+    181,
+    196
+   ]
+  },
+  {
+   "code": "012796",
+   "first": "Mfiondu",
+   "last": "Kabengele",
+   "club": "DUB",
+   "values": [
+    130,
+    146,
+    158,
+    176,
+    185,
+    196
+   ]
+  },
+  {
+   "code": "013363",
+   "first": "Jordan",
+   "last": "Nwora",
+   "club": "RED",
+   "values": [
+    132,
+    150,
+    162,
+    171,
+    184,
+    196
+   ]
+  },
+  {
+   "code": "006661",
+   "first": "Scottie",
+   "last": "Wilbekin",
+   "club": "BES",
+   "values": [
+    133,
+    133,
+    149,
+    164,
+    178,
+    190
+   ]
+  },
+  {
+   "code": "009862",
+   "first": "Kevin",
+   "last": "Punter",
+   "club": "BAR",
+   "values": [
+    150,
+    159,
+    159,
+    159,
+    159,
+    159
+   ]
+  }
+ ]
+}
