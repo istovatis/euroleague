@@ -1,0 +1,81 @@
+{
+  "season": "E2026",
+  "round": 14,
+  "players": [
+    {
+      "code": "014316",
+      "first": "Cory",
+      "last": "Joseph",
+      "club": "OLY",
+      "dorsal": "34",
+      "position": "Guard",
+      "pir": 31.0,
+      "pts": 27.0,
+      "ast": 3.0,
+      "reb": 1.0,
+      "won": true,
+      "game": 140,
+      "slot": "PG"
+    },
+    {
+      "code": "013403",
+      "first": "Lonnie",
+      "last": "Walker Iv",
+      "club": "BES",
+      "dorsal": "4",
+      "position": "Guard",
+      "pir": 28.0,
+      "pts": 24.0,
+      "ast": 2.0,
+      "reb": 4.0,
+      "won": false,
+      "game": 132,
+      "slot": "SG"
+    },
+    {
+      "code": "013380",
+      "first": "Evan",
+      "last": "Fournier",
+      "club": "OLY",
+      "dorsal": "94",
+      "position": "Forward",
+      "pir": 27.0,
+      "pts": 23.0,
+      "ast": 11.0,
+      "reb": 1.0,
+      "won": true,
+      "game": 140,
+      "slot": "SF"
+    },
+    {
+      "code": "007831",
+      "first": "Shavon",
+      "last": "Shields",
+      "club": "ULK",
+      "dorsal": "31",
+      "position": "Forward",
+      "pir": 28.0,
+      "pts": 26.0,
+      "ast": 1.0,
+      "reb": 6.0,
+      "won": true,
+      "game": 133,
+      "slot": "PF"
+    },
+    {
+      "code": "012878",
+      "first": "Moses",
+      "last": "Wright",
+      "club": "MIL",
+      "dorsal": "5",
+      "position": "Center",
+      "pir": 35.0,
+      "pts": 29.0,
+      "ast": 2.0,
+      "reb": 8.0,
+      "won": true,
+      "game": 136,
+      "slot": "C"
+    }
+  ]
+}
