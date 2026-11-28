@@ -26,9 +26,11 @@ from roundmap import VENUES, arena_name
 KICKER = {"en": "Round {n}", "el": "{n}η αγωνιστική"}
 HEAD = {"en": "Biggest\ncrowds", "el": "Ο περισσότερος\nκόσμος"}
 FULL = {"en": "{p}% full", "el": "{p}% πληρότητα"}
+FANS = {"en": "fans", "el": "φίλαθλοι"}
+GAMES = {"en": "games", "el": "αγώνες"}
 POST_AT = "17:00"                      # Athens, Saturday
 INTRO, STEP, HOLD = 1.0, .75, 2.8      # seconds: before the first row; per row; the end held
-TOP, ROW = 560, 100                    # px: the first row's y; per row
+TOP, ROW = 610, 100                    # px: the first row's y; per row
 
 
 def light(hex_colour):
@@ -174,14 +176,28 @@ em {{ font-style:normal; color:{C['accent']}; }}
 .row.first .rank, .row.first .num b {{ color:{C['accent']}; }}
 .line {{ left:72px; right:72px; top:{TOP + n * ROW + 40}px; font-weight:900; font-size:76px; line-height:1; text-transform:uppercase; }}
 .line .ln {{ display:block; }}
+.sum {{ left:72px; top:462px; font-weight:700; font-size:40px; color:{C['muted']}; text-transform:uppercase; letter-spacing:.03em; }}
+.sum b {{ color:{C['accent']}; font-weight:900; }}
+.crests {{ left:72px; top:520px; display:flex; gap:8px; }}
+.slot {{ left:56px; right:56px; height:{ROW - 12}px; border-radius:14px; border:3px dashed #ffffff22; display:flex; align-items:center;
+  padding:0 22px; gap:18px; }}
+.slot .rank {{ color:#ffffff44; }} .slot i {{ font-style:normal; font-weight:900; font-size:44px; color:#ffffff33; }}
 """
     head = "".join(f'<span class="ln">{html.escape(l)}</span>' for l in HEAD[lang].split("\n"))
+    # The first frame (the preview) already tells the story without giving the order away: the round's fans in total,
+    # every home club's crest (alphabetical) and the ten empty slots of the ranking, each filled as it is revealed.
+    total_fans = f"{sum(a['crowd'] for a in d['arenas']):,}".replace(",", "," if lang == "en" else ".")
+    crests = "".join(mark(c, 52) for c in sorted({a["home"] for a in d["arenas"]}, key=lambda c: CLUBS[c][lang]))
+    slots = "".join(f'<div class="slot abs" style="top:{TOP + k * ROW}px"><div class="rank">{k + 1}</div><i>?</i></div>'
+                    for k in range(n))
     lines = "".join(f'<span class="ln">{l}</span>' for l in rich(d[lang]["title"]).split("<br>"))
     body = f"""<div class="stage abs" style="inset:0">{parquet(1080, 1920)}<div class="shade"></div>
 <div class="top abs"><span class="brand">{centre_disc(C['accent'])}<b>{html.escape(BRAND['name'][lang])}</b></span></div>
 <div class="kicker abs"><span>{html.escape(KICKER[lang].format(n=d['round']))}</span></div>
 <div class="head abs">{head}</div>
-{''.join(rows)}<div class="line abs">{lines}</div></div>"""
+<div class="sum abs"><b>{total_fans}</b> {FANS[lang]} · {n} {GAMES[lang]}</div>
+<div class="crests abs">{crests}</div>
+{slots}{''.join(rows)}<div class="line abs">{lines}</div></div>"""
     script = """
 const SEP = '%(sep)s', INTRO = %(intro)d, STEP = %(step)d, END = %(end)d, FILL = 600;
 const ease = 'cubic-bezier(.2,.8,.2,1)';
@@ -192,9 +208,10 @@ function anim(el, frames, delay, dur, easing, fill) {
 const rows = $$('.row'), N = rows.length;
 const at = k => INTRO + (N - 1 - k) * STEP;  // the smallest crowd first, the biggest last
 function setup() {
-  anim($('.kicker'), [{opacity: 0}, {opacity: 1}], 0, 300);
-  $$('.head .ln').forEach((el, i) => anim(el, [{opacity: 0, transform: 'translateY(50px)'}, {opacity: 1, transform: 'none'}], 100 + i * 180, 420));
+  // No entrance for the title, summary, crests or slots: the first frame is complete.
+  const slots = $$('.slot');
   rows.forEach((r, k) => {
+    anim(slots[k], [{opacity: 1}, {opacity: 0}], at(k) + 200, 200, 'linear', 'forwards');
     anim(r, [{opacity: 0, transform: 'translateX(120px)'}, {opacity: 1, transform: 'none'}], at(k), 320);
     anim(r.querySelector('.fill'), [{width: '0%%'}, {width: r.dataset.w + '%%'}], at(k) + 120, FILL, 'cubic-bezier(.3,.7,.2,1)');
   });
