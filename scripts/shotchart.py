@@ -142,6 +142,9 @@ em {{ font-style:normal; color:{C['accent']}; }}
 .mark img {{ width:72%; height:72%; object-fit:contain; }}
 .mark span {{ font-weight:900; font-size:150%; letter-spacing:.04em; }}
 .shot {{ width:0; height:0; }}
+.ghost i {{ position:absolute; border-radius:50%; transform:translate(-50%, -50%); }}
+.ghost i.m {{ width:18px; height:18px; background:{C['accent']}; opacity:.3; }}
+.ghost i.o {{ width:12px; height:12px; background:#ffffff2a; }}
 .shot .dot {{ position:absolute; left:-17px; top:-17px; width:34px; height:34px; border-radius:50%; background:{C['accent']};
   box-shadow:0 0 0 5px {C['bg']}, 0 0 26px 6px {C['accent']}99; }}
 .shot.three .dot {{ left:-21px; top:-21px; width:42px; height:42px; }}
@@ -167,6 +170,10 @@ em {{ font-style:normal; color:{C['accent']}; }}
     X = lambda cm: MID + cm * S
     Y = lambda cm: BASELINE + (157.5 + cm) * S
     dots, ft_pops = [], []
+    # The first frame (the preview) already shows where he scored: every shot of the night as a faint ghost dot,
+    # lit up one by one as the game clock runs.
+    ghost = "".join(f'<i class="{"m" if e["made"] else "o"}" style="left:{X(e["x"]):.0f}px;top:{Y(e["y"]):.0f}px"></i>'
+                    for e in events if "x" in e)
     for i, e in enumerate(events):
         if e.get("ft"):
             ft_pops.append(f'<div class="ftpop abs" data-i="{i}">+{e["pts"]} {html.escape(FT[lang])}</div>')
@@ -184,7 +191,7 @@ em {{ font-style:normal; color:{C['accent']}; }}
 <div class="kicker abs"><span>{html.escape(KICKER[lang])}</span></div>
 <div class="who abs">{mark(d['club'], 110)}<div class="n"><div class="first">{html.escape(first)}</div><div class="last">{html.escape(last)}</div>
 <div class="game">{html.escape(score)}</div></div></div>
-{''.join(dots)}{''.join(ft_pops)}
+<div class="ghost abs" style="inset:0">{ghost}</div>{''.join(dots)}{''.join(ft_pops)}
 <div class="board abs"><div class="pts"><div class="v">0</div><div class="l">{html.escape(POINTS[lang])}</div></div>
 <div class="clock"><div class="t">{PERIOD[lang][0]} 10:00</div></div></div>
 <div class="veil abs"></div><div class="title abs">{lines}</div><div class="stats abs">{stat_html}</div></div>
