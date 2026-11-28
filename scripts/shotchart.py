@@ -136,7 +136,7 @@ em {{ font-style:normal; color:{C['accent']}; }}
 .who {{ left:72px; right:72px; top:240px; display:flex; align-items:center; gap:24px; }}
 .who .n {{ text-transform:uppercase; line-height:.95; }}
 .who .first {{ font-weight:700; font-size:34px; color:{C['muted']}; letter-spacing:.05em; }}
-.who .last {{ font-weight:900; font-size:100px; white-space:nowrap; }}
+.who .last {{ font-weight:900; font-size:100px; white-space:nowrap; margin-top:14px; }}  /* room for Greek capitals' accents and diaereses (ΡΑΪΤ) */
 .who .game {{ margin-top:6px; font-weight:700; font-size:26px; color:{C['muted']}; letter-spacing:.08em; }}
 .mark {{ flex:none; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px #0008; }}
 .mark img {{ width:72%; height:72%; object-fit:contain; }}

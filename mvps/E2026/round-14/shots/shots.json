@@ -195,10 +195,40 @@
  ],
  "en": {
   "first": "Moses",
-  "last": "Wright"
+  "last": "Wright",
+  "title": "All of it\nat the rim.\n*Milan won\nin Villeurbanne.*",
+  "stats": [
+   [
+    "13/16",
+    "twos"
+   ],
+   [
+    "0/2",
+    "threes"
+   ],
+   [
+    "3/3",
+    "free throws"
+   ]
+  ]
  },
  "el": {
   "first": "Μόουζες",
-  "last": "Ράιτ"
+  "last": "Ράιτ",
+  "title": "Όλα κάτω\nαπό το καλάθι.\n*Η Αρμάνι πήρε\nτο διπλό.*",
+  "stats": [
+   [
+    "13/16",
+    "δίποντα"
+   ],
+   [
+    "0/2",
+    "τρίποντα"
+   ],
+   [
+    "3/3",
+    "βολές"
+   ]
+  ]
  }
 }
