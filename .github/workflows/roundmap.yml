@@ -11,6 +11,11 @@ on:
   schedule:
     - cron: "30 5,6 * * 6"
     - cron: "30 8,9 * * 0"
+  # The routines start this job on time by pushing kick/roundmap (GitHub's clock above often runs late or not at
+  # all; it stays as a backup, and a second start finds the work done).
+  push:
+    branches: [main]
+    paths: ["kick/roundmap"]
   workflow_dispatch:
 
 permissions:

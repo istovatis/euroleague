@@ -8,6 +8,11 @@ name: Biggest crowds
 on:
   schedule:
     - cron: "30 13,14 * * 6"
+  # The routines start this job on time by pushing kick/crowds (GitHub's clock above often runs late or not at
+  # all; it stays as a backup, and a second start finds the work done).
+  push:
+    branches: [main]
+    paths: ["kick/crowds"]
   workflow_dispatch:
 
 permissions:
