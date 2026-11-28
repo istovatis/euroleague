@@ -299,6 +299,7 @@ em {{ font-style:normal; color:{C['accent']}; }}
   letter-spacing:.06em; text-transform:uppercase; padding:4px 16px; }}
 .head {{ left:72px; top:240px; font-weight:900; font-size:104px; line-height:.95; text-transform:uppercase; }}
 .head .ln {{ display:block; }}
+.duo {{ right:72px; top:250px; display:flex; gap:16px; }}
 .sum {{ left:72px; top:452px; font-weight:700; font-size:40px; color:{C['muted']}; text-transform:uppercase; letter-spacing:.03em; }}
 .sum b {{ color:{C['accent']}; font-weight:900; }}
 .wait {{ fill:{C['accent']}; }}
@@ -325,6 +326,9 @@ svg.map {{ position:absolute; left:0; top:0; width:1080px; height:1920px; }}
 .line .ln {{ display:block; }}
 """
     head = d.get("head", {}).get(lang) or HEAD[lang].format(n=d["round"])
+    # The Greek weekly's first frame carries Olympiacos' and Panathinaikos' crests beside its title (the owner's choice,
+    # 2026-11-28).
+    duo = f'<div class="duo abs">{"".join(mark(c, 140) for c in GREEK)}</div>' if "head" in d else ""
     head = "".join(f'<span class="ln">{html.escape(l)}</span>' for l in head.split("\n"))
     title = loc.get("title", "")
     lines = "".join(f'<span class="ln">{l}</span>' for l in rich(title).split("<br>")) if title else ""
@@ -338,7 +342,7 @@ svg.map {{ position:absolute; left:0; top:0; width:1080px; height:1920px; }}
 <div class="top abs"><span class="brand">{centre_disc(C['accent'])}<b>{html.escape(BRAND['name'][lang])}</b></span></div>
 <div class="kicker abs"><span>{html.escape(d.get("kicker", {}).get(lang) or KICKER[lang])}</span></div>
 <div class="head abs">{head}</div>
-<div class="sum abs"><b>{len(d["games"])}</b> {GAMES[lang]} · {html.escape(days(d, lang))}</div>
+{duo}<div class="sum abs"><b>{len(d["games"])}</b> {GAMES[lang]} · {html.escape(days(d, lang))}</div>
 {''.join(cards)}<div class="line abs">{lines}</div></div>"""
     script = """
 const G = %(games)s, INTRO = %(intro)d, STEP = %(step)d, FLY = %(fly)d, END = %(end)d;
