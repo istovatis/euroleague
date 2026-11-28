@@ -1,0 +1,82 @@
+{
+ "season": "E2026",
+ "round": 14,
+ "arenas": [
+  {
+   "home": "RED",
+   "away": "VIR",
+   "venue": "BELGRADE ARENA",
+   "crowd": 14529,
+   "capacity": 21000
+  },
+  {
+   "home": "PAM",
+   "away": "PAN",
+   "venue": "ROIG ARENA",
+   "crowd": 14310,
+   "capacity": 15600
+  },
+  {
+   "home": "MAD",
+   "away": "ZAL",
+   "venue": "MOVISTAR ARENA",
+   "crowd": 8179,
+   "capacity": 13109
+  },
+  {
+   "home": "MUN",
+   "away": "TEL",
+   "venue": "SAP GARDEN",
+   "crowd": 7832,
+   "capacity": 11500
+  },
+  {
+   "home": "ASV",
+   "away": "MIL",
+   "venue": "LDLC ARENA",
+   "crowd": 7504,
+   "capacity": 12523
+  },
+  {
+   "home": "BAS",
+   "away": "IST",
+   "venue": "BUESA ARENA",
+   "crowd": 6702,
+   "capacity": 15431
+  },
+  {
+   "home": "OLY",
+   "away": "HTA",
+   "venue": "SUNEL ARENA",
+   "crowd": 6337,
+   "capacity": 8300
+  },
+  {
+   "home": "BAR",
+   "away": "ULK",
+   "venue": "PALAU BLAUGRANA",
+   "crowd": 5698,
+   "capacity": 7585
+  },
+  {
+   "home": "DUB",
+   "away": "PAR",
+   "venue": "COCA-COLA ARENA",
+   "crowd": 5370,
+   "capacity": 13221
+  },
+  {
+   "home": "BES",
+   "away": "PRS",
+   "venue": "TURKCELL BASKETBALL DEVELOPMENT CENTER",
+   "crowd": 3323,
+   "capacity": 10000
+  }
+ ],
+ "en": {
+  "title": "Most fans:\n*Belgrade Arena.*"
+ },
+ "el": {
+  "title": "Πρώτη σε κόσμο:\n*Belgrade Arena, Βελιγράδι.*"
+ }
+}
