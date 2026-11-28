@@ -1,0 +1,44 @@
+name: MVP shot chart (data)
+
+# The MVP of the round's shots, from the EuroLeague live API (live.euroleague.net, which the cloud routine's network
+# can't reach; GitHub can). The Saturday routine starts it by pushing kick/shotchart once the MVP's mvp.json is
+# committed: it takes the newest mvps/<season>/round-NN/ with mvp.json but no shots/shots.json, runs
+# scripts/shotchart.py mvp (3 API calls) and commits shots/shots.json; the routine then writes the line, the numbers and
+# the captions and queues the Reel for Sunday 18:00 (ROUTINE.md). A Saturday clock run is the backup.
+on:
+  push:
+    branches: [main]
+    paths: ["kick/shotchart"]
+  schedule:
+    - cron: "0 9,11 * * 6"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shotchart
+  cancel-in-progress: false
+
+jobs:
+  shotchart:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch the MVP's shots
+        run: |
+          git config user.name "parquet-hoops-bot"
+          git config user.email "parquet-hoops-bot@users.noreply.github.com"
+          folder=$(ls -d mvps/*/round-*/ 2>/dev/null | sort | tail -1)
+          folder=${folder%/}
+          if [ -z "$folder" ] || [ ! -f "$folder/mvp.json" ]; then echo "No MVP yet"; exit 0; fi
+          if [ -f "$folder/shots/shots.json" ]; then echo "Already fetched: $folder"; exit 0; fi
+          python3 scripts/shotchart.py mvp "$folder"
+          git add "$folder/shots"
+          git commit -q -m "MVP shot chart data: $folder"
+          git pull -q --rebase origin main
+          git push -q origin main
